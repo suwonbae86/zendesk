@@ -1,10 +1,10 @@
 
 $text-color: #262D33;
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 
 
+@import url("https://kit-pro.fontawesome.com/releases/v5.15.1/css/pro.min.css");
 
 
 #vis-wrapper {
@@ -31,10 +31,25 @@ min-height: 450px;
 
 }
 
+p {
+    margin-top: 0;
+    margin-bottom: 0rem;
+}
+
 h3{
   color:#797e8a;
   margin-top:0em
 }
+
+h6{
+  color:#797e8a;
+  margin:0em
+}
+
+h5{
+  color:white
+}
+
 
 .varianceBox{
   min-height: 100px;
@@ -42,8 +57,49 @@ h3{
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #f4cccc;
+
   padding:1.5em 0em
+}
+
+
+.varianceBox.negative{
+  background: rgb(251, 231, 229);
+  color: rgb(199, 32, 10);
+}
+
+.varianceBox.positive{
+
+background: rgb(238, 248, 232);
+color: rgb(57, 128, 11);
+
+}
+
+.caret{
+  position: relative;
+}
+.varianceBox.negative .caret::before {
+  font-family: "Font Awesome 5 Pro";
+  position: absolute;
+  content: "\f0d7";
+  display: inline-block;
+  left: 5px;
+  top: 2px;
+  color: rgb(199, 32, 10);
+    font-weight:700
+}
+
+
+
+
+.varianceBox.positive .caret::before{
+    font-family: "Font Awesome 5 Pro";
+    position: absolute;
+    content: "\f0d8";
+    display: inline-block;
+    left: 5px;
+    top: 2px;
+  color: rgb(57, 128, 11);
+  font-weight:700
 }
 
 .greenBox{
@@ -53,7 +109,8 @@ text-align: center;
 }
 .greenBox p{
   color:white;
-  font-weight: 500
+  font-weight: 500;
+  font-size: 15px;
 }
 
 .negative-background{
@@ -62,6 +119,29 @@ text-align: center;
 
 .red{
   color:#ff0000
+}
+
+.showFirstLast{
+  height: 5px;
+  margin-top:0;
+  width:100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  color:black;
+  padding:0px 7px;
+  border-bottom: 1px solid black
+}
+
+.bottom{
+  padding: .5em 3em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.bottom p{
+  margin-bottom: 0em !important
 }
 
 #app .btn-group {
@@ -104,13 +184,14 @@ text-align: center;
   #chart-wrapper {
     width: 100%;
     height: 100%;
-position: relative;
-    min-height: 300px;
-    max-height: 340px;
+    position: relative;
+    min-height: 200px;
+    max-height: 240px;
     width: 100%;
     border: none;
     display: flex;
     justify-content: center;
+    margin-bottom:0em
   }
 
   #chart {
@@ -144,7 +225,10 @@ position: relative;
 
 // Chart tooltip
 .chartjs-tooltip {
-  top:-250px;
+  top:-550px;
+  min-width: 200px !important;
+  margin-top:-340px;
+  margin-left:-40% !important;
   opacity: 1;
   position: absolute;
   padding: 8px 10px;

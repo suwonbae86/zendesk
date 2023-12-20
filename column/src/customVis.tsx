@@ -69,31 +69,31 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
 
     // config
     const configOptions: ConfigOptions = {
-      title: {
+      // title: {
+      //   type: "string",
+      //   display: "text",
+      //   default: "Title",
+      //   label: "Title",
+      //   placeholder: "Title",
+      //   order: 1,
+      //   section: "Title",
+      // },
+      // showXAxisLabel: {
+      //   type: "boolean",
+      //   label: "Show X Axis Label",
+      //   default: true,
+      //   order: 2,
+      //   section: "X-Axis",
+      // },
+      textTitle: {
         type: "string",
-        display: "text",
-        default: "Title",
-        label: "Title",
-        placeholder: "Title",
-        order: 1,
-        section: "Title",
-      },
-      showXAxisLabel: {
-        type: "boolean",
-        label: "Show X Axis Label",
-        default: true,
-        order: 2,
-        section: "X-Axis",
-      },
-      xAxisDropdown: {
-        type: "string",
-        label: "Choose X Axis Label Value",
+        label: "Choose Title",
         display: "select",
         placeholder: "Please Select",
-        values: fieldOptions2,
+        values: fieldOptions,
         order: 3,
         default:"Please Select",
-        section: "X-Axis",
+        section: "Style",
       },
       // xAxisText: {
       //   type: "string",
@@ -102,23 +102,23 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
       //   order: 4,
       // },
 
-      showYAxisLabel: {
-        type: "boolean",
-        label: "Show Y Axis Label",
-        default: true,
-        order: 5,
-        section: "Y-Axis",
-      },
+      // showYAxisLabel: {
+      //   type: "boolean",
+      //   label: "Show Y Axis Label",
+      //   default: true,
+      //   order: 5,
+      //   section: "Y-Axis",
+      // },
 
       yAxisDropdown: {
         type: "string",
-        label: "Choose Y Axis Label Value",
+        label: "Choose Percentage Change Value",
         display: "select",
         placeholder: "Please Select",
-        values: fieldOptions2,
+        values: fieldOptions,
         order: 6,
         default:"Please Select",
-        section: "Y-Axis",
+        section: "KPI-Values",
       },
       // yAxisText: {
       //   type: "string",
@@ -138,13 +138,13 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
 
            symbol: {
             type: "string",
-            label: "Select Currency Symbol",
+            label: "Select Target Value",
             display: "select",
             placeholder: "Please Select",
             values: fieldOptions,
             order: 26,
             default:'',
-            section: "Y-Axis",
+            section: "KPI-Values",
           },
       // showPoints: {
       //   type: "boolean",
@@ -173,16 +173,16 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
       //   section: "Y-Axis",
       // },
 
-      // yAxisRightDropdown: {
-      //   type: "string",
-      //   label: "Choose Y Axis Right Side Label",
-      //   display: "select",
-      //   placeholder: "Please Select",
-      //   values: fieldOptions2,
-      //   order: 15,
-      //   default:'',
-      //   section: "Y-Axis",
-      // },
+      yAxisRightDropdown: {
+        type: "string",
+        label: "Choose 13W Avg Value",
+        display: "select",
+        placeholder: "Please Select",
+        values: fieldOptions,
+        order: 15,
+        default:'',
+        section: "Bottom",
+      },
 
 
            //
@@ -231,13 +231,13 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
       //   default: "sq ft",
       //   order: 10,
       // },
-      isStacked: {
-        type: "boolean",
-        label: "Stacked",
-        default: false,
-        order: 20,
-        section: "Style",
-      },
+      // isStacked: {
+      //   type: "boolean",
+      //   label: "Stacked",
+      //   default: false,
+      //   order: 20,
+      //   section: "Style",
+      // },
       // showLineChartGradient: {
       //   type: "boolean",
       //   label: "Show Line Chart Gradient",
@@ -277,13 +277,13 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
       },
       yAxisLeftValues: {
         type: "string",
-        label: "Choose Y Axis Left Side Value",
+        label: "Choose Measure Value for Chart",
         display: "select",
         placeholder: "Please Select",
         values: fieldOptions,
         order: 25,
         default:'',
-        section: "Y-Axis",
+        section: "Chart",
       },
     };
 
@@ -307,12 +307,11 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
     const { dimension_like, measure_like, pivots } = queryResponse.fields;
     const fields: Fields = {
       dimensions: dimension_like.map((d) => d.name),
-      dimensionsLabel: dimension_like.map((d) => d.label),
+      dimensionsLabel: dimension_like.map((d) => d.label_short),
       measures: measure_like.map((m) => m.name),
-      measuresLabel: measure_like.map((m) => m.label),
+      measuresLabel: measure_like.map((m) => m.label_short),
       pivots: pivots?.map((p) => p.name),
     };
-
 
 
 

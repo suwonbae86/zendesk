@@ -109,7 +109,7 @@ function BarLineVis({
     xAxisText,
     showYAxisLabel,
     yAxisText,
-    title,
+    textTitle,
     showKpi,
     kpiUnit,
     isStacked,
@@ -131,14 +131,6 @@ function BarLineVis({
   } = config;
 
 
-
-console.log(lookerVis)
-  // lookerVis.trigger("updateConfig", [{ yAxisDropdown: yAxisDropdownValues}]);
-
-  // lookerVis.trigger("registerOptions", configOptions);
-
-  // lookerVis.trigger("updateConfig", [{ showXGridLines: true }]);
-
   // Chart type toggle
   interface ChartTypeOption {
     label: string;
@@ -150,29 +142,9 @@ console.log(lookerVis)
       label: "Bar",
       value: "bar",
     },
-    // {
-    //   label: "Line",
-    //   value: "line",
-    // },
-    // {
-    //   label: "Doughnut",
-    //   value: "doughnut",
-    // },
-    // {
-    //   label: "Scatter",
-    //   value: "scatter",
-    // },
+
   ];
-  // const chartTypeOptions: ChartTypeOption[] = [
-  //   {
-  //     label: "Line",
-  //     value: "line",
-  //   },
-  //   {
-  //     label: "Bar",
-  //     value: "bar",
-  //   },
-  // ];
+
   const [selectedChartType, setSelectedChartType] = useState(
     chartTypeOptions[0].value
   );
@@ -431,8 +403,6 @@ let text = cols_to_hide.toString()
 
         const pivotValue = context.tooltip.dataPoints[0].dataset.label;
 
-
-
         const previousPeriodValue =
           data[dataIndex][periodComparisonMeasure][pivotValue].value;
         const currentPeriodValue = context.tooltip.dataPoints[0].raw as number;
@@ -463,6 +433,7 @@ let text = cols_to_hide.toString()
         dimensionLabel0: `${dimensionLabel}:`,
         dimensionLabel: `${context.tooltip.title[0]}`,
         measureLabel: `${context.tooltip.dataPoints[0].dataset.label}: `,
+        // measureLabel: `${yAxisLeftValues}: `,
         measureLabel0: `${context.tooltip.dataPoints[0].formattedValue}`,
         left:
           position.left + window.pageXOffset + context.tooltip.caretX + "px",
@@ -484,47 +455,66 @@ let text = cols_to_hide.toString()
 
 
 
-
-      const Content = config.xAxisDropdown.split(",").map((d, i) => ({
-      xAxisDropdown: d,
+      const Content = config.textTitle.split(",").map((d, i) => ({
+      textTitle: d,
       yAxisDropdown:config.yAxisDropdown.split(",")[i],
+      // xAxisDropdown:config.xAxisDropdown.split(",")[i],
+
       symbol:config.symbol.split(",")[i],
       yAxisLeftValues:config.yAxisLeftValues.split(",")[i],
-      // yAxisRightDropdown:config.yAxisRightDropdown.split(",")[i],
+      yAxisRightDropdown:config.yAxisRightDropdown.split(",")[i],
+
       // yAxisRightValues:config.yAxisRightValues.split(",")[i],
       // symbol2:config.symbol2.split(",")[i],
 
       }))
 
 
+
+      let title = Content.map(function(val, i){ return val.textTitle });
+
+      let title = title[0]
+
+
+      let percent = Content.map(function(val, i){ return val.yAxisDropdown });
+
+      let percent = Math.round(percent[0] * 100)
+
+      console.log(percent)
+
+
+
 let result = Content.map(function(val, i){ return val.symbol });
 
-let theSymbol = result[0]
+let target = Math.round(result[0] * 100)
 
 
 
-// let result2 = Content.map(function(val, i){ return val.symbol2 });
+
+// let xAxisDropdownValues = Content.map(function(val, i){ return val.xAxisDropdown });
 //
-// let theSymbol2 = result2[0]
-
-let xAxisDropdownValues = Content.map(function(val, i){ return val.xAxisDropdown });
-
-
-let yAxisDropdownValues = Content.map(function(val, i){ return val.yAxisDropdown });
-
-
 //
-// let yAxisRightDropdownValues = Content.map(function(val, i){ return val.yAxisRightDropdown });
+// let yAxisDropdownValues = Content.map(function(val, i){ return val.yAxisDropdown });
 //
+//
+
+
+
+
+
+let yAxisRightDropdownValues = Content.map(function(val, i){ return val.yAxisRightDropdown });
+
+
+let yAxisRightDropdownValues = Math.round(yAxisRightDropdownValues[0])
+
 // let yAxisRightValues = Content.map(function(val, i){ return val.yAxisRightValues });
 //
 //
 
 
-// vis.trigger("updateConfig", [{ yAxisDropdownValues: yAxisDropdownValues }]);
 
-
-
+const first = labels[0];
+const last = labels[labels.length - 1];
 
 
   const chartOptions: ChartOptions<"scatter" | "bar"> = useMemo(
@@ -598,14 +588,14 @@ let yAxisDropdownValues = Content.map(function(val, i){ return val.yAxisDropdown
           stacked: false,
           title: {
             display: false,
-            text: ` ${xAxisDropdown ?  xAxisDropdownValues  : dimensionLabel }`,
+            // text: ` ${xAxisDropdown ?  xAxisDropdownValues  : dimensionLabel }`,
             font: {
               size: 10
             }
           },
           ticks: {
 
-
+          display:false,
           maxTicksLimit: 2,
           autoSkip: true,
 
@@ -634,12 +624,12 @@ let yAxisDropdownValues = Content.map(function(val, i){ return val.yAxisDropdown
           ticks: {
             display:false,
             callback: function (value: number) {
-              return `${symbol ? theSymbol : text}${formatNumber(value)}`;
+              return `${formatNumber(value)}`;
             },
           },
           title: {
             display: false,
-            text: `${yAxisDropdown ?  yAxisDropdownValues  : measureLabel }`,
+            // text: `${yAxisDropdown ?  yAxisDropdownValues  : measureLabel }`,
             font: {
               size: 10
             }
@@ -708,17 +698,18 @@ let yAxisDropdownValues = Content.map(function(val, i){ return val.yAxisDropdown
     <div>
 
     <div class="upDown">
-
-
     <div className="greenBox pt-3">
-      <p className="mb-0">{title}</p>
+      <h5 className="mb-0">{title}</h5>
           <p>Number of accounts without activity in the last 30 days</p>
     </div>
 
-    <div className="varianceBox">
+    <div className={target < 0 ? "varianceBox negative" : "varianceBox positive"}>
 
-    <h1 className="mb-0">90 </h1>
-   <h3>Target: 0</h3>
+    <h1 className="mb-0">{percent}
+    <span class="caret">
+    </span>
+      </h1>
+   <h3>Target: {target}</h3>
 
 
     </div>
@@ -735,6 +726,14 @@ let yAxisDropdownValues = Content.map(function(val, i){ return val.yAxisDropdown
         />
         {tooltip && <Tooltip hasPivot={hasPivot} hasNoPivot={hasNoPivot} tooltipData={tooltip} />}
       </div>
+      <div className="showFirstLast">
+        <p>{first}</p>
+        <p>{last}</p>
+      </div>
+          <div className="bottom">
+          <p>L13W Avg</p>
+          <p>{yAxisRightDropdownValues}</p>
+          </div>
     </div>
     </div>
     </div>
