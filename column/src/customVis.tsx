@@ -26,6 +26,7 @@ looker.plugins.visualizations.add({
   updateAsync: function (data, element, config, queryResponse, details, done) {
 
 
+
     const { dimension_like: dimensionLike } = queryResponse.fields;
 
     const dimensions1 = dimensionLike.map((dimension) => ({
@@ -48,20 +49,28 @@ looker.plugins.visualizations.add({
 
 
 
-     const fieldOptions = [...dimensions1, ...measures1].map((dim) => ({
+const fieldOptions = [...dimensions1, ...measures1].map((dim) => ({
          [dim.label]: queryResponse.data.map(row => row[dim.name].value).join(",")
        }));
 
 
-
 const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
     [dim.label]: dim.label
-
-
   }));
 
 
+  const measures: Measure[] = measureLike.map((measure) => ({
+    label: measure.label_short ?? measure.label,
+    name: measure.name,
+  }));
 
+  const firstmeasure = measures[0].name;
+  const secondmeasure = measures.length > 1 ? measures[1].name : "";
+  const thirdmeasure = measures.length > 2 ? measures[2].name : "";
+
+console.log(firstmeasure )
+console.log(secondmeasure )
+console.log(thirdmeasure )
 
     const lookerVis = this;
 
@@ -114,7 +123,7 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
         type: "string",
         label: "Choose Percentage Change Value",
         display: "select",
-        placeholder: "Please Select",
+        default:secondmeasure,
         values: fieldOptions,
         order: 6,
         default:"Please Select",
@@ -140,10 +149,11 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
             type: "string",
             label: "Select Target Value",
             display: "select",
-            placeholder: "Please Select",
+
+            default:firstmeasure,
             values: fieldOptions,
             order: 26,
-            default:'',
+
             section: "KPI-Values",
           },
       // showPoints: {
@@ -315,6 +325,7 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
 
 
 
+    console.log(fields)
 
     // create react root
     element.innerHTML = '<div id="app"></div>';

@@ -72,9 +72,8 @@ const chartPlugins = [
       // Get a reference to the original fit function
       const originalFit = chart.legend.fit;
 
-      // Override the fit function
       chart.legend.fit = function fit() {
-        // Call the original function and bind scope in order to use `this` correctly inside it
+
         originalFit.bind(chart.legend)();
         this.height += 10;
       };
@@ -127,8 +126,10 @@ function BarLineVis({
     isYAxisCurrency2,
     choosePoints,
     color_range,
-    yAxisLeftValues
+    yAxisLeftValues,
+    firstmeasure
   } = config;
+
 
 
   // Chart type toggle
@@ -170,7 +171,6 @@ for (const [key, value] of Object.entries(firstData)) {
   }
 }
 
-// console.log(firstData)
 
 let points = [];
 
@@ -182,27 +182,6 @@ for (const [key, value] of Object.entries(firstData)) {
 }
 let points = points.toString()
 
-
-
-// let elem = document.getElementById("vis-wrapper");
-//
-// let isMainPresent = elem.classList.contains("hidePoints");
-//
-// if (isMainPresent === true){
-//   console.log("sfkbsfbksbksdbksbdvkbbs")
-// }
-
-// var word = measureName.split(".")[1]
-//
-//
-// var word = word.replace(/_/g, ' ').replace(/(?: |\b)(\w)/g, function(word) { return word.toUpperCase()});
-//
-// console.log(word)
-
-// console.log(firstData, "one")
-// console.log(cols_to_hide, "two")
-
-// let text = cols_to_hide.toString().slice(0, -1);
 let text = cols_to_hide.toString()
 
 
@@ -221,8 +200,6 @@ let text = cols_to_hide.toString()
 
   const fill = showLineChartGradient ? "origin" : false;
 
-
-
   const defaultChartData: ChartData<
     | "bar"
     | "line"
@@ -240,17 +217,6 @@ let text = cols_to_hide.toString()
   };
   const [chartData, setChartData] = useState(defaultChartData);
 
-  // function createGradient(
-  //   ctx: CanvasRenderingContext2D,
-  //   startColor: string,
-  //   endColor: string
-  // ): CanvasGradient {
-  //   const gradientFill = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
-  //   gradientFill.addColorStop(0, startColor);
-  //   gradientFill.addColorStop(1, endColor);
-  //   return gradientFill;
-  // }
-
   function updateChartData(chartType: ChartType) {
     let datasets = [];
     let canvasElement = document.getElementById("chart") as HTMLCanvasElement;
@@ -266,11 +232,6 @@ let text = cols_to_hide.toString()
             (row) => row[measureName][pivotValue].value
           );
 
-          // const gradientFill = createGradient(
-          //   ctx,
-          //   `#${colors[i]}`,
-          //   `#${colors[i]}00`
-          // );
 
           datasets.push({
             datalabels: {
@@ -294,11 +255,6 @@ let text = cols_to_hide.toString()
         });
       }
       else {
-        // const gradientFill = createGradient(
-        //   ctx,
-        //   `#${colors[0]}`,
-        //   `#${colors[0]}00`
-        // );
 
 
         datasets.push({
@@ -335,12 +291,12 @@ let text = cols_to_hide.toString()
       (number | Point | [number, number] | BubbleDataPoint)[],
       unknown
     >;
-    tooltip: TooltipModel<"scatter" | "bar">;
+    tooltip: TooltipModel<"bar" | "scatter">;
   }
 
   function tooltipHandler(
     context: TooltipContext,
-    isYAxisCurrency: boolean,
+
 
     setTooltip: (newState: TooltipData | null) => void
   ) {
@@ -348,9 +304,6 @@ let text = cols_to_hide.toString()
     if (isTooltipVisible) {
       const position = context.chart.canvas.getBoundingClientRect();
 
-
-      //
-      // console.log(context.tooltip.dataPoints[0].formattedValue, "elizabetusvfuswvuye")
 
       const { dataIndex } = context.tooltip.dataPoints[0];
 
@@ -364,8 +317,6 @@ let text = cols_to_hide.toString()
 
           ([pivotName, { value: currentPeriodValue }], i) => {
 
-
-            // Period comparison
             const previousPeriodValue =
               lookerRow[previousPeriodFieldName][pivotName].value;
 
@@ -381,10 +332,7 @@ let text = cols_to_hide.toString()
             rows.push({
               hasPreviousPeriod,
 
-              measureValue: `${
-                isYAxisCurrency ? "$" : ""
-              }${currentPeriodValue}`,
-
+              measureValue: `${currentPeriodValue}`,
 
               periodComparisonValue,
               pivotColor: `#${colors[i]}`,
@@ -416,7 +364,7 @@ let text = cols_to_hide.toString()
         rows = [
           {
             hasPreviousPeriod,
-            measureValue: `${isYAxisCurrency ? "$" : ""}${
+            measureValue: `${
               context.tooltip.dataPoints[0].formattedValue
             }`,
 
@@ -453,8 +401,6 @@ let text = cols_to_hide.toString()
   }
 
 
-
-
       const Content = config.textTitle.split(",").map((d, i) => ({
       textTitle: d,
       yAxisDropdown:config.yAxisDropdown.split(",")[i],
@@ -480,9 +426,6 @@ let text = cols_to_hide.toString()
 
       let percent = Math.round(percent[0] * 100)
 
-      console.log(percent)
-
-
 
 let result = Content.map(function(val, i){ return val.symbol });
 
@@ -491,25 +434,10 @@ let target = Math.round(result[0] * 100)
 
 
 
-// let xAxisDropdownValues = Content.map(function(val, i){ return val.xAxisDropdown });
-//
-//
-// let yAxisDropdownValues = Content.map(function(val, i){ return val.yAxisDropdown });
-//
-//
-
-
-
-
-
 let yAxisRightDropdownValues = Content.map(function(val, i){ return val.yAxisRightDropdown });
 
 
 let yAxisRightDropdownValues = Math.round(yAxisRightDropdownValues[0])
-
-// let yAxisRightValues = Content.map(function(val, i){ return val.yAxisRightValues });
-//
-//
 
 
 
@@ -527,7 +455,7 @@ const last = labels[labels.length - 1];
       },
 
       onClick: (event, elements, chart) => {
-        console.log("sdfy")
+
 
         if (!elements.length) {
           return;
@@ -573,7 +501,7 @@ const last = labels[labels.length - 1];
           enabled: false,
           position: "nearest",
           external: (context) =>
-            tooltipHandler(context, isYAxisCurrency, setTooltip),
+            tooltipHandler(context, setTooltip),
         },
       },
       scales: {
@@ -637,32 +565,6 @@ const last = labels[labels.length - 1];
 
         },
 
-        // yRight: {
-        //   grid: {
-        //     display: false,
-        //   },
-        //   position: "right" as const,
-        //
-        //   ticks: {
-        //
-        //     display: showYAxis2Value,
-        //
-        //
-        //     callback: function (value: number) {
-        //
-        //       return `${symbol2 ? theSymbol2 : text}${formatNumber(yAxisRightValues)}`;
-        //     },
-        //   },
-        //   title: {
-        //     display: showYAxis2,
-        //     text: `${yAxisRightDropdown ?  yAxisRightDropdownValues  : measureLabel }`,
-        //     font: {
-        //       size: 14
-        //     }
-        //   },
-        //
-        // },
-
       },
     }),
     []
@@ -699,8 +601,8 @@ const last = labels[labels.length - 1];
 
     <div class="upDown">
     <div className="greenBox pt-3">
-      <h5 className="mb-0">{title}</h5>
-          <p>Number of accounts without activity in the last 30 days</p>
+      <h5 className="mb-3">{title}</h5>
+          {/*<p>Number of accounts without activity in the last 30 days</p>*/}
     </div>
 
     <div className={target < 0 ? "varianceBox negative" : "varianceBox positive"}>
