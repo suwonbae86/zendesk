@@ -37,7 +37,7 @@ import { Chart } from "react-chartjs-2";
 import "bootstrap/scss/bootstrap.scss";
 import Button from "react-bootstrap/Button";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
-
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 ChartJS.register(
   LinearScale,
   ArcElement,
@@ -51,6 +51,7 @@ ChartJS.register(
   BarController,
   Filler,
   ScatterController,
+  ChartDataLabels
 );
 
 
@@ -261,6 +262,11 @@ let text = cols_to_hide.toString()
 
 
         datasets.push({
+          datalabels: {
+            color: "black !important",
+            fontWeight:'600'
+          },
+          labels: 90,
           type: chartType,
           label: measureLabel,
           backgroundColor:`${color_range ? colors[0] : colors[0]}`,
@@ -442,6 +448,7 @@ let yAxisRightDropdownValues = Math.round(yAxisRightDropdownValues[0])
 
 
 
+
 const first = labels[0];
 const last = labels[labels.length - 1];
 
@@ -450,8 +457,11 @@ const last = labels[labels.length - 1];
     () => ({
       layout: {
         padding: {
-          top: 10,
-          right:10,
+          top: 20,
+          right:20,
+          left: 10,
+          bottom:0
+
         },
       },
 
@@ -483,6 +493,13 @@ const last = labels[labels.length - 1];
     maintainAspectRatio: false,
     responsive: true,
       plugins: {
+        datalabels: {
+          display:true,
+          anchor: 'end',
+          align: 'end',
+
+
+        },
         legend: {
           position: "bottom",
           labels: {
@@ -496,7 +513,7 @@ const last = labels[labels.length - 1];
           usePointStyle: true
          },
         align: "center" as const,
-        display: false,
+        display: `${showXGridLines ? hasNoPivot || hasPivot : ""}`
         },
         tooltip: {
           enabled: false,
@@ -512,7 +529,7 @@ const last = labels[labels.length - 1];
         },
 
           grid: {
-            display: showXGridLines,
+            display: false,
           },
           stacked: false,
           title: {
@@ -546,19 +563,19 @@ const last = labels[labels.length - 1];
           display: false,
         },
           grid: {
-            display: showYGridLines,
+            display: false,
           },
           position: "left" as const,
           stacked: false,
           ticks: {
-            display:false,
+            display:showYGridLines,
             callback: function (value: number) {
               return `${formatNumber(value)}`;
             },
           },
           title: {
             display: false,
-            // text: `${yAxisDropdown ?  yAxisDropdownValues  : measureLabel }`,
+            // text: `${showYGridLines ?  yAxisRightDropdownValues  : measureLabel }`,
             font: {
               size: 10
             }
@@ -627,6 +644,7 @@ const last = labels[labels.length - 1];
           options={chartOptions}
           id="chart"
           plugins={chartPlugins}
+
           lookerVis={lookerVis}
         />
         {tooltip && <Tooltip hasPivot={hasPivot} hasNoPivot={hasNoPivot} tooltipData={tooltip} />}

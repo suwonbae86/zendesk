@@ -273,17 +273,17 @@ console.log(thirdmeasure )
 
       showXGridLines: {
         type: "boolean",
-        label: "Show X Grid Lines",
+        label: "Show Legend",
         default: false,
         order: 21,
-          section: "Style",
+        section: "Chart",
       },
       showYGridLines: {
         type: "boolean",
-        label: "Show Y Grid Lines",
+        label: "Show Y Axis Tick Values",
         default: false,
         order: 22,
-          section: "Style",
+        section: "Chart",
       },
 
       showAllValuesInTooltip: {
