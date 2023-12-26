@@ -96,12 +96,20 @@ console.log(thirdmeasure )
       // },
       textTitle: {
         type: "string",
-        label: "Choose Title",
+        label: "Choose Title from Dropdown",
         display: "select",
         placeholder: "Please Select",
         values: fieldOptions,
         order: 3,
         default:"Please Select",
+        section: "Style",
+      },
+
+      writeTitle: {
+        type: "string",
+        label: "Write Title Text Instead",
+        default: "Add Title Here",
+        order: 4,
         section: "Style",
       },
       // xAxisText: {
@@ -127,6 +135,14 @@ console.log(thirdmeasure )
         values: fieldOptions,
         order: 6,
         default:"Please Select",
+        section: "KPI-Values",
+      },
+
+      hideTarget: {
+        type: "boolean",
+        label: "Hide Target",
+        default: false,
+        order: 7,
         section: "KPI-Values",
       },
       // yAxisText: {
@@ -272,10 +288,10 @@ console.log(thirdmeasure )
 
       showAllValuesInTooltip: {
         type: "boolean",
-        label: "Show All Row Values in Tooltip",
+        label: "Show Tooltip Values",
         default: true,
-        order: 23,
-          section: "Style",
+        order: 40,
+        section: "Style",
       },
       color_range: {
         type: 'array',
@@ -295,6 +311,15 @@ console.log(thirdmeasure )
         default:'',
         section: "Chart",
       },
+
+      borderLine: {
+        type: "boolean",
+        label: "Remove Border",
+        default: false,
+        order: 26,
+        section: "Style",
+      },
+
     };
 
 

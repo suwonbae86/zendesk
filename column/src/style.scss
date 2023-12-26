@@ -11,11 +11,11 @@ $text-color: #262D33;
   display: flex;
   font-family: 'Roboto', sans-serif;
   justify-content: center;
-position: relative;
+  position: relative;
 }
 
 body, html{
-    font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .upDown{
@@ -24,25 +24,27 @@ body, html{
 
   font-family: 'Roboto', sans-serif;
   border: 1px solid black;
-max-width: 400px;
-margin: 0 auto;
-min-height: 380px;
-
+  max-width: 400px;
+  margin: 2em auto 0 auto;
+  min-height: 380px;
+  box-shadow: 0px 0px 19px -1px rgba(175,175,175,0.67);
 
 }
 
-
+.upDown.noBorder{
+  border: none
+}
 
 p {
-    margin-top: 0;
-    margin-bottom: 0rem;
+  margin-top: 0;
+  margin-bottom: 0rem;
 }
 
 h3{
   color:#797e8a;
   margin-top: 0em !important;
   font-weight: 400 !important;
-    font-size: 20px !important;
+  font-size: 20px !important;
 }
 
 h6{
@@ -73,8 +75,8 @@ h5{
 
 .varianceBox.positive{
 
-background: rgb(238, 248, 232);
-color: rgb(57, 128, 11);
+  background: rgb(238, 248, 232);
+  color: rgb(57, 128, 11);
 
 }
 
@@ -89,27 +91,27 @@ color: rgb(57, 128, 11);
   left: 5px;
   top: 2px;
   color: rgb(199, 32, 10);
-    font-weight:700
+  font-weight:700
 }
 
 
 
 
 .varianceBox.positive .caret::before{
-    font-family: "Font Awesome 5 Pro";
-    position: absolute;
-    content: "\f0d8";
-    display: inline-block;
-    left: 5px;
-    top: 2px;
+  font-family: "Font Awesome 5 Pro";
+  position: absolute;
+  content: "\f0d8";
+  display: inline-block;
+  left: 5px;
+  top: 2px;
   color: rgb(57, 128, 11);
   font-weight:700
 }
 
 .greenBox{
   background: #00363d;
-    padding: 0em 0.5em;
-text-align: center;
+  padding: 0em 0.5em;
+  text-align: center;
 }
 .greenBox p{
   color:white;
@@ -127,6 +129,10 @@ h1{
 
 .red{
   color:#ff0000
+}
+
+.hidden{
+  display: none !important
 }
 
 .showFirstLast{
@@ -153,10 +159,10 @@ h1{
 }
 
 #app .btn-group {
-    border-radius: 3px;
-    margin-top: -45px;
-    margin-right: 0px;
-    font-family: 'Roboto', sans-serif;
+  border-radius: 3px;
+  margin-top: -45px;
+  margin-right: 0px;
+  font-family: 'Roboto', sans-serif;
 }
 
 #app {
@@ -186,7 +192,7 @@ h1{
     display: flex;
     justify-content: center;
     height: auto;
-  margin-bottom: 15px;
+    margin-bottom: 15px;
   }
 
   #chart-wrapper {
@@ -233,10 +239,10 @@ h1{
 
 // Chart tooltip
 .chartjs-tooltip {
-  top:-550px;
+  // top:-550px;
   min-width: 160px !important;
-  margin-top:-280px;
-  margin-left:-380px !important;
+  // margin-top:-280px;
+  // margin-left:-380px !important;
   opacity: 1;
   position: absolute;
   padding: 8px 10px;

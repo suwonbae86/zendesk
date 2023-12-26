@@ -127,7 +127,10 @@ function BarLineVis({
     choosePoints,
     color_range,
     yAxisLeftValues,
-    firstmeasure
+    firstmeasure,
+    borderLine,
+    hideTarget,
+    writeTitle
   } = config;
 
 
@@ -384,14 +387,12 @@ let text = cols_to_hide.toString()
         // measureLabel: `${yAxisLeftValues}: `,
         measureLabel0: `${context.tooltip.dataPoints[0].formattedValue}`,
         left:
-          position.left + window.pageXOffset + context.tooltip.caretX + "px",
+          position.left + window.pageXOffset + context.tooltip.caretX  - 160 + "px",
         rows,
         top:
           position.top +
           window.pageYOffset +
-          context.tooltip.caretY -
-          20 +
-          "px",
+          context.tooltip.caretY - 200 + "px",
         yAlign: context.tooltip.yAlign,
       });
 
@@ -599,9 +600,11 @@ const last = labels[labels.length - 1];
 
     <div>
 
-    <div class="upDown">
+
+
+    <div className={borderLine ?  "upDown noBorder"  : "upDown"}>
     <div className="greenBox pt-3">
-      <h5 className="mb-3">{title}</h5>
+    <h5 className="mb-3">{writeTitle === "" ? title : writeTitle}</h5>
           {/*<p>Number of accounts without activity in the last 30 days</p>*/}
     </div>
 
@@ -611,7 +614,7 @@ const last = labels[labels.length - 1];
     <span class="caret">
     </span>
       </h1>
-   <h3>Target: {target}</h3>
+   <h3 className={hideTarget ? "hidden" : ""}>Target: {target}</h3>
 
 
     </div>
