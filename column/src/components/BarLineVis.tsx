@@ -35,7 +35,11 @@ import {
 import Tooltip from "./Tooltip";
 import { Chart } from "react-chartjs-2";
 import "bootstrap/scss/bootstrap.scss";
-import Button from "react-bootstrap/Button";
+// import Button from "react-bootstrap/Button";
+
+import { Button, Overlay, OverlayTrigger, Popover, PopoverBody, PopoverHeader} from 'react-bootstrap';
+
+
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 ChartJS.register(
@@ -132,7 +136,12 @@ function BarLineVis({
     borderLine,
     hideTarget,
     writeTitle,
-    showDatalabels
+    showDatalabels,
+    writeTooltip,
+    toolOn,
+    showX,
+    showTwo,
+    hideBox
   } = config;
 
 
@@ -395,12 +404,12 @@ function BarLineVis({
         // measureLabel: `${yAxisLeftValues}: `,
         measureLabel0: `${context.tooltip.dataPoints[0].formattedValue}`,
         left:
-        position.left + window.pageXOffset + context.tooltip.caretX  - 200 + "px",
+        position.left + window.pageXOffset + context.tooltip.caretX  - 400 + "px",
         rows,
         top:
         position.top +
         window.pageYOffset +
-        context.tooltip.caretY - 270 + "px",
+        context.tooltip.caretY - 240 + "px",
         yAlign: context.tooltip.yAlign,
       });
 
@@ -417,7 +426,7 @@ function BarLineVis({
 
     symbol:config.symbol.split(",")[i],
     yAxisLeftValues:config.yAxisLeftValues.split(",")[i],
-    yAxisRightDropdown:config.yAxisRightDropdown.split(",")[i],
+    // yAxisRightDropdown:config.yAxisRightDropdown.split(",")[i],
 
     // yAxisRightValues:config.yAxisRightValues.split(",")[i],
     // symbol2:config.symbol2.split(",")[i],
@@ -425,15 +434,15 @@ function BarLineVis({
   }))
 
 
-console.log(yAxisLeftValues)
-
+// console.log(yAxisLeftValues)
+//
 
 
 let array = yAxisLeftValues.split(',').map(function(item) {
-    return parseInt(item, 10);
+    return parseInt(item);
 });
 
-console.log(array)
+// console.log(array)
 function calculateAverage(array) {
   var sum = 0;
   for (var i = 0; i < array.length; i++) {
@@ -445,7 +454,7 @@ function calculateAverage(array) {
 var average = calculateAverage(array);
 
 var average = Math.round(average * 1).toLocaleString();
-console.log(average);
+// console.log(average);
 
 
   let title = Content.map(function(val, i){ return val.textTitle });
@@ -462,20 +471,25 @@ console.log(average);
 
   let target = Math.round(result[0] * 100)
 
-
-
-
-  let yAxisRightDropdownValues = Content.map(function(val, i){ return val.yAxisRightDropdown });
-
-
-  let yAxisRightDropdownValues = Math.round(yAxisRightDropdownValues[0])
-
-
+  // let yAxisRightDropdownValues = Content.map(function(val, i){ return val.yAxisRightDropdown });
+  //
+  //
+  // let yAxisRightDropdownValues = Math.round(yAxisRightDropdownValues[0])
 
 
   const first = labels[0];
   const last = labels[labels.length - 1];
 
+
+
+  const popoverHoverFocus = (
+    <Popover
+    className={toolOn ? "" : "hidden"}
+    id="popover"
+    >
+    <p>{writeTooltip}</p>
+    </Popover>
+  );
 
   const chartOptions: ChartOptions<"scatter" | "bar"> = useMemo(
     () => ({
@@ -578,15 +592,15 @@ console.log(average);
           },
           ticks: {
 
-            display:false,
-            maxTicksLimit: 2,
-            autoSkip: true,
-
-            callback: () => {
-
-              return labels[0];
-              return labels[labels.length - 1];
-            },
+            display:showX,
+            // maxTicksLimit: 2,
+            // autoSkip: true,
+            //
+            // callback: () => {
+            //
+            //   return labels[0];
+            //   return labels[labels.length - 1];
+            // },
 
             font: {
               size: 10
@@ -656,37 +670,56 @@ console.log(average);
 
 
 
+
     <div className={borderLine ?  "upDown noBorder"  : "upDown"}>
     <div className="greenBox pt-3">
+
+
     <h5 className="mb-3">{writeTitle === "" ? title : writeTitle}</h5>
     {/*<p>Number of accounts without activity in the last 30 days</p>*/}
     </div>
 
-    <div className={`${percent > 0 ? "varianceBox negative" : "varianceBox positive"} ${hideTarget ? "varianceBox clear" : ""}`}>
+    <div className={`
+      ${percent > 0 ? "varianceBox negative" : "varianceBox positive"}
+      ${hideTarget ? "varianceBox clear" : ""}
+      ${hideBox ? "hidden" : ""}
+      `}>
 
-    <h1 className="mb-0">{percent}
-    <span class="caret">
-    </span>
-    </h1>
+
+    <OverlayTrigger
+
+      trigger="hover"
+      placement="right"
+      overlay={popoverHoverFocus}
+    >
+      <h1 className="mb-0">{percent}
+      <span class="caret">
+      </span>
+      </h1>
+    </OverlayTrigger>
+
     <h3 className={hideTarget ? "hidden" : ""}>Target: {target}</h3>
 
 
     </div>
     <div id="vis-wrapper" className={`${config.showPoints ? "points hidePoints" : "points"}`}>
 
-    <div id="chart-wrapper">
+    <div
+    id="chart-wrapper"
+    className={hideBox ? "tallerBox" : ""}>
     <Chart
     type={selectedChartType}
     data={chartData}
     options={chartOptions}
     id="chart"
+
     plugins={chartPlugins}
 
     lookerVis={lookerVis}
     />
     {tooltip && <Tooltip hasPivot={hasPivot} hasNoPivot={hasNoPivot} tooltipData={tooltip} />}
     </div>
-    <div className="showFirstLast">
+    <div className={showTwo ? "showFirstLast" : "hidden"}>
     <p>{first}</p>
     <p>{last}</p>
     </div>

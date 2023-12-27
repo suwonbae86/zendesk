@@ -68,9 +68,9 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
   const secondmeasure = measures.length > 1 ? measures[1].name : "";
   const thirdmeasure = measures.length > 2 ? measures[2].name : "";
 
-console.log(firstmeasure )
-console.log(secondmeasure )
-console.log(thirdmeasure )
+// console.log(firstmeasure )
+// console.log(secondmeasure )
+// console.log(thirdmeasure )
 
     const lookerVis = this;
 
@@ -94,6 +94,15 @@ console.log(thirdmeasure )
       //   order: 2,
       //   section: "X-Axis",
       // },
+
+
+      hideBox: {
+        type: "boolean",
+        label: "Hide KPI Box and Only Show Chart",
+        default: false,
+        order: 1,
+        section: "Style",
+      },
       textTitle: {
         type: "string",
         label: "Choose Title from Dropdown",
@@ -145,6 +154,24 @@ console.log(thirdmeasure )
         order: 7,
         section: "KPI-Values",
       },
+
+      toolOn: {
+        type: "boolean",
+        label: "Turn on Tooltip for KPI Tile",
+        default: false,
+        order: 8,
+        section: "KPI-Values",
+      },
+
+      writeTooltip: {
+        type: "string",
+        label: "Write Tooltip Text",
+        default: "",
+        order: 9,
+        section: "KPI-Values",
+      },
+
+
       // yAxisText: {
       //   type: "string",
       //   label: "Write Y Axis Text Instead",
@@ -199,16 +226,16 @@ console.log(thirdmeasure )
       //   section: "Y-Axis",
       // },
 
-      yAxisRightDropdown: {
-        type: "string",
-        label: "Choose 13W Avg Value",
-        display: "select",
-        placeholder: "Please Select",
-        values: fieldOptions,
-        order: 15,
-        default:'',
-        section: "Bottom",
-      },
+      // yAxisRightDropdown: {
+      //   type: "string",
+      //   label: "Choose 13W Avg Value",
+      //   display: "select",
+      //   placeholder: "Please Select",
+      //   values: fieldOptions,
+      //   order: 15,
+      //   default:'',
+      //   section: "Bottom",
+      // },
 
 
            //
@@ -293,6 +320,23 @@ console.log(thirdmeasure )
         section: "Chart",
       },
 
+      showX: {
+        type: "boolean",
+        label: "Show X Axis Tick Values",
+        default: false,
+        order: 24,
+        section: "Chart",
+      },
+
+      showTwo: {
+        type: "boolean",
+        label: "Show First and Last X Axis Values",
+        default: true,
+        order: 25,
+        section: "Chart",
+      },
+
+
       showAllValuesInTooltip: {
         type: "boolean",
         label: "Show Tooltip Values",
@@ -314,7 +358,7 @@ console.log(thirdmeasure )
         display: "select",
         placeholder: "Please Select",
         values: fieldOptions,
-        order: 25,
+        order: 0,
         default:'',
         section: "Chart",
       },
@@ -357,7 +401,7 @@ console.log(thirdmeasure )
 
 
 
-    console.log(fields)
+    // console.log(fields)
 
     // create react root
     element.innerHTML = '<div id="app"></div>';
