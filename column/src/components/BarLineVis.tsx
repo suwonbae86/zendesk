@@ -96,7 +96,7 @@ function BarLineVis({
   config,
   lookerCharts,
   lookerVis,
-   configOptions
+  configOptions
 }: BarLineVisProps): JSX.Element {
 
 
@@ -166,28 +166,28 @@ function BarLineVis({
 
 
 
-const [firstData = {}] = data;
-let cols_to_hide = [];
+  const [firstData = {}] = data;
+  let cols_to_hide = [];
 
-for (const [key, value] of Object.entries(firstData)) {
-  if (key.split(".")[1] === "currency_number_format") {
-    cols_to_hide = firstData[key].value.split(",").map((e) => e.trim());
+  for (const [key, value] of Object.entries(firstData)) {
+    if (key.split(".")[1] === "currency_number_format") {
+      cols_to_hide = firstData[key].value.split(",").map((e) => e.trim());
 
+    }
   }
-}
 
 
-let points = [];
+  let points = [];
 
-for (const [key, value] of Object.entries(firstData)) {
-  if (key.split(".")[1] === "points_sized_by") {
-    points = firstData[key].value.split(",").map((e) => e.trim());
+  for (const [key, value] of Object.entries(firstData)) {
+    if (key.split(".")[1] === "points_sized_by") {
+      points = firstData[key].value.split(",").map((e) => e.trim());
 
+    }
   }
-}
-let points = points.toString()
+  let points = points.toString()
 
-let text = cols_to_hide.toString()
+  let text = cols_to_hide.toString()
 
 
   const labels = data.map(
@@ -206,16 +206,16 @@ let text = cols_to_hide.toString()
   const fill = showLineChartGradient ? "origin" : false;
 
   const defaultChartData: ChartData<
-    | "bar"
-    | "line"
-    | "scatter"
-    | "bubble"
-    | "pie"
-    | "doughnut"
-    | "polarArea"
-    | "radar",
-    (number | Point | [number, number] | BubbleDataPoint)[],
-    any
+  | "bar"
+  | "line"
+  | "scatter"
+  | "bubble"
+  | "pie"
+  | "doughnut"
+  | "polarArea"
+  | "radar",
+  (number | Point | [number, number] | BubbleDataPoint)[],
+  any
   > = {
     labels,
     datasets: [],
@@ -240,9 +240,9 @@ let text = cols_to_hide.toString()
 
           datasets.push({
             datalabels: {
-             color:  `${color_range ? colors[i] : colors[i]}`,
-             fontWeight:'600'
-           },
+              color:  `${color_range ? colors[i] : colors[i]}`,
+              fontWeight:'600'
+            },
             labels:pivotValues,
             type: chartType,
             label: pivotValue,
@@ -298,9 +298,9 @@ let text = cols_to_hide.toString()
 
   interface TooltipContext {
     chart: ChartJS<
-      keyof ChartTypeRegistry,
-      (number | Point | [number, number] | BubbleDataPoint)[],
-      unknown
+    keyof ChartTypeRegistry,
+    (number | Point | [number, number] | BubbleDataPoint)[],
+    unknown
     >;
     tooltip: TooltipModel<"bar" | "scatter">;
   }
@@ -329,14 +329,14 @@ let text = cols_to_hide.toString()
           ([pivotName, { value: currentPeriodValue }], i) => {
 
             const previousPeriodValue =
-              lookerRow[previousPeriodFieldName][pivotName].value;
+            lookerRow[previousPeriodFieldName][pivotName].value;
 
             const hasPreviousPeriod =
-              hasPeriodComparisonMeasure && !!previousPeriodValue;
+            hasPeriodComparisonMeasure && !!previousPeriodValue;
             const periodComparisonValue =
-              ((currentPeriodValue - previousPeriodValue) /
-                previousPeriodValue) *
-              100;
+            ((currentPeriodValue - previousPeriodValue) /
+            previousPeriodValue) *
+            100;
 
 
 
@@ -363,14 +363,14 @@ let text = cols_to_hide.toString()
         const pivotValue = context.tooltip.dataPoints[0].dataset.label;
 
         const previousPeriodValue =
-          data[dataIndex][periodComparisonMeasure][pivotValue].value;
+        data[dataIndex][periodComparisonMeasure][pivotValue].value;
         const currentPeriodValue = context.tooltip.dataPoints[0].raw as number;
 
         const hasPreviousPeriod =
-          hasPeriodComparisonMeasure && !!previousPeriodValue;
+        hasPeriodComparisonMeasure && !!previousPeriodValue;
         const periodComparisonValue =
-          ((currentPeriodValue - previousPeriodValue) / previousPeriodValue) *
-          100;
+        ((currentPeriodValue - previousPeriodValue) / previousPeriodValue) *
+        100;
 
         rows = [
           {
@@ -382,7 +382,7 @@ let text = cols_to_hide.toString()
 
             periodComparisonValue,
             pivotColor: context.tooltip.dataPoints[0].dataset
-              .borderColor as string,
+            .borderColor as string,
             pivotText: context.tooltip.dataPoints[0].dataset.label,
           },
         ];
@@ -395,12 +395,12 @@ let text = cols_to_hide.toString()
         // measureLabel: `${yAxisLeftValues}: `,
         measureLabel0: `${context.tooltip.dataPoints[0].formattedValue}`,
         left:
-          position.left + window.pageXOffset + context.tooltip.caretX  - 160 + "px",
+        position.left + window.pageXOffset + context.tooltip.caretX  - 200 + "px",
         rows,
         top:
-          position.top +
-          window.pageYOffset +
-          context.tooltip.caretY - 200 + "px",
+        position.top +
+        window.pageYOffset +
+        context.tooltip.caretY - 270 + "px",
         yAlign: context.tooltip.yAlign,
       });
 
@@ -410,49 +410,71 @@ let text = cols_to_hide.toString()
   }
 
 
-      const Content = config.textTitle.split(",").map((d, i) => ({
-      textTitle: d,
-      yAxisDropdown:config.yAxisDropdown.split(",")[i],
-      // xAxisDropdown:config.xAxisDropdown.split(",")[i],
+  const Content = config.textTitle.split(",").map((d, i) => ({
+    textTitle: d,
+    yAxisDropdown:config.yAxisDropdown.split(",")[i],
+    // xAxisDropdown:config.xAxisDropdown.split(",")[i],
 
-      symbol:config.symbol.split(",")[i],
-      yAxisLeftValues:config.yAxisLeftValues.split(",")[i],
-      yAxisRightDropdown:config.yAxisRightDropdown.split(",")[i],
+    symbol:config.symbol.split(",")[i],
+    yAxisLeftValues:config.yAxisLeftValues.split(",")[i],
+    yAxisRightDropdown:config.yAxisRightDropdown.split(",")[i],
 
-      // yAxisRightValues:config.yAxisRightValues.split(",")[i],
-      // symbol2:config.symbol2.split(",")[i],
+    // yAxisRightValues:config.yAxisRightValues.split(",")[i],
+    // symbol2:config.symbol2.split(",")[i],
 
-      }))
-
-
-
-      let title = Content.map(function(val, i){ return val.textTitle });
-
-      let title = title[0]
+  }))
 
 
-      let percent = Content.map(function(val, i){ return val.yAxisDropdown });
-
-      let percent = Math.round(percent[0] * 100)
-
-
-let result = Content.map(function(val, i){ return val.symbol });
-
-let target = Math.round(result[0] * 100)
+console.log(yAxisLeftValues)
 
 
 
+let array = yAxisLeftValues.split(',').map(function(item) {
+    return parseInt(item, 10);
+});
 
-let yAxisRightDropdownValues = Content.map(function(val, i){ return val.yAxisRightDropdown });
+console.log(array)
+function calculateAverage(array) {
+  var sum = 0;
+  for (var i = 0; i < array.length; i++) {
+    sum += array[i];
+  }
+  return sum / array.length;
+}
+
+var average = calculateAverage(array);
+
+var average = Math.round(average * 1).toLocaleString();
+console.log(average);
 
 
-let yAxisRightDropdownValues = Math.round(yAxisRightDropdownValues[0])
+  let title = Content.map(function(val, i){ return val.textTitle });
+
+  let title = title[0]
+
+
+  let percent = Content.map(function(val, i){ return val.yAxisDropdown });
+
+  let percent = Math.round(percent[0] * 100)
+
+
+  let result = Content.map(function(val, i){ return val.symbol });
+
+  let target = Math.round(result[0] * 100)
 
 
 
 
-const first = labels[0];
-const last = labels[labels.length - 1];
+  let yAxisRightDropdownValues = Content.map(function(val, i){ return val.yAxisRightDropdown });
+
+
+  let yAxisRightDropdownValues = Math.round(yAxisRightDropdownValues[0])
+
+
+
+
+  const first = labels[0];
+  const last = labels[labels.length - 1];
 
 
   const chartOptions: ChartOptions<"scatter" | "bar"> = useMemo(
@@ -477,23 +499,23 @@ const last = labels[labels.length - 1];
 
         if (hasPivot) {
 
-        const measureLinks = Object.values(data[dataIndex][measureName])[datasetIndex].links ?? [];
-        const dimensionLinks = (data[dataIndex][dimensionName].links as Link[]) ?? [];
+          const measureLinks = Object.values(data[dataIndex][measureName])[datasetIndex].links ?? [];
+          const dimensionLinks = (data[dataIndex][dimensionName].links as Link[]) ?? [];
 
-      }
-      else{
-        const measureLinks = data[dataIndex][measureName].links ?? [];
+        }
+        else{
+          const measureLinks = data[dataIndex][measureName].links ?? [];
 
-        const dimensionLinks = (data[dataIndex][dimensionName].links) ?? [];
-      }
+          const dimensionLinks = (data[dataIndex][dimensionName].links) ?? [];
+        }
 
         lookerCharts.Utils.openDrillMenu({
           links: [...measureLinks, ...dimensionLinks],
           event: event.native,
         });
       },
-    maintainAspectRatio: false,
-    responsive: true,
+      maintainAspectRatio: false,
+      responsive: true,
       plugins: {
         datalabels: {
           display:showDatalabels,
@@ -501,13 +523,13 @@ const last = labels[labels.length - 1];
 
             let percentage = (value) / 1000
             return `${formatNumber(Math.round(percentage.toFixed() * 1000))}`;
-       },
-       font: {
-         size: 10,
-         weight: '500',
-         family: "Roboto",
+          },
+          font: {
+            size: 10,
+            weight: '500',
+            family: "Roboto",
 
-       },
+          },
 
 
           anchor: 'end',
@@ -525,23 +547,23 @@ const last = labels[labels.length - 1];
               family: "Roboto"
 
             },
-          usePointStyle: true
-         },
-        align: "center" as const,
-        display: `${showXGridLines ? hasNoPivot || hasPivot : ""}`
+            usePointStyle: true
+          },
+          align: "center" as const,
+          display: `${showXGridLines ? hasNoPivot || hasPivot : ""}`
         },
         tooltip: {
           enabled: false,
           position: "nearest",
           external: (context) =>
-            tooltipHandler(context, setTooltip),
+          tooltipHandler(context, setTooltip),
         },
       },
       scales: {
         x: {
           border: {
-          display: false,
-        },
+            display: false,
+          },
 
           grid: {
             display: false,
@@ -556,15 +578,15 @@ const last = labels[labels.length - 1];
           },
           ticks: {
 
-          display:false,
-          maxTicksLimit: 2,
-          autoSkip: true,
+            display:false,
+            maxTicksLimit: 2,
+            autoSkip: true,
 
-          callback: () => {
+            callback: () => {
 
-            return labels[0];
-            return labels[labels.length - 1];
-          },
+              return labels[0];
+              return labels[labels.length - 1];
+            },
 
             font: {
               size: 10
@@ -575,8 +597,8 @@ const last = labels[labels.length - 1];
 
         yLeft: {
           border: {
-          display: false,
-        },
+            display: false,
+          },
           grid: {
             display: false,
           },
@@ -637,41 +659,41 @@ const last = labels[labels.length - 1];
     <div className={borderLine ?  "upDown noBorder"  : "upDown"}>
     <div className="greenBox pt-3">
     <h5 className="mb-3">{writeTitle === "" ? title : writeTitle}</h5>
-          {/*<p>Number of accounts without activity in the last 30 days</p>*/}
+    {/*<p>Number of accounts without activity in the last 30 days</p>*/}
     </div>
 
-    <div className={percent > 0 ? "varianceBox negative" : "varianceBox positive"}>
+    <div className={`${percent > 0 ? "varianceBox negative" : "varianceBox positive"} ${hideTarget ? "varianceBox clear" : ""}`}>
 
     <h1 className="mb-0">{percent}
     <span class="caret">
     </span>
-      </h1>
-   <h3 className={hideTarget ? "hidden" : ""}>Target: {target}</h3>
+    </h1>
+    <h3 className={hideTarget ? "hidden" : ""}>Target: {target}</h3>
 
 
     </div>
     <div id="vis-wrapper" className={`${config.showPoints ? "points hidePoints" : "points"}`}>
 
-      <div id="chart-wrapper">
-        <Chart
-          type={selectedChartType}
-          data={chartData}
-          options={chartOptions}
-          id="chart"
-          plugins={chartPlugins}
+    <div id="chart-wrapper">
+    <Chart
+    type={selectedChartType}
+    data={chartData}
+    options={chartOptions}
+    id="chart"
+    plugins={chartPlugins}
 
-          lookerVis={lookerVis}
-        />
-        {tooltip && <Tooltip hasPivot={hasPivot} hasNoPivot={hasNoPivot} tooltipData={tooltip} />}
-      </div>
-      <div className="showFirstLast">
-        <p>{first}</p>
-        <p>{last}</p>
-      </div>
-          <div className="bottom">
-          <p>L13W Avg</p>
-          <p>{yAxisRightDropdownValues}</p>
-          </div>
+    lookerVis={lookerVis}
+    />
+    {tooltip && <Tooltip hasPivot={hasPivot} hasNoPivot={hasNoPivot} tooltipData={tooltip} />}
+    </div>
+    <div className="showFirstLast">
+    <p>{first}</p>
+    <p>{last}</p>
+    </div>
+    <div className="bottom">
+    <p>L13W Avg</p>
+    <p>{average}</p>
+    </div>
     </div>
     </div>
     </div>

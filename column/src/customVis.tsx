@@ -108,7 +108,7 @@ console.log(thirdmeasure )
       writeTitle: {
         type: "string",
         label: "Write Title Text Instead",
-        default: "Add Title Here",
+        default: "",
         order: 4,
         section: "Style",
       },

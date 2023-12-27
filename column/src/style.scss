@@ -80,6 +80,16 @@ h5{
 
 }
 
+.varianceBox.clear{
+  background: transparent !important;
+  border-bottom: 1px solid black;
+
+}
+
+.varianceBox.clear .caret{
+  display:none !important
+}
+
 .caret{
   position: relative;
 }
