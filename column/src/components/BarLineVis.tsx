@@ -496,7 +496,7 @@ var average = Math.round(average * 1).toLocaleString();
       layout: {
         padding: {
           top: 30,
-          right:20,
+          right:10,
           left: 10,
           bottom:0
 
