@@ -131,7 +131,8 @@ function BarLineVis({
     firstmeasure,
     borderLine,
     hideTarget,
-    writeTitle
+    writeTitle,
+    showDatalabels
   } = config;
 
 
@@ -264,9 +265,10 @@ let text = cols_to_hide.toString()
         datasets.push({
           datalabels: {
             color: "black !important",
-            fontWeight:'600'
+            fontWeight:'600',
+
           },
-          labels: 90,
+
           type: chartType,
           label: measureLabel,
           backgroundColor:`${color_range ? colors[0] : colors[0]}`,
@@ -457,7 +459,7 @@ const last = labels[labels.length - 1];
     () => ({
       layout: {
         padding: {
-          top: 20,
+          top: 30,
           right:20,
           left: 10,
           bottom:0
@@ -494,7 +496,20 @@ const last = labels[labels.length - 1];
     responsive: true,
       plugins: {
         datalabels: {
-          display:true,
+          display:showDatalabels,
+          formatter: function(value: number) {
+
+            let percentage = (value) / 1000
+            return `${formatNumber(Math.round(percentage.toFixed() * 1000))}`;
+       },
+       font: {
+         size: 10,
+         weight: '500',
+         family: "Roboto",
+
+       },
+
+
           anchor: 'end',
           align: 'end',
 
@@ -625,7 +640,7 @@ const last = labels[labels.length - 1];
           {/*<p>Number of accounts without activity in the last 30 days</p>*/}
     </div>
 
-    <div className={target < 0 ? "varianceBox negative" : "varianceBox positive"}>
+    <div className={percent > 0 ? "varianceBox negative" : "varianceBox positive"}>
 
     <h1 className="mb-0">{percent}
     <span class="caret">

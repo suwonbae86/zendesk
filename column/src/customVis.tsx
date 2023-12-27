@@ -285,6 +285,13 @@ console.log(thirdmeasure )
         order: 22,
         section: "Chart",
       },
+      showDatalabels: {
+        type: "boolean",
+        label: "Show Data Labels",
+        default: false,
+        order: 23,
+        section: "Chart",
+      },
 
       showAllValuesInTooltip: {
         type: "boolean",
