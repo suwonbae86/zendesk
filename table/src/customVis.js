@@ -29,18 +29,32 @@ hidePag: {
  default: false,
  order: 3,
 },
-unsetTable: {
+// unsetTable: {
+//  type: "boolean",
+//  label: "Table Column Width Unset or Fixed",
+//  default: true,
+//  order: 4,
+// },
+//
+// removeBars: {
+//  type: "boolean",
+//  label: "Center Small Table",
+//  default: false,
+//  order: 5,
+// },
+
+index: {
  type: "boolean",
- label: "Table Column Width Unset or Fixed",
- default: false,
- order: 4,
+ label: "Show Row Index",
+ default: true,
+ order: 6,
 },
 
-removeBars: {
+border: {
  type: "boolean",
- label: "Center Small Table",
+ label: "Hide Border",
  default: false,
- order: 5,
+ order: 7,
 },
 
 

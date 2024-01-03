@@ -141,7 +141,8 @@ function BarLineVis({
     toolOn,
     showX,
     showTwo,
-    hideBox
+    hideBox,
+    hideColors
   } = config;
 
 
@@ -280,7 +281,10 @@ function BarLineVis({
 
           type: chartType,
           label: measureLabel,
-          backgroundColor:`${color_range ? colors[0] : colors[0]}`,
+          backgroundColor: data.map((item, index) => {
+           return index === data.length - 1 ? colors[1] : colors[0]
+          }),
+          // backgroundColor:`${color_range ? colors[0] : colors[0]}`,
           borderColor: `${color_range ? colors[0] : colors[0]}`,
           pointBackgroundColor: `${color_range ? colors[0] : colors[0]}`,
           // data: data.map((row) => row[measureName].value),
@@ -619,6 +623,9 @@ var average = Math.round(average * 1).toLocaleString();
           position: "left" as const,
           stacked: false,
           ticks: {
+            font: {
+              size: 10
+            },
             display:showYGridLines,
             callback: function (value: number) {
               return `${formatNumber(value)}`;
@@ -681,7 +688,7 @@ var average = Math.round(average * 1).toLocaleString();
 
     <div className={`
       ${percent > 0 ? "varianceBox negative" : "varianceBox positive"}
-      ${hideTarget ? "varianceBox clear" : ""}
+      ${hideColors ? "varianceBox clear" : ""}
       ${hideBox ? "hidden" : ""}
       `}>
 

@@ -172,6 +172,15 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
       },
 
 
+      hideColors: {
+        type: "boolean",
+        label: "Hide Variance Colors",
+        default: false,
+        order: 10,
+        section: "KPI-Values",
+      },
+
+
       // yAxisText: {
       //   type: "string",
       //   label: "Write Y Axis Text Instead",
@@ -348,7 +357,7 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
         type: 'array',
         label: 'Color Range',
         display: 'colors',
-        default: ['#a2c4c9','#dd3333', '#80ce5d', '#f78131', '#369dc1', '#c572d3', '#36c1b3', '#b57052', '#ed69af'],
+        default: ['#a2c4c9', '#00363d', '#dd3333', '#80ce5d', '#f78131', '#369dc1', '#c572d3', '#36c1b3', '#b57052', '#ed69af'],
         order: 24,
         section: "Style",
       },

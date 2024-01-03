@@ -1,4 +1,5 @@
 import React, {
+  Fragment,
   cloneElement,
   useMemo,
   useState,
@@ -35,13 +36,11 @@ import { TablePagination } from "@mui/material";
 
 
 const Styles = ({ children, config }) => {
-  var { thColor, thFontSize, tableBordered, fixedHeight, unsetTable, hidePag, removeBars, rightPag } = config;
+  var { thColor, thFontSize, tableBordered, fixedHeight, unsetTable, hidePag, removeBars, rightPag, index, border } = config;
 
   const StyledWrapper = styled.div`
 
-@import url(https://db.onlinewebfonts.com/c/c6da2799f8877386e9a261e8744b2885?family=Aeonik+Pro+Light);
-
-
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 
   @import url("https://kit-pro.fontawesome.com/releases/v5.15.1/css/pro.min.css");
 
@@ -51,7 +50,7 @@ const Styles = ({ children, config }) => {
       width: 100%;
       display: flex;
       flex-direction: column;
-      font-family: "Aeonik Pro Light"  !important;
+      font-family: 'Roboto', sans-serif  !important;
       font-weight: 300;
       justify-content:center
  }
@@ -82,13 +81,13 @@ const Styles = ({ children, config }) => {
       fill: rgb(199, 32, 10) !important;
  }
   body {
-      font-family: "Aeonik Pro Light"  !important;
+      font-family: 'Roboto', sans-serif  !important;
  }
   thead th {
       font-size: 12px !important;
       color: ${thColor};
       font-weight: 400;
-      font-family: "Aeonik Pro Light"  !important;
+      font-family: 'Roboto', sans-serif  !important;
       text-align: left;
  }
   tbody > tr > td {
@@ -103,7 +102,7 @@ const Styles = ({ children, config }) => {
  }
   .moveRight {
       margin: 0em 0em 0em 0.5em !important;
-      font-family: "Aeonik Pro Light"  !important;
+      font-family: 'Roboto', sans-serif  !important;
  }
   .d-flex {
       display: flex;
@@ -124,7 +123,7 @@ const Styles = ({ children, config }) => {
       margin-bottom: 0 !important;
       color: #1d1e20 !important;
       font-weight: 400 !important;
-      font-family: "Aeonik Pro Light"  !important;
+      font-family: 'Roboto', sans-serif  !important;
       margin-top: 0 !important;
       min-width: 2rem;
  }
@@ -135,7 +134,7 @@ const Styles = ({ children, config }) => {
       color: #72777e !important;
       font-weight: 300 !important;
       font-size: 11px !important;
-      font-family: "Aeonik Pro Light"  !important;
+      font-family: 'Roboto', sans-serif  !important;
  }
   p {
       margin: 0rem !important;
@@ -471,7 +470,7 @@ tr:nth-child(odd) td{
       padding-left:1em;
       margin: 0;
 
-    font-family: "Aeonik Pro Light"  !important;
+    font-family: 'Roboto', sans-serif  !important;
     position: relative;
  }
   .bordered td:first-child {
@@ -561,33 +560,48 @@ width: 99%;
       z-index: 100;
  }
   .table {
-      font-family: "Aeonik Pro Light"  !important;
+      font-family: 'Roboto', sans-serif  !important;
       display: inline-block;
       border-spacing: 0;
       .th {
           font-size: 12px;
           text-transform: capitalize;
-          font-family: "Aeonik Pro Light"  !important;
+
+
+          font-family: 'DM Sans', sans-serif !important;
           text-align: left;
           border-right: 1px solid white;
-          font-weight: 300;
+          font-weight: 700;
      }
       .td {
           font-size: 12px !important;
           text-align: left;
-          font-family: "Aeonik Pro Light"  !important;
-          min-height:55px
+          font-family: 'Roboto', sans-serif  !important;
+          min-height: unset !important;
+          height:auto !important
      }
       .th, .td {
           margin: 0;
-          padding: 1.5rem;
-          font-family: "Aeonik Pro Light"  !important;
+          padding: .6rem;
+          font-family: 'Roboto', sans-serif  !important;
           position: relative;
           font-weight:300;
           height: 75px;
           width: 200px;
 
      }
+
+
+     .th{
+       font-size:12px !important;
+       font-size: 12px !important;
+height: auto;
+display: flex !important;
+align-items: center;
+font-weight: 400;
+     }
+
+
       .td:last-child {
           border-right: 0;
      }
@@ -637,7 +651,7 @@ width: 99%;
       color: #A6A6A6 !important;
       font-weight: 100 !important;
       font-size: 13px !important;
-      font-family: "Aeonik Pro Light"  !important;
+      font-family: 'Roboto', sans-serif  !important;
       min-width: 70%;
       margin-right:.5em;
       line-height:1
@@ -735,12 +749,25 @@ h5{
 max-width:120px !important;
 }
 
-.table .th:first-child {
+ .th.smallerWidth:first-child {
  max-width:120px !important;
 }
 
 
+.table{
+  box-shadow: 0px 0px 19px -1px rgba(175,175,175,.67);
 
+      border: 1px solid black;
+}
+
+.removeBorder .table{
+  border:none
+}
+
+thead th{
+  background:#00363d;
+  color:white
+}
 
 
   `;
@@ -751,7 +778,7 @@ max-width:120px !important;
 function Table({ columns, data, config }) {
 
 
-  var { tableBordered, fixedHeight, unsetTable, hidePag, rightPag, removeBars } = config;
+  var { tableBordered, fixedHeight, unsetTable, hidePag, rightPag, removeBars, index, border } = config;
 
   const defaultColumn = React.useMemo(
      () => ({
@@ -808,43 +835,45 @@ function Table({ columns, data, config }) {
       </Container>
     <Container className={`${config.removeBars ? "scrunch" : "padding-0 second mb-5 mt-2"}`}>
 
-      <div className={`${config.unsetTable ? "unsetTable" : ""}`}>
-        <div className={`${config.fixedHeight  ? "" : "fixedHeight"}`}>
-
+      <div className="unsetTable">
+        <div className={`${config.fixedHeight  ? "fixedHeight" : ""}`}>
+        <div className={`${config.border ? "removeBorder" : ""}`}>
         <table className="table" {...getTableProps()}>
 
-        <thead className={`${config.tableBordered ? "hidden" : "" }`}>
-       {headerGroups.map((headerGroup, index) => (
-       <tr
-        key={headerGroup.id}
-        {...headerGroup.getHeaderGroupProps()} className="tr">
+        {
+          config.index ? (
+         <Fragment>
 
+            <thead className={`${config.tableBordered ? "hidden" : "" }`}>
+              {headerGroups.map((headerGroup, index) => (
+              <tr
+               key={headerGroup.id}
+               {...headerGroup.getHeaderGroupProps()} className="tr">
 
+                <th className="th smallerWidth"/>
+                  {headerGroup.headers.map((column, i) => (
+                    <th
+                    key={column.id}
+                      {...column.getHeaderProps(column.getSortByToggleProps())}
+                      className="th"
+                    >
+                      {column.render("Header")}
 
-         <th className="th"/>
-           {headerGroup.headers.map((column, i) => (
-             <th
-             key={column.id}
-               {...column.getHeaderProps(column.getSortByToggleProps())}
-               className="th"
-             >
-               {column.render("Header")}
-
-               <span>
-                 {/* {column.isSorted ? (column.isSortedDesc ? "↓"  : "↑"  ) : " "}  */ }
-                 {column.isSorted ?  "⇅"  : " "}
-               </span>
-               {/* Use column.getResizerProps to hook up the events correctly */}
-               <div
-                 {...column.getResizerProps()}
-                 className={`resizer ${column.isResizing ? "isResizing" : ""
-                   }`}
-               />
-             </th>
-           ))}
-         </tr>
-       ))}
-     </thead>
+                      <span>
+                        {/* {column.isSorted ? (column.isSortedDesc ? "↓"  : "↑"  ) : " "}  */ }
+                        {column.isSorted ?  "⇅"  : " "}
+                      </span>
+                      {/* Use column.getResizerProps to hook up the events correctly */}
+                      <div
+                        {...column.getResizerProps()}
+                        className={`resizer ${column.isResizing ? "isResizing" : ""
+                          }`}
+                      />
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
 
               <tbody {...getTableBodyProps()}>
                         {page.map((row, i) => {
@@ -871,10 +900,68 @@ function Table({ columns, data, config }) {
 
                           );
                         })}
-                      </tbody>
+                </tbody>
+                </Fragment>
+
+            ) : (
+
+
+              <Fragment>
+              <thead className={`${config.tableBordered ? "hidden" : "" }`}>
+                      {headerGroups.map((headerGroup) => (
+                            <tr {...headerGroup.getHeaderGroupProps()} className="tr">
+                              {headerGroup.headers.map((column) => (
+                                <th
+                                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                                  className="th"
+                                >
+                                  {column.render("Header")}
+
+                                  <div
+                                    {...column.getResizerProps()}
+                                    className={`resizer ${
+                                      column.isResizing ? "isResizing" : ""
+                                    }`}
+                                  />
+                                </th>
+                              ))}
+                            </tr>
+                          ))}
+                        </thead>
+
+
+
+
+                 <tbody {...getTableBodyProps()}>
+                     {page.map((row, i) => {
+                       prepareRow(row);
+
+                       return (
+                         <tr {...row.getRowProps()} className="tr">
+                           {row.cells.map((cell) => {
+                             return (
+                               <td {...cell.getCellProps()} className="td">
+                                 {cell.render("Cell")}
+                               </td>
+                             );
+                           })}
+                         </tr>
+                       );
+                     })}
+                   </tbody>
+
+                     </Fragment>
+
+            )
+        }
+
+
+
+
 
             </table>
 
+            </div>
         </div>
 
       </div>
@@ -923,14 +1010,32 @@ const createLabel = (label) => {
 
 
 export const CustomTable = ({ data, config, queryResponse, details, done }) => {
-  const [tableData, setTableData] = useState([]);
-  // const [page, setPage] = useState(2);
-  // const [rowsPerPage, setRowsPerPage] = useState(2);
+
+
+
+  // get dimensions and measures
+  const { dimension_like, measure_like, pivots } = queryResponse.fields;
+  const fields = {
+    dimensions: dimension_like.map((d) => d.name),
+    dimensionsLabel: dimension_like.map((d) => d.label_short),
+    measures: measure_like.map((m) => m.name),
+    measuresLabel: measure_like.map((m) => m.label_short),
+    pivots: pivots?.map((p) => p.name),
+  };
+
+
+
+const dimensionName = fields.dimensions[0];
+const measureName = fields.measures[0];
+
+console.log(dimensionName)
+
+  const [page, setPage] = useState(2);
+  const [rowsPerPage, setRowsPerPage] = useState(2);
   const [firstData = {}] = data;
   let cols_to_hide = [];
 
   for (const [key, value] of Object.entries(firstData)) {
-
     if (key.split(".")[1] === "columns_to_hide") {
       cols_to_hide = firstData[key].value.split(",").map((e) => e.trim());
       break;
@@ -946,35 +1051,115 @@ export const CustomTable = ({ data, config, queryResponse, details, done }) => {
 
 
 
-  const columns = useMemo(
-    () =>
-      Object.keys(firstData).map((key) => {
+
+    const columns = useMemo(
+      () =>
+        Object.keys(firstData).map((key) => {
 
 
-console.log(key)
 
-        return {
-          id: key,
-          Header: createLabel(key),
-          accessor: (d) => {
-            return d[key].value
-          },
+if (key === dimensionName || key === measureName){
 
-          sortable: true,
-
-          sortType: 'basic',
-          // Cell: (  { row: { original } }) => {
-          //   return original[key]?.rendered || original[key]?.value;
-          // },
-          Cell: ({ cell, value, row }) => {
-            // const row = cell.row.original;
-            return row.original[key]?.rendered || row.original[key]?.value;
-          },
-          headerClassName: "table-header1",
-        };
-      }),
-    []
+  const [tableKeyword, slicedKey] = key.split(".");
+  const dimension = config.query_fields.dimensions.find(
+    (dimension) => dimension.name === key
   );
+
+  return {
+    Header:
+      slicedKey === key
+        ? key
+        : dimension?.field_group_variant ||
+
+
+          config.query_fields.measures.find(
+            (dimension) => dimension.name === key
+          )?.field_group_variant ||
+          slicedKey,
+
+      accessor: (d) => {
+      return d[key].value;
+    },
+
+    sortable: true,
+
+    sortType: "basic",
+
+
+    Cell: ({ cell, value, row }) => {
+
+
+      if (slicedKey === "logo_url") {
+        return (
+          <>
+            <div class="d-flex align-items-center" id="logoText">
+              <img
+                src={
+                  row.original[key]?.rendered ||
+                  row.original[key]?.value
+                }
+                alt=""
+                class="img-fluid"
+              />
+
+              <p class="moveRight">
+                {row.original[tableKeyword + ".logo_text"]?.rendered ||
+                  row.original[tableKeyword + ".logo_text"]?.value}
+              </p>
+            </div>
+          </>
+        );
+      }
+
+
+
+
+
+      return row.original[key]?.rendered || row.original[key]?.value;
+    },
+
+    headerClassName: "table-header1",
+  };
+
+
+
+}
+
+else{
+  return {
+    id: key,
+    Header: createLabel(key),
+    accessor: (d) => {
+      return d[key].value
+    },
+
+    sortable: true,
+
+    sortType: 'basic',
+    // Cell: (  { row: { original } }) => {
+    //   return original[key]?.rendered || original[key]?.value;
+    // },
+    Cell: ({ cell, value, row }) => {
+      // const row = cell.row.original;
+      return row.original[key]?.rendered || row.original[key]?.value;
+    },
+    headerClassName: "table-header1",
+  };
+
+}
+
+
+
+        }),
+      []
+    );
+
+
+
+
+
+
+
 
 
   const handleChangePage = (event, newPage) => {
