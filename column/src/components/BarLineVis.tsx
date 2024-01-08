@@ -142,7 +142,10 @@ function BarLineVis({
     showX,
     showTwo,
     hideBox,
-    hideColors
+    hideColors,
+    hideBottom,
+    writeTarget,
+    color_title
   } = config;
 
 
@@ -207,6 +210,8 @@ function BarLineVis({
 
 
   const colors = config.color_range
+
+  const background = config.color_title
 
 
   const hasPivot = !!fields.pivots && fields.pivots.length > 0;
@@ -336,7 +341,7 @@ function BarLineVis({
 
 
       let rows: TooltipRow[] = [];
-      if (showAllValuesInTooltip ) {
+      // if (showAllValuesInTooltip ) {
         Object.entries(lookerRow[measureName]).forEach(
 
           ([pivotName, { value: currentPeriodValue }], i) => {
@@ -368,38 +373,38 @@ function BarLineVis({
 
           }
         );
-      }
+      // }
 
 
-      else {
-
-        const pivotValue = context.tooltip.dataPoints[0].dataset.label;
-
-        const previousPeriodValue =
-        data[dataIndex][periodComparisonMeasure][pivotValue].value;
-        const currentPeriodValue = context.tooltip.dataPoints[0].raw as number;
-
-        const hasPreviousPeriod =
-        hasPeriodComparisonMeasure && !!previousPeriodValue;
-        const periodComparisonValue =
-        ((currentPeriodValue - previousPeriodValue) / previousPeriodValue) *
-        100;
-
-        rows = [
-          {
-            hasPreviousPeriod,
-            measureValue: `${
-              context.tooltip.dataPoints[0].formattedValue
-            }`,
-
-
-            periodComparisonValue,
-            pivotColor: context.tooltip.dataPoints[0].dataset
-            .borderColor as string,
-            pivotText: context.tooltip.dataPoints[0].dataset.label,
-          },
-        ];
-      }
+      // else {
+      //
+      //   const pivotValue = context.tooltip.dataPoints[0].dataset.label;
+      //
+      //   const previousPeriodValue =
+      //   data[dataIndex][periodComparisonMeasure][pivotValue].value;
+      //   const currentPeriodValue = context.tooltip.dataPoints[0].raw as number;
+      //
+      //   const hasPreviousPeriod =
+      //   hasPeriodComparisonMeasure && !!previousPeriodValue;
+      //   const periodComparisonValue =
+      //   ((currentPeriodValue - previousPeriodValue) / previousPeriodValue) *
+      //   100;
+      //
+      //   rows = [
+      //     {
+      //       hasPreviousPeriod,
+      //       measureValue: `${
+      //         context.tooltip.dataPoints[0].formattedValue
+      //       }`,
+      //
+      //
+      //       periodComparisonValue,
+      //       pivotColor: context.tooltip.dataPoints[0].dataset
+      //       .borderColor as string,
+      //       pivotText: context.tooltip.dataPoints[0].dataset.label,
+      //     },
+      //   ];
+      // }
 
       setTooltip({
         dimensionLabel0: `${dimensionLabel}:`,
@@ -679,7 +684,7 @@ var average = Math.round(average * 1).toLocaleString();
 
 
     <div className={borderLine ?  "upDown noBorder"  : "upDown"}>
-    <div className="greenBox pt-3">
+    <div className="greenBox pt-3" style={{ backgroundColor: color_title ? background[0] : '#00363d'}}>
 
 
     <h5 className="mb-3">{writeTitle === "" ? title : writeTitle}</h5>
@@ -689,7 +694,7 @@ var average = Math.round(average * 1).toLocaleString();
     <div className={`
       ${percent > 0 ? "varianceBox negative" : "varianceBox positive"}
       ${hideColors ? "varianceBox clear" : ""}
-      ${hideBox ? "hidden" : ""}
+      ${hideBox ? "visibiltyHidden" : ""}
       `}>
 
 
@@ -705,7 +710,7 @@ var average = Math.round(average * 1).toLocaleString();
       </h1>
     </OverlayTrigger>
 
-    <h3 className={hideTarget ? "hidden" : ""}>Target: {target}</h3>
+    <h3 className={hideTarget ? "hidden" : ""}>Target: {writeTarget === "" ? target : writeTarget}</h3>
 
 
     </div>
@@ -730,7 +735,7 @@ var average = Math.round(average * 1).toLocaleString();
     <p>{first}</p>
     <p>{last}</p>
     </div>
-    <div className="bottom">
+    <div className={hideBottom ? "bottom hideBottom" : "bottom"}>
     <p>L13W Avg</p>
     <p>{average}</p>
     </div>

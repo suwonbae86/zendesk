@@ -114,11 +114,20 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
         section: "Style",
       },
 
+      color_title: {
+        type: 'array',
+        label: 'Title Background Color',
+        display: 'colors',
+        default: ['#00363d', '#17494d', '#498283', '#bdd9d7', '#aecfc2', '#d1e8df'],
+        order: 4,
+        section: "Style",
+      },
+
       writeTitle: {
         type: "string",
         label: "Write Title Text Instead",
         default: "",
-        order: 4,
+        order: 5,
         section: "Style",
       },
       // xAxisText: {
@@ -206,6 +215,15 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
             values: fieldOptions,
             order: 26,
 
+            section: "KPI-Values",
+          },
+
+
+          writeTarget: {
+            type: "string",
+            label: "Write Target Text Instead",
+            default: "",
+            order: 27,
             section: "KPI-Values",
           },
       // showPoints: {
@@ -346,13 +364,13 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
       },
 
 
-      showAllValuesInTooltip: {
-        type: "boolean",
-        label: "Show Tooltip Values",
-        default: true,
-        order: 40,
-        section: "Style",
-      },
+      // showAllValuesInTooltip: {
+      //   type: "boolean",
+      //   label: "Show Tooltip Values",
+      //   default: true,
+      //   order: 40,
+      //   section: "Style",
+      // },
       color_range: {
         type: 'array',
         label: 'Color Range',
@@ -377,6 +395,14 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
         label: "Remove Border",
         default: false,
         order: 26,
+        section: "Style",
+      },
+
+      hideBottom: {
+        type: "boolean",
+        label: "Hide Bottom Section",
+        default: false,
+        order: 27,
         section: "Style",
       },
 
