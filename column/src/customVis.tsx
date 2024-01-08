@@ -118,7 +118,7 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
         type: 'array',
         label: 'Title Background Color',
         display: 'colors',
-        default: ['#00363d', '#17494d', '#498283', '#bdd9d7', '#aecfc2', '#d1e8df'],
+        default: ['#00363d', '#17494d', '#498283', '#bdd9d7', '#aecfc2', '#d1e8df', '#edf8f4', '#f5fcfc'],
         order: 4,
         section: "Style",
       },
@@ -377,6 +377,13 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
         display: 'colors',
         default: ['#a2c4c9', '#00363d', '#dd3333', '#80ce5d', '#f78131', '#369dc1', '#c572d3', '#36c1b3', '#b57052', '#ed69af'],
         order: 24,
+        section: "Style",
+      },
+      lastBar: {
+        type: "boolean",
+        label: "Remove Dark Color from Last Column",
+        default: false,
+        order: 25,
         section: "Style",
       },
       yAxisLeftValues: {

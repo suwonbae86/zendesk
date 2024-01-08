@@ -145,7 +145,8 @@ function BarLineVis({
     hideColors,
     hideBottom,
     writeTarget,
-    color_title
+    color_title,
+    lastBar
   } = config;
 
 
@@ -286,10 +287,8 @@ function BarLineVis({
 
           type: chartType,
           label: measureLabel,
-          backgroundColor: data.map((item, index) => {
-           return index === data.length - 1 ? colors[1] : colors[0]
-          }),
-          // backgroundColor:`${color_range ? colors[0] : colors[0]}`,
+          backgroundColor: lastBar ? color_range ? colors[0] : colors[0] : data.map((item, index) => { return index === data.length - 1 ? colors[1] : colors[0]}),
+          //backgroundColor:`${color_range ? colors[0] : colors[0]}`,
           borderColor: `${color_range ? colors[0] : colors[0]}`,
           pointBackgroundColor: `${color_range ? colors[0] : colors[0]}`,
           // data: data.map((row) => row[measureName].value),
