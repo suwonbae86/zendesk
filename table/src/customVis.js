@@ -52,7 +52,7 @@ index: {
 
 border: {
  type: "boolean",
- label: "Hide Border",
+ label: "Remove Border",
  default: false,
  order: 7,
 },

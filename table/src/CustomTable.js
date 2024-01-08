@@ -754,19 +754,35 @@ max-width:120px !important;
 }
 
 
-.table{
+.aroundIt{
   box-shadow: 0px 0px 19px -1px rgba(175,175,175,.67);
 
       border: 1px solid black;
 }
 
-.removeBorder .table{
-  border:none
+.removeBorder .aroundIt{
+  border:none;
 }
 
 thead th{
-  background:#00363d;
-  color:white
+border-bottom:1px solid black;
+  line-height: 1.2;
+}
+
+.greenBox{
+  background: #00363d;
+  padding: 0em 0.5em 1em 0.5em;
+  text-align: center;
+}
+.greenBox p{
+  color:white;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+thead{
+  border-bottom: 1px solid black;
+  background:transparent
 }
 
 
@@ -832,12 +848,19 @@ function Table({ columns, data, config }) {
 
     <Container fluid className="padding-0 mb-3 mt-2 d-flex justify-content-center align-items-center text-center">
 
+
+
       </Container>
-    <Container className={`${config.removeBars ? "scrunch" : "padding-0 second mb-5 mt-2"}`}>
+    <Container fluid className={`${config.removeBars ? "scrunch" : "padding-0 second mb-5 mt-2"}`}>
 
       <div className="unsetTable">
         <div className={`${config.fixedHeight  ? "fixedHeight" : ""}`}>
         <div className={`${config.border ? "removeBorder" : ""}`}>
+        <div className="aroundIt">
+        <div className="greenBox pt-3">
+
+        <p>title</p>
+        </div>
         <table className="table" {...getTableProps()}>
 
         {
@@ -960,7 +983,7 @@ function Table({ columns, data, config }) {
 
 
             </table>
-
+            </div>
             </div>
         </div>
 
@@ -1023,12 +1046,21 @@ export const CustomTable = ({ data, config, queryResponse, details, done }) => {
     pivots: pivots?.map((p) => p.name),
   };
 
+  let mes = fields.dimensions.map(function(val, i){ return val });
+
+
+var element;
+  for (let index = 0; index < mes.length; ++index) {
+      var element = mes[index];
+      console.log(element);
+  }
+
 
 
 const dimensionName = fields.dimensions[0];
+const dimensionName1 = fields.dimensions[1];
 const measureName = fields.measures[0];
 
-console.log(dimensionName)
 
   const [page, setPage] = useState(2);
   const [rowsPerPage, setRowsPerPage] = useState(2);
@@ -1058,74 +1090,70 @@ console.log(dimensionName)
 
 
 
-if (key === dimensionName || key === measureName){
-
-  const [tableKeyword, slicedKey] = key.split(".");
-  const dimension = config.query_fields.dimensions.find(
-    (dimension) => dimension.name === key
-  );
-
-  return {
-    Header:
-      slicedKey === key
-        ? key
-        : dimension?.field_group_variant ||
-
-
-          config.query_fields.measures.find(
-            (dimension) => dimension.name === key
-          )?.field_group_variant ||
-          slicedKey,
-
-      accessor: (d) => {
-      return d[key].value;
-    },
-
-    sortable: true,
-
-    sortType: "basic",
-
-
-    Cell: ({ cell, value, row }) => {
-
-
-      if (slicedKey === "logo_url") {
-        return (
-          <>
-            <div class="d-flex align-items-center" id="logoText">
-              <img
-                src={
-                  row.original[key]?.rendered ||
-                  row.original[key]?.value
-                }
-                alt=""
-                class="img-fluid"
-              />
-
-              <p class="moveRight">
-                {row.original[tableKeyword + ".logo_text"]?.rendered ||
-                  row.original[tableKeyword + ".logo_text"]?.value}
-              </p>
-            </div>
-          </>
-        );
-      }
-
-
-
-
-
-      return row.original[key]?.rendered || row.original[key]?.value;
-    },
-
-    headerClassName: "table-header1",
-  };
-
-
-
-}
-
-else{
+// if (key === dimensionName || key === measureName || key === dimensionName1){
+//
+//   const [tableKeyword, slicedKey] = key.split(".");
+//   const dimension = config.query_fields.dimensions.find(
+//     (dimension) => dimension.name === key
+//   );
+//
+//   return {
+//     Header:
+//       slicedKey === key
+//         ? key
+//         : dimension?.field_group_variant ||
+//
+//
+//           config.query_fields.measures.find(
+//             (dimension) => dimension.name === key
+//           )?.field_group_variant ||
+//           slicedKey,
+//
+//       accessor: (d) => {
+//       return d[key].value;
+//     },
+//
+//     sortable: true,
+//
+//     sortType: "basic",
+//
+//
+//     Cell: ({ cell, value, row }) => {
+//
+//
+//       if (slicedKey === "logo_url") {
+//         return (
+//           <>
+//             <div class="d-flex align-items-center" id="logoText">
+//               <img
+//                 src={
+//                   row.original[key]?.rendered ||
+//                   row.original[key]?.value
+//                 }
+//                 alt=""
+//                 class="img-fluid"
+//               />
+//
+//               <p class="moveRight">
+//                 {row.original[tableKeyword + ".logo_text"]?.rendered ||
+//                   row.original[tableKeyword + ".logo_text"]?.value}
+//               </p>
+//             </div>
+//           </>
+//         );
+//       }
+//
+//       return row.original[key]?.rendered || row.original[key]?.value;
+//     },
+//
+//     headerClassName: "table-header1",
+//   };
+//
+//
+//
+// }
+//
+// else{
   return {
     id: key,
     Header: createLabel(key),
@@ -1146,19 +1174,11 @@ else{
     headerClassName: "table-header1",
   };
 
-}
-
-
+// }
 
         }),
       []
     );
-
-
-
-
-
-
 
 
 
