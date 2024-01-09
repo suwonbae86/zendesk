@@ -1,4 +1,3 @@
-// To allow invalid https certificates from localhost in Chrome: chrome://flags/#allow-insecure-localhost
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -6,144 +5,170 @@ import { CustomTable } from "./CustomTable";
 import PaginationComponent from "./PaginationComponent";
 
 looker.plugins.visualizations.add({
-  options: {
-
-
-
-  tableBordered: {
-   type: "boolean",
-   label: "Hide Header",
-   default: false,
-   order: 1,
- },
- fixedHeight: {
-  type: "boolean",
-  label: "Table Fixed Height",
-  default: false,
-  order: 2,
-},
-
-hidePag: {
- type: "boolean",
- label: "Hide Pagination",
- default: false,
- order: 3,
-},
-// unsetTable: {
-//  type: "boolean",
-//  label: "Table Column Width Unset or Fixed",
-//  default: true,
-//  order: 4,
-// },
-//
-// removeBars: {
-//  type: "boolean",
-//  label: "Center Small Table",
-//  default: false,
-//  order: 5,
-// },
-
-index: {
- type: "boolean",
- label: "Show Row Index",
- default: true,
- order: 6,
-},
-
-border: {
- type: "boolean",
- label: "Remove Border",
- default: false,
- order: 7,
-},
-
-
-
-
-
-
-
-  },
-
-
-
-
   create: function (element, config) {
-    // console.log("create-config", config);
+
   },
 
+updateAsync: function (data, element, config, queryResponse, details, done) {
 
-  // The updateAsync method gets called any time the visualization rerenders due to any kind of change,
-  // such as updated data, configuration options, etc.
-  updateAsync: function (data, element, config, queryResponse, details, done) {
+const { dimension_like: dimensionLike } = queryResponse.fields;
 
-    // const options = {
-    //       // fields
-    //       kpiField: {
-    //         label: "KPI Value",
+const dimensions = dimensionLike.map((dimension) => ({
+   label: dimension.label_short ?? dimension.label,
+   name: dimension.name
+
+
+ }));
+
+
+
+ const { measure_like: measureLike } = queryResponse.fields;
+
+
+ const measures = measureLike.map((measure) => ({
+   label: measure.label_short ?? measure.label,
+   name: measure.name,
+ }));
+
+
+
+ const fieldOptions = [...dimensions, ...measures].map((dim) => ({
+     [dim.label]: queryResponse.data.map(row => row[dim.name].value).join(",")
+   }));
+
+console.log(fieldOptions)
+
+    const options = {
+
+      textTitle: {
+        type: "string",
+        label: "Choose Title from Dropdown",
+        display: "select",
+        placeholder: "Please Select",
+        values: fieldOptions,
+        order: 1,
+        default:"Please Select",
+        section: "Style",
+      },
+
+      color_title: {
+        type: 'array',
+        label: 'Title Background Color',
+        display: 'colors',
+        default: ['#00363d', '#17494d', '#498283', '#bdd9d7', '#aecfc2', '#d1e8df', '#edf8f4', '#f5fcfc'],
+        order: 2,
+        section: "Style",
+      },
+
+      writeTitle: {
+        type: "string",
+        label: "Write Title Text Instead",
+        default: "",
+        order: 3,
+        section: "Style",
+      },
+
+      tableBordered: {
+       type: "boolean",
+       label: "Hide Header",
+       default: false,
+       order: 4,
+       section: "Style",
+     },
+
+           toolOn: {
+             type: "boolean",
+             label: "Turn on Tooltip for Title",
+             default: false,
+             order: 5,
+               section: "Style",
+           },
+
+           writeTooltip: {
+             type: "string",
+             label: "Write Tooltip Text",
+             default: "",
+             order: 6,
+            section: "Style",
+           },
+
+     fixedHeight: {
+      type: "boolean",
+      label: "Table Fixed Height",
+      default: true,
+      order: 7,
+      section: "Style",
+    },
+
+    hidePag: {
+     type: "boolean",
+     label: "Hide Pagination",
+     default: true,
+     order: 8,
+    section: "Style",
+    },
+    unsetWidth: {
+     type: "boolean",
+     label: "Table Column Width Unset or Fixed",
+     default: true,
+     order: 9,
+     section: "Style",
+    },
+    //
+    // removeBars: {
+    //  type: "boolean",
+    //  label: "Center Small Table",
+    //  default: false,
+    //  order: 5,
+    // },
+
+    index: {
+     type: "boolean",
+     label: "Show Row Index",
+     default: true,
+     order: 10,
+      section: "Style",
+    },
+
+    border: {
+     type: "boolean",
+     label: "Remove Border",
+     default: false,
+     order: 11,
+      section: "Style",
+    },
+
+
+
+    // yesText: {
+    //  type: "boolean",
+    //  label: "Change Default Header to Dropdown",
+    //  default: false,
+    //  order: 11,
+    //   section: "Style",
+    // },
+    //
+    //
+    //         headerText: {
     //         type: "string",
+    //         label: "Choose Header Text from Dropdown",
+    //
     //         display: "select",
-    //         default: kpiFieldDefault,
+    //
     //         values: fieldOptions,
-    //         section: SECTIONS.fields,
-    //         order: 1,
+    //         order: 12,
+    //         default:'',
+    //         section: "Style",
     //       },
-    //       comparisonField: {
-    //         label: "Comparison Period Value",
-    //         type: "string",
-    //         display: "select",
-    //         default: comparisonFieldDefault,
-    //         values: fieldOptions,
-    //         section: SECTIONS.fields,
-    //         order: 2,
-    //       },
-    //       gaugeField: {
-    //         label: "Gauge Value",
-    //         type: "string",
-    //         display: "select",
-    //         default: gaugeFieldDefault,
-    //         values: fieldOptions,
-    //         section: SECTIONS.fields,
-    //         order: 3,
-    //       },
-    //       // layout
-    //       isPeriodComparisonVisible: {
-    //         label: "Show Period Comparison",
-    //         default: true,
-    //         type: "boolean",
-    //         section: SECTIONS.layout,
-    //         order: 1,
-    //       },
-    //       isGaugeVisible: {
-    //         label: "Show Gauge",
-    //         default: true,
-    //         type: "boolean",
-    //         section: SECTIONS.layout,
-    //         order: 2,
-    //       },
-    //       kpiLabel: {
-    //         label: "KPI Label",
-    //         default: "Label",
-    //         type: "string",
-    //         section: SECTIONS.layout,
-    //         order: 3,
-    //       },
-    //       kpiValueUnit: {
-    //         label: "KPI Value Unit",
-    //         default: "sf",
-    //         type: "string",
-    //         section: SECTIONS.layout,
-    //         order: 4,
-    //       },
-    //       comparisonLabel: {
-    //         label: "Comparison Label",
-    //         default: "vs previous period",
-    //         type: "string",
-    //         section: SECTIONS.layout,
-    //         order: 5,
-    //       },
-    //     };
- // this.trigger("registerOptions", options);
+
+
+
+  };
+
+
+
+
+ this.trigger("registerOptions", options);
 
     ReactDOM.render(
 

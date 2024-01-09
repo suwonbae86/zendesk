@@ -31,12 +31,12 @@ import {
 } from "react-sparklines";
 
 import Pagination from "@mui/material/Pagination";
-import { ProgressBar, Button, ButtonGroup, Form, Row, Col, Container } from "react-bootstrap";
+import { ProgressBar, Button, ButtonGroup, Form, Row, Col, Container, Overlay, OverlayTrigger, Popover, PopoverBody, PopoverHeader } from "react-bootstrap";
 import { TablePagination } from "@mui/material";
 
 
 const Styles = ({ children, config }) => {
-  var { thColor, thFontSize, tableBordered, fixedHeight, unsetTable, hidePag, removeBars, rightPag, index, border } = config;
+  var { thColor, thFontSize, tableBordered, fixedHeight, unsetTable, hidePag, removeBars, rightPag, index, border, unsetWidth } = config;
 
   const StyledWrapper = styled.div`
 
@@ -432,24 +432,11 @@ tr:nth-child(odd) td{
 }
 
   .fixedHeight {
-      height: 400px;
-      overflow-y: scroll;
+
+      overflow-y: auto;
       overflow-x: auto;
 
-    ::-webkit-scrollbar-track {
-    border-radius: 0.125rem;
-    background-color: lightgray;
-    height: 0px;
-  }
-  ::-webkit-scrollbar {
-    width: 0.25rem;
-    border-radius: 0.125rem;
-      height: 0px;
-  }
-  ::-webkit-scrollbar-thumb {
-    border-radius: 0.125rem;
-    background-color: gray;
-  };
+
   }
  }
 
@@ -545,8 +532,11 @@ justify-content: flex-end;
 }
 
   .unsetTable tr, .unsetTable th {
-      width: 100% !important;
 
+width:100%;
+ }
+ .unsetWidth .unsetTable  tr, .unsetWidth .unsetTable th{
+   width:unset
  }
 
 .fixAcross{
@@ -724,9 +714,7 @@ margin-top: 3px;
 .hidden{
   display:none
 }
-h5{
-  font-size:22px !important;
-}
+
 
 .padding-0{
   padding: 0;
@@ -757,7 +745,9 @@ max-width:120px !important;
 .aroundIt{
   box-shadow: 0px 0px 19px -1px rgba(175,175,175,.67);
 
-      border: 1px solid black;
+  height:500px
+
+
 }
 
 .removeBorder .aroundIt{
@@ -785,6 +775,31 @@ thead{
   background:transparent
 }
 
+#height{
+
+  box-shadow: 0px 0px 19px -1px rgba(175,175,175,.67);
+  border: 1px solid black;
+      margin: 2em auto 0 auto;
+}
+h5{
+  color:white;
+
+  position:relative;
+  display: inline-block;
+
+
+}
+
+a{
+  color:black;
+  text-decoration: none;
+}
+
+
+    .arrow{
+     display:none !important
+    }
+
 
   `;
 
@@ -794,7 +809,7 @@ thead{
 function Table({ columns, data, config }) {
 
 
-  var { tableBordered, fixedHeight, unsetTable, hidePag, rightPag, removeBars, index, border } = config;
+  var { tableBordered, fixedHeight, unsetTable, hidePag, rightPag, removeBars, index, border, textTitle, color_title, writeTitle, toolOn, writeTooltip, headerText, yesText, unsetWidth } = config;
 
   const defaultColumn = React.useMemo(
      () => ({
@@ -839,27 +854,75 @@ function Table({ columns, data, config }) {
       useBlockLayout,
       useResizeColumns
    );
-   // const { pageIndex, pageSize } = state;
 
+
+   const Content = config.textTitle.split(",").map((d, i) => ({
+     textTitle: d,
+     // headerText:config.headerText.split(",")[i],
+
+     // symbol:config.symbol.split(",")[i],
+     // yAxisLeftValues:config.yAxisLeftValues.split(",")[i],
+
+   }))
+
+
+
+  //
+  //   var text = Content.map(function(val, i){ return val.headerText });
+  //
+  //   Content.forEach(function(number) {
+  //   console.log(number);
+  // })
+
+
+
+     var title = Content.map(function(val, i){ return val.textTitle });
+
+     var title = title[0]
+
+
+
+
+
+  const background = config.color_title
+
+  const popoverHoverFocus = (
+    <Popover
+
+    className={config.toolOn ? "" : "hidden"}
+    id="popover"
+    style={{backgroundColor:'black', color:'white', padding: '1em 1.25em'}}
+    >
+    <p className="m-0">{config.writeTooltip}</p>
+    </Popover>
+  );
 
 
   return (
     <>
 
-    <Container fluid className="padding-0 mb-3 mt-2 d-flex justify-content-center align-items-center text-center">
 
 
 
-      </Container>
-    <Container fluid className={`${config.removeBars ? "scrunch" : "padding-0 second mb-5 mt-2"}`}>
+    <Container fluid className={`${config.removeBars ? "scrunch" : "padding-0 second"}`} id="height">
 
-      <div className="unsetTable">
+
+      <div className={`${config.unsetWidth  ? "unsetWidth" : ""}`}>
+        <div className="unsetTable">
         <div className={`${config.fixedHeight  ? "fixedHeight" : ""}`}>
         <div className={`${config.border ? "removeBorder" : ""}`}>
         <div className="aroundIt">
-        <div className="greenBox pt-3">
+        <div className="greenBox pt-3" style={{ backgroundColor: config.color_title ? background[0] : '#00363d'}}>
 
-        <p>title</p>
+
+        <OverlayTrigger
+          trigger="hover"
+          placement="right"
+          overlay={popoverHoverFocus}
+        >
+        <h5 class="mb-0">{config.writeTitle === "" ? title : config.writeTitle}</h5>
+        </OverlayTrigger>
+
         </div>
         <table className="table" {...getTableProps()}>
 
@@ -880,7 +943,11 @@ function Table({ columns, data, config }) {
                       {...column.getHeaderProps(column.getSortByToggleProps())}
                       className="th"
                     >
-                      {column.render("Header")}
+
+
+
+                    {column.render("Header")}
+
 
                       <span>
                         {/* {column.isSorted ? (column.isSortedDesc ? "↓"  : "↑"  ) : " "}  */ }
@@ -973,7 +1040,7 @@ function Table({ columns, data, config }) {
                      })}
                    </tbody>
 
-                     </Fragment>
+               </Fragment>
 
             )
         }
@@ -988,7 +1055,7 @@ function Table({ columns, data, config }) {
         </div>
 
       </div>
-
+</div>
 
 
 
@@ -1082,78 +1149,64 @@ const measureName = fields.measures[0];
 
 
 
-
-
     const columns = useMemo(
       () =>
         Object.keys(firstData).map((key) => {
 
 
 
-// if (key === dimensionName || key === measureName || key === dimensionName1){
-//
-//   const [tableKeyword, slicedKey] = key.split(".");
-//   const dimension = config.query_fields.dimensions.find(
-//     (dimension) => dimension.name === key
-//   );
-//
-//   return {
-//     Header:
-//       slicedKey === key
-//         ? key
-//         : dimension?.field_group_variant ||
-//
-//
-//           config.query_fields.measures.find(
-//             (dimension) => dimension.name === key
-//           )?.field_group_variant ||
-//           slicedKey,
-//
-//       accessor: (d) => {
-//       return d[key].value;
-//     },
-//
-//     sortable: true,
-//
-//     sortType: "basic",
-//
-//
-//     Cell: ({ cell, value, row }) => {
-//
-//
-//       if (slicedKey === "logo_url") {
-//         return (
-//           <>
-//             <div class="d-flex align-items-center" id="logoText">
-//               <img
-//                 src={
-//                   row.original[key]?.rendered ||
-//                   row.original[key]?.value
-//                 }
-//                 alt=""
-//                 class="img-fluid"
-//               />
-//
-//               <p class="moveRight">
-//                 {row.original[tableKeyword + ".logo_text"]?.rendered ||
-//                   row.original[tableKeyword + ".logo_text"]?.value}
-//               </p>
-//             </div>
-//           </>
-//         );
-//       }
-//
-//       return row.original[key]?.rendered || row.original[key]?.value;
-//     },
-//
-//     headerClassName: "table-header1",
-//   };
-//
-//
-//
-// }
-//
-// else{
+ if(key.indexOf('.') !== -1) {
+
+  const [tableKeyword, slicedKey] = key.split(".");
+  const dimension = config.query_fields.dimensions.find(
+    (dimension) => dimension.name === key
+  );
+
+  return {
+    Header:
+      slicedKey === key
+        ? key
+        : dimension?.field_group_variant ||
+
+
+          config.query_fields.measures.find(
+            (dimension) => dimension.name === key
+          )?.field_group_variant ||
+          slicedKey,
+
+      accessor: (d) => {
+      return d[key].value;
+    },
+
+    sortable: true,
+
+    sortType: "basic",
+
+
+    Cell: ({ cell, value, row }) => {
+
+      if (row.original[key]?.html){
+
+
+      let comment1 = `${row.original[key]?.html}`
+      return <div dangerouslySetInnerHTML={{__html:comment1}} />
+
+    }
+    else{
+      return row.original[key]?.rendered || row.original[key]?.value
+    }
+
+      {/*return row.original[key]?.rendered || row.original[key]?.value*/}
+    },
+
+    headerClassName: "table-header1",
+  };
+
+
+
+}
+
+else{
   return {
     id: key,
     Header: createLabel(key),
@@ -1168,13 +1221,24 @@ const measureName = fields.measures[0];
     //   return original[key]?.rendered || original[key]?.value;
     // },
     Cell: ({ cell, value, row }) => {
-      // const row = cell.row.original;
-      return row.original[key]?.rendered || row.original[key]?.value;
+
+      if (row.original[key]?.html){
+
+
+      let comment1 = `${row.original[key]?.html}`
+      return <div dangerouslySetInnerHTML={{__html:comment1}} />
+
+    }
+    else{
+      return row.original[key]?.rendered || row.original[key]?.value
+    }
+
+      {/*return row.original[key]?.rendered || row.original[key]?.value*/}
     },
     headerClassName: "table-header1",
   };
 
-// }
+}
 
         }),
       []

@@ -462,7 +462,7 @@ function calculateAverage(array) {
 var average = calculateAverage(array);
 
 var average = Math.round(average * 1).toLocaleString();
-// console.log(average);
+
 
 
   let title = Content.map(function(val, i){ return val.textTitle });
@@ -543,9 +543,30 @@ var average = Math.round(average * 1).toLocaleString();
           display:showDatalabels,
           formatter: function(value: number) {
 
-            let percentage = (value) / 1000
-            return `${formatNumber(Math.round(percentage.toFixed() * 1000))}`;
-          },
+            if (value < 100){
+
+            return Math.round(value*100)
+          }
+          else if (value < 1000){
+
+          return Math.round(value*1)
+        }
+          else{
+              // return `${formatNumber(Math.round(value).toFixed(0) * 1) }`;
+
+              let percentage = (value) / 1000
+
+              return `${formatNumber(Math.round(percentage.toFixed() * 1000))}`;
+          }
+        },
+          // formatter: function(value: number) {
+          //
+          //   return `${formatNumber(Math.round(value).toFixed(0) * 1) }`;
+          //
+          //   // let percentage = (value) / 1000
+          //   //
+          //   // return `${formatNumber(Math.round(percentage.toFixed() * 1000))}`;
+          // },
           font: {
             size: 10,
             weight: '500',
@@ -693,7 +714,7 @@ var average = Math.round(average * 1).toLocaleString();
     <div className={`
       ${percent > 0 ? "varianceBox negative" : "varianceBox positive"}
       ${hideColors ? "varianceBox clear" : ""}
-      ${hideBox ? "visibiltyHidden" : ""}
+      ${hideBox ? "visibilityHidden" : ""}
       `}>
 
 
@@ -730,7 +751,7 @@ var average = Math.round(average * 1).toLocaleString();
     />
     {tooltip && <Tooltip hasPivot={hasPivot} hasNoPivot={hasNoPivot} tooltipData={tooltip} />}
     </div>
-    <div className={showTwo ? "showFirstLast" : "hidden"}>
+    <div className={showTwo ? "showFirstLast" : "showFirstLast colorWhite"}>
     <p>{first}</p>
     <p>{last}</p>
     </div>
