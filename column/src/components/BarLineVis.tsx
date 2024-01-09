@@ -146,7 +146,11 @@ function BarLineVis({
     hideBottom,
     writeTarget,
     color_title,
-    lastBar
+    lastBar,
+    titleColor,
+    firstmeasure,
+    fieldOptions0,
+    sign
   } = config;
 
 
@@ -178,7 +182,7 @@ function BarLineVis({
   const measureLabel = fields.measuresLabel[0];
 
 
-
+  yAxisLeftValues = yAxisLeftValues ?? firstmeasure;
 
   const [firstData = {}] = data;
   let cols_to_hide = [];
@@ -430,20 +434,15 @@ function BarLineVis({
   const Content = config.textTitle.split(",").map((d, i) => ({
     textTitle: d,
     yAxisDropdown:config.yAxisDropdown.split(",")[i],
-    // xAxisDropdown:config.xAxisDropdown.split(",")[i],
+
 
     symbol:config.symbol.split(",")[i],
     yAxisLeftValues:config.yAxisLeftValues.split(",")[i],
-    // yAxisRightDropdown:config.yAxisRightDropdown.split(",")[i],
 
-    // yAxisRightValues:config.yAxisRightValues.split(",")[i],
-    // symbol2:config.symbol2.split(",")[i],
 
   }))
 
 
-// console.log(yAxisLeftValues)
-//
 
 
 let array = yAxisLeftValues.split(',').map(function(item) {
@@ -489,6 +488,13 @@ var average = Math.round(average * 1).toLocaleString();
   const last = labels[labels.length - 1];
 
 
+
+  let array2 = yAxisDropdown.split(',').map(function(item) {
+      return parseInt(item);
+  });
+
+const last = array2[array2.length - 1];
+  console.log(last)
 
   const popoverHoverFocus = (
     <Popover
@@ -543,9 +549,14 @@ var average = Math.round(average * 1).toLocaleString();
           display:showDatalabels,
           formatter: function(value: number) {
 
-            if (value < 100){
+
+            if (value < 1){
 
             return Math.round(value*100)
+          }
+          else if  (value < 100){
+
+            return Math.round(value*1)
           }
           else if (value < 1000){
 
@@ -707,7 +718,7 @@ var average = Math.round(average * 1).toLocaleString();
     <div className="greenBox pt-3" style={{ backgroundColor: color_title ? background[0] : '#00363d'}}>
 
 
-    <h5 className="mb-3">{writeTitle === "" ? title : writeTitle}</h5>
+    <h5 className="mb-3" style={{ color: titleColor ? titleColor : '#fff'}}>{writeTitle === "" ? title : writeTitle}</h5>
     {/*<p>Number of accounts without activity in the last 30 days</p>*/}
     </div>
 
@@ -724,7 +735,7 @@ var average = Math.round(average * 1).toLocaleString();
       placement="right"
       overlay={popoverHoverFocus}
     >
-      <h1 className="mb-0">{percent}
+      <h1 className="mb-0">{sign ? sign : ""}{last}
       <span class="caret">
       </span>
       </h1>

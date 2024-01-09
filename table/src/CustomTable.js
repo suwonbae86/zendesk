@@ -36,7 +36,7 @@ import { TablePagination } from "@mui/material";
 
 
 const Styles = ({ children, config }) => {
-  var { thColor, thFontSize, tableBordered, fixedHeight, unsetTable, hidePag, removeBars, rightPag, index, border, unsetWidth } = config;
+  var { thColor, thFontSize, tableBordered, fixedHeight, unsetTable, hidePag, removeBars, rightPag, index, border, unsetWidth, titleColor } = config;
 
   const StyledWrapper = styled.div`
 
@@ -471,7 +471,8 @@ tr:nth-child(odd) td{
  }
   .unsetTable .td,
   .unsetTable td,
-  .unsetTable tr {
+  .unsetTable tr,
+    .unsetTable th {
 
 
     width: 100% !important;
@@ -484,6 +485,29 @@ tr:nth-child(odd) td{
 
   }
 
+
+
+
+  .unsetTable::-webkit-scrollbar-track {
+   border-radius: 0.125rem;
+   background-color: lightgray;
+   height: 0px;
+ }
+   .unsetTable::-webkit-scrollbar {
+   width: 0.25rem;
+   border-radius: 0.125rem;
+     height: 0px;
+ }
+   .unsetTable::-webkit-scrollbar-thumb {
+   border-radius: 0.125rem;
+   background-color: gray;
+      height: 0px;
+ }
+
+ .unsetTable .fixedHeight {
+
+     overflow-x: hidden;
+ }
 
 
 
@@ -531,13 +555,7 @@ justify-content: flex-end;
   justify-content:flex-end !important
 }
 
-  .unsetTable tr, .unsetTable th {
 
-width:100%;
- }
- .unsetWidth .unsetTable  tr, .unsetWidth .unsetTable th{
-   width:unset
- }
 
 .fixAcross{
 position: fixed;
@@ -745,12 +763,12 @@ max-width:120px !important;
 .aroundIt{
   box-shadow: 0px 0px 19px -1px rgba(175,175,175,.67);
 
-  height:500px
+  height:436px
 
 
 }
 
-.removeBorder .aroundIt{
+.removeBorder #height{
   border:none;
 }
 
@@ -800,6 +818,18 @@ a{
      display:none !important
     }
 
+    .redBackground::before {
+        position: absolute;
+        content: "";
+        width: 100%;
+        left: 0;
+        z-index: 1;
+        background-color: rgba(253, 182, 176, 0.2);
+        height: 100%;
+        right:0;
+        top:0
+    }
+
 
   `;
 
@@ -809,7 +839,7 @@ a{
 function Table({ columns, data, config }) {
 
 
-  var { tableBordered, fixedHeight, unsetTable, hidePag, rightPag, removeBars, index, border, textTitle, color_title, writeTitle, toolOn, writeTooltip, headerText, yesText, unsetWidth } = config;
+  var { tableBordered, fixedHeight, unsetTable, hidePag, rightPag, removeBars, index, border, textTitle, color_title, writeTitle, toolOn, writeTooltip, headerText, yesText, unsetWidth,   titleColor } = config;
 
   const defaultColumn = React.useMemo(
      () => ({
@@ -902,28 +932,28 @@ function Table({ columns, data, config }) {
     <>
 
 
-
+      <div className={`${config.border ? "removeBorder" : ""}`}>
 
     <Container fluid className={`${config.removeBars ? "scrunch" : "padding-0 second"}`} id="height">
+    <div className="greenBox pt-3" style={{ backgroundColor: config.color_title ? background[0] : '#00363d'}}>
 
 
-      <div className={`${config.unsetWidth  ? "unsetWidth" : ""}`}>
-        <div className="unsetTable">
+    <OverlayTrigger
+      trigger="hover"
+      placement="right"
+      overlay={popoverHoverFocus}
+    >
+    <h5 class="mb-0" style={{ color: titleColor ? titleColor : '#fff'}}>{config.writeTitle === "" ? title : config.writeTitle}</h5>
+    </OverlayTrigger>
+
+    </div>
+
+      <div>
+        <div className={`${config.unsetTable  ? "" : "unsetTable"}`}>
         <div className={`${config.fixedHeight  ? "fixedHeight" : ""}`}>
-        <div className={`${config.border ? "removeBorder" : ""}`}>
+
         <div className="aroundIt">
-        <div className="greenBox pt-3" style={{ backgroundColor: config.color_title ? background[0] : '#00363d'}}>
 
-
-        <OverlayTrigger
-          trigger="hover"
-          placement="right"
-          overlay={popoverHoverFocus}
-        >
-        <h5 class="mb-0">{config.writeTitle === "" ? title : config.writeTitle}</h5>
-        </OverlayTrigger>
-
-        </div>
         <table className="table" {...getTableProps()}>
 
         {
@@ -1046,20 +1076,19 @@ function Table({ columns, data, config }) {
         }
 
 
-
-
-
             </table>
             </div>
             </div>
         </div>
 
-      </div>
+
 </div>
 
 
 
 </Container>
+
+  </div>
 
 <div className={`${config.hidePag ? "hidden" : "pagination display-flex justify-content-center align-items-center" }`}>
 
@@ -1185,6 +1214,20 @@ const measureName = fields.measures[0];
 
     Cell: ({ cell, value, row }) => {
 
+
+       if (slicedKey === "days_since_last_activity_from_today") {
+         return (
+                       <>
+
+                           <span class="redBackground">
+                             {row.original[key]?.rendered || row.original[key]?.value}
+                           </span>
+
+                       </>
+                     );
+
+       }
+
       if (row.original[key]?.html){
 
 
@@ -1221,6 +1264,20 @@ else{
     //   return original[key]?.rendered || original[key]?.value;
     // },
     Cell: ({ cell, value, row }) => {
+
+ 
+      if (key === "days_since_last_activity_from_today") {
+        return (
+                      <>
+
+                          <span class="redBackground">
+                            {row.original[key]?.rendered || row.original[key]?.value}
+                          </span>
+
+                      </>
+                    );
+
+      }
 
       if (row.original[key]?.html){
 

@@ -25,7 +25,24 @@ looker.plugins.visualizations.add({
   // such as updated data, configuration options, etc.
   updateAsync: function (data, element, config, queryResponse, details, done) {
 
+    const { measure_like: measureLike } = queryResponse.fields;
+    interface Measure {
+      label: string;
+      name: string;
+    }
+    const measures: Measure[] = measureLike.map((measure) => ({
+      label: measure.label_short ?? measure.label,
+      name: measure.name,
+    }));
 
+    interface FieldOption {
+      [key: string]: string;
+    }
+    const fieldOptions0: FieldOption[] = measures.map((measure) => ({
+      [measure.label]: measure.name,
+    }));
+
+console.log(fieldOptions0)
 
     const { dimension_like: dimensionLike } = queryResponse.fields;
 
@@ -35,10 +52,6 @@ looker.plugins.visualizations.add({
 
 
      }));
-
-
-
-     const { measure_like: measureLike } = queryResponse.fields;
 
 
      const measures1 = measureLike.map((measure) => ({
@@ -54,47 +67,22 @@ const fieldOptions = [...dimensions1, ...measures1].map((dim) => ({
        }));
 
 
+console.log(fieldOptions)
+
 const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
     [dim.label]: dim.label
   }));
 
 
-  const measures: Measure[] = measureLike.map((measure) => ({
-    label: measure.label_short ?? measure.label,
-    name: measure.name,
-  }));
-
   const firstmeasure = measures[0].name;
   const secondmeasure = measures.length > 1 ? measures[1].name : "";
   const thirdmeasure = measures.length > 2 ? measures[2].name : "";
 
-// console.log(firstmeasure )
-// console.log(secondmeasure )
-// console.log(thirdmeasure )
-
-    const lookerVis = this;
 
 
 
-    // config
+const lookerVis = this;
     const configOptions: ConfigOptions = {
-      // title: {
-      //   type: "string",
-      //   display: "text",
-      //   default: "Title",
-      //   label: "Title",
-      //   placeholder: "Title",
-      //   order: 1,
-      //   section: "Title",
-      // },
-      // showXAxisLabel: {
-      //   type: "boolean",
-      //   label: "Show X Axis Label",
-      //   default: true,
-      //   order: 2,
-      //   section: "X-Axis",
-      // },
-
 
       hideBox: {
         type: "boolean",
@@ -130,20 +118,18 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
         order: 5,
         section: "Style",
       },
-      // xAxisText: {
-      //   type: "string",
-      //   label: "Write X Axis Text Instead",
-      //   default: "X Axis",
-      //   order: 4,
-      // },
 
-      // showYAxisLabel: {
-      //   type: "boolean",
-      //   label: "Show Y Axis Label",
-      //   default: true,
-      //   order: 5,
-      //   section: "Y-Axis",
-      // },
+
+      titleColor: {
+      type: "string",
+      label: "Title Color",
+      default: "#ffffff",
+      display: "text",
+      placeholder: "#ffffff",
+
+      order: 6,
+      section: "Style",
+    },
 
       yAxisDropdown: {
         type: "string",
@@ -190,22 +176,6 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
       },
 
 
-      // yAxisText: {
-      //   type: "string",
-      //   label: "Write Y Axis Text Instead",
-      //   default: "Y Axis",
-      //   order: 7,
-      // },
-
-      // isYAxisCurrency: {
-      //   type: "boolean",
-      //   label: "Format Y Axis as Currency and Show",
-      //   default: true,
-      //   order: 10,
-      //   section: "Y-Axis",
-      // },
-
-
            symbol: {
             type: "string",
             label: "Select Target Value",
@@ -226,104 +196,7 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
             order: 27,
             section: "KPI-Values",
           },
-      // showPoints: {
-      //   type: "boolean",
-      //   label: "Show Points Sized By",
-      //   default: false,
-      //   order: 12,
-      //   section: "X-Axis",
-      // },
-      //
-      // choosePoints: {
-      //   type: "string",
-      //   label: "Choose Label for Points Sized By",
-      //   display: "select",
-      //   placeholder: "Please Select",
-      //   values: fieldOptions2,
-      //   order: 13,
-      //   default:'',
-      //   section: "X-Axis",
-      // },
 
-      // showYAxis2: {
-      //   type: "boolean",
-      //   label: "Show Y Axis Right Side Label",
-      //   default: false,
-      //   order: 14,
-      //   section: "Y-Axis",
-      // },
-
-      // yAxisRightDropdown: {
-      //   type: "string",
-      //   label: "Choose 13W Avg Value",
-      //   display: "select",
-      //   placeholder: "Please Select",
-      //   values: fieldOptions,
-      //   order: 15,
-      //   default:'',
-      //   section: "Bottom",
-      // },
-
-
-           //
-           //  showYAxis2Value: {
-           //    type: "boolean",
-           //    label: "Show Y Axis Right Side Value",
-           //    default: false,
-           //    order: 16,
-           //    section: "Y-Axis",
-           //  },
-           //
-           //  yAxisRightValues: {
-           //    type: "string",
-           //    label: "Choose Y Axis Right Side Value",
-           //    display: "select",
-           //    placeholder: "Please Select",
-           //    values: fieldOptions,
-           //    order: 17,
-           //    default:'',
-           //    section: "Y-Axis",
-           //  },
-           //
-           //  isYAxisCurrency2: {
-           //    type: "boolean",
-           //    label: "Format Y Axis Right Side as Currency",
-           //    default: false,
-           //    order: 18,
-           //    section: "Y-Axis",
-           //  },
-           //
-           //  symbol2: {
-           //   type: "string",
-           //   label: "Select Currency Symbol for Right Side",
-           //   display: "select",
-           //   placeholder: "Please Select",
-           //   values: fieldOptions,
-           //   order: 19,
-           //   default:'',
-           //   section: "Y-Axis",
-           // },
-
-
-      // kpiUnit: {
-      //   type: "string",
-      //   label: "KPI Unit",
-      //   default: "sq ft",
-      //   order: 10,
-      // },
-      // isStacked: {
-      //   type: "boolean",
-      //   label: "Stacked",
-      //   default: false,
-      //   order: 20,
-      //   section: "Style",
-      // },
-      // showLineChartGradient: {
-      //   type: "boolean",
-      //   label: "Show Line Chart Gradient",
-      //   default: false,
-      //   order: 12,
-      // },
 
       showXGridLines: {
         type: "boolean",
@@ -363,14 +236,6 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
         section: "Chart",
       },
 
-
-      // showAllValuesInTooltip: {
-      //   type: "boolean",
-      //   label: "Show Tooltip Values",
-      //   default: true,
-      //   order: 40,
-      //   section: "Style",
-      // },
       color_range: {
         type: 'array',
         label: 'Color Range',
@@ -390,10 +255,10 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
         type: "string",
         label: "Choose Measure Value for Chart",
         display: "select",
-        placeholder: "Please Select",
+        default: firstmeasure,
         values: fieldOptions,
         order: 0,
-        default:'',
+
         section: "Chart",
       },
 
@@ -412,6 +277,20 @@ const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
         order: 27,
         section: "Style",
       },
+
+      sign: {
+      type: "string",
+      label: "Add Symbol",
+      display: "select",
+      values: [
+         {"Dollar": "$"},
+         {"Percentage": "%"},
+         {"No Symbol": ""}
+
+      ],
+      default: "",
+      section: "Style",
+    }
 
     };
 

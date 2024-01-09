@@ -60,11 +60,22 @@ console.log(fieldOptions)
         section: "Style",
       },
 
+      titleColor: {
+      type: "string",
+      label: "Title Color",
+      default: "#ffffff",
+      display: "text",
+      placeholder: "#ffffff",
+
+      order: 3,
+      section: "Style",
+    },
+
       writeTitle: {
         type: "string",
         label: "Write Title Text Instead",
         default: "",
-        order: 3,
+        order: 4,
         section: "Style",
       },
 
@@ -72,7 +83,7 @@ console.log(fieldOptions)
        type: "boolean",
        label: "Hide Header",
        default: false,
-       order: 4,
+       order: 5,
        section: "Style",
      },
 
@@ -80,7 +91,7 @@ console.log(fieldOptions)
              type: "boolean",
              label: "Turn on Tooltip for Title",
              default: false,
-             order: 5,
+             order: 6,
                section: "Style",
            },
 
@@ -88,7 +99,7 @@ console.log(fieldOptions)
              type: "string",
              label: "Write Tooltip Text",
              default: "",
-             order: 6,
+             order: 7,
             section: "Style",
            },
 
@@ -96,7 +107,7 @@ console.log(fieldOptions)
       type: "boolean",
       label: "Table Fixed Height",
       default: true,
-      order: 7,
+      order: 8,
       section: "Style",
     },
 
@@ -104,14 +115,14 @@ console.log(fieldOptions)
      type: "boolean",
      label: "Hide Pagination",
      default: true,
-     order: 8,
+     order: 9,
     section: "Style",
     },
-    unsetWidth: {
+    unsetTable: {
      type: "boolean",
-     label: "Table Column Width Unset or Fixed",
-     default: true,
-     order: 9,
+     label: "Make Table Column Width Unset",
+     default: false,
+     order: 10,
      section: "Style",
     },
     //
@@ -126,7 +137,7 @@ console.log(fieldOptions)
      type: "boolean",
      label: "Show Row Index",
      default: true,
-     order: 10,
+     order: 11,
       section: "Style",
     },
 
@@ -134,7 +145,7 @@ console.log(fieldOptions)
      type: "boolean",
      label: "Remove Border",
      default: false,
-     order: 11,
+     order: 12,
       section: "Style",
     },
 

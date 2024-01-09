@@ -28,7 +28,7 @@ body, html{
   margin: 2em auto 0 auto;
   // min-height: 380px;
   box-shadow: 0px 0px 19px -1px rgba(175,175,175,0.67);
-
+max-height: 498px;
 }
 
 .upDown.noBorder{
@@ -157,9 +157,13 @@ h1{
 }
 
 .popover-arrow{
-    display: none !important;
+
 }
 
+.popover .popover-arrow::after {
+
+    margin-left: -1px;
+}
 
 .showFirstLast{
   height: 5px;
