@@ -1,17 +1,5 @@
-
-
-export interface Fields {
-  dimensions: string[];
-  measures: string[];
-  pivots: string[];
-  measuresLabel: string[];
-  dimensionsLabel: string[];
-}
-
-
-
-
-
+// API Globals
+// pulled from https://github.com/looker/custom_visualizations_v2/blob/master/src/examples/types/types.ts
 export interface Looker {
   plugins: {
     visualizations: {

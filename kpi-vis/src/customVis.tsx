@@ -74,6 +74,9 @@ function KpiVis({
     ],
   };
 
+
+
+
   return (
     <div id="vis-wrapper">
       <div id="left-side">
@@ -120,6 +123,8 @@ function KpiVis({
         )}
       </div>
     </div>
+
+
   );
 }
 
@@ -233,6 +238,9 @@ looker.plugins.visualizations.add({
       gaugeField,
     } = config;
 
+
+    console.log(kpiField)
+
     // defaults
     isPeriodComparisonVisible = isPeriodComparisonVisible ?? true;
     isGaugeVisible = isGaugeVisible ?? true;
@@ -243,9 +251,15 @@ looker.plugins.visualizations.add({
     comparisonField = comparisonField ?? comparisonFieldDefault;
     gaugeField = gaugeField ?? gaugeFieldDefault;
 
+
+
+    console.log(kpiField)
+
     const kpiValue =
       (data[0][kpiField].rendered as string) ??
       data[0][kpiField].value.toString();
+
+      console.log(kpiValue, "this is value")
 
     let comparisonValue = "";
     let comparisonValueRaw;
@@ -269,6 +283,9 @@ looker.plugins.visualizations.add({
       comparisonValueRaw,
       gaugeValue,
     };
+
+
+        console.log(kpiField)
 
     // create react root
     element.innerHTML = '<div id="app"></div>';

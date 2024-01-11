@@ -61,6 +61,8 @@ const Styles = ({ children, config }) => {
         flex-direction: column;
         align-items:center
  }
+
+
   #spark1 svg, #spark2 svg, #spark3 svg {
       overflow: visible;
       width: 100%;
@@ -795,7 +797,6 @@ thead{
 
 #height{
 
-  box-shadow: 0px 0px 19px -1px rgba(175,175,175,.67);
   border: 1px solid black;
       margin: 2em auto 0 auto;
 }
@@ -810,7 +811,7 @@ h5{
 
 a{
   color:black;
-  text-decoration: none;
+
 }
 
 
@@ -828,6 +829,13 @@ a{
         height: 100%;
         right:0;
         top:0
+    }
+
+    #vis {
+        height: 100%;
+        width: 100% !important;
+        margin: 0 !important;
+        border: none;
     }
 
 
@@ -875,7 +883,7 @@ function Table({ columns, data, config }) {
        columns,
        data,
        defaultColumn,
-       initialState: { pageIndex: 0, pageSize: 50 },
+       initialState: { pageIndex: 0, pageSize: 500 },
        disableSortRemove: true,
        defaultCanSort: true
      },
@@ -1265,7 +1273,7 @@ else{
     // },
     Cell: ({ cell, value, row }) => {
 
- 
+
       if (key === "days_since_last_activity_from_today") {
         return (
                       <>

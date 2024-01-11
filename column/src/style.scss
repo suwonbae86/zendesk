@@ -14,6 +14,13 @@ $text-color: #262D33;
   position: relative;
 }
 
+#vis {
+    height: 100%;
+    width: 100% !important;
+    margin: 0 !important;
+    border: none;
+}
+
 body, html{
   font-family: 'Roboto', sans-serif;
 }
@@ -27,7 +34,7 @@ body, html{
   max-width: 490px;
   margin: 2em auto 0 auto;
   // min-height: 380px;
-  box-shadow: 0px 0px 19px -1px rgba(175,175,175,0.67);
+
 max-height: 498px;
 }
 
@@ -175,8 +182,30 @@ h1{
   font-size: 10px;
   color:black;
   padding:0px 7px;
+position: relative;
+}
+
+
+ p.leftP{
+  position: absolute;
+  bottom: 20px;
+  left: 44px;
+
 
 }
+
+ p.rightP{
+  position: absolute;
+  bottom: 30px;
+  right: 23px;
+
+}
+
+  p.leftP.moveDown,
+  p.rightP.moveDown{
+  bottom: 0px;
+}
+
 
 .showFirstLast.colorWhite{
   color:transparent
@@ -293,22 +322,23 @@ h1{
 // Chart tooltip
 .chartjs-tooltip {
   // top:-550px;
-  min-width: 160px !important;
-  // margin-top:-280px;
-  // margin-left:-380px !important;
+  min-width: 100px !important;
+  margin-top:-70px;
+  margin-left:-50px !important;
   opacity: 1;
   position: absolute;
-  padding: 8px 10px;
+  padding: 5px 8px;
   pointer-events: none;
   background-color: #1d1e20;
   color: #ffffff;
   border-radius: 4px;
-  padding-right: 30px;
+  padding-right: 20px;
 
   .dimension-label {
     color: white;
-    font-size: 13px;
+    font-size: 11px !important;
     font-weight: 400;
+    line-height: 1.2
   }
 
   .pivot-label {

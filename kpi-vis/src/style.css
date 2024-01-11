@@ -1,52 +1,26 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
-@import url("https://kit-pro.fontawesome.com/releases/v5.15.1/css/pro.min.css");
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("./fonts/IBM_Plex_Sans/IBMPlexSans-Regular.ttf") format("truetype");
+  font-weight: 400;
+}
 
-
-
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("./fonts/IBM_Plex_Sans/IBMPlexSans-Bold.ttf") format("truetype");
+  font-weight: 700;
+}
 
 #vis-wrapper {
   display: flex;
-  font-family: 'Roboto', sans-serif;
-  justify-content: center;
-position: relative;
-}
-
-body, html{
-    font-family: 'Roboto', sans-serif;
-}
-
-.upDown{
-  display: flex;
-  flex-direction: column;
-
-  font-family: 'Roboto', sans-serif;
-  border: 1px solid black;
-max-width: 400px;
-margin: 0 auto;
-min-height: 450px;
-
-
-}
-
-.greenBox{
-  background: #00363d;
-    padding: 0em 0.5em;
-text-align: center;
-}
-.greenBox p{
-  color:white;
-  font-weight: 500
+  font-family: "IBM Plex Sans";
+  justify-content: space-between;
 }
 
 #kpi-label {
-  font-size: 20px;
-      font-weight: 400;
-      color: #72777e;
-      line-height: 20px;
-      display: flex;
-      justify-content: center;
-      margin-bottom: 1em;
-
+  font-size: 14px;
+  font-weight: 400;
+  color: #72777e;
+  line-height: 20px;
 }
 
 #kpi-value {
@@ -58,78 +32,30 @@ text-align: center;
 
 #kpi-change-wrapper {
   display: flex;
-  display: flex;
-    align-items: center;
-    /* width: fit-content; */
-    /* margin-top: 2px; */
-    justify-content: center;
-    flex-direction: column;
-
+  align-items: center;
+  width: fit-content;
+  margin-top: 2px;
 }
 
 .change-value-wrapper {
-  font-size: 28px;
-
-    display: flex;
-
-    border-radius: 0;
-    padding: 0;
-
-    padding: 0;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-
-}
-
-.positive-background::before {
-  content:"";
-  background: #eef8e8;
-  position: absolute;
-  width:100%;
-  left:0;
-  top:0;
-  right:0;
-  min-height: 150px;
-  z-index: -1
-}
-
-h2{
-  font-weight: 400 !important;
-  margin-bottom: 0em;
-}
-
-
-h3{
-  font-weight: 400 !important;
-  margin-top: 0em;
-  color:#72777e;
-  font-size: 24px
-}
-
-#between{
+  font-size: 10px;
+  line-height: 14px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0em 4em;
-    border-top: 1px solid;
-
+  background: #eef8e8;
+  border-radius: 4px;
+  padding: 1px 2px;
 }
 
-.negative-background::before {
-  content:"";
+.positive-background {
+  background: #eef8e8;
+}
+
+.negative-background {
   background: #fbe7e5;
-  position: absolute;
-  width:100%;
-  left:0;
-  top:0;
-  right:0;
-    min-height: 150px;
-      z-index: -1
 }
 
 .change-value {
-
+  margin-left: 3px;
 }
 
 .positive-text {

@@ -25,64 +25,90 @@ looker.plugins.visualizations.add({
   // such as updated data, configuration options, etc.
   updateAsync: function (data, element, config, queryResponse, details, done) {
 
+
+
+
+    const { measure_like: measureLike } = queryResponse.fields;
+    const { dimension_like: dimensionLike } = queryResponse.fields;
+
+    const dimensions1 = dimensionLike.map((dimension) => ({
+      label: dimension.label_short ?? dimension.label,
+      name: dimension.name
+
+    }));
+
+
+    const measures1 = measureLike.map((measure) => ({
+      label: measure.label_short ?? measure.label,
+      name: measure.name,
+    }));
+
+
+    const fieldOptions = [...dimensions1, ...measures1].map((dim) => ({
+      [dim.label]: queryResponse.data.map(row => row[dim.name].value).join(",")
+    }));
+
+
+    const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
+      [dim.label]: dim.label
+    }));
+
+
+
     const { measure_like: measureLike } = queryResponse.fields;
     interface Measure {
       label: string;
       name: string;
     }
+
+    interface Dimension {
+      label: string;
+      name: string;
+    }
+
     const measures: Measure[] = measureLike.map((measure) => ({
       label: measure.label_short ?? measure.label,
       name: measure.name,
     }));
 
+    const dimensions: Dimensions[] = dimensionLike.map((dimension) => ({
+      label: dimension.label_short ?? dimension.label,
+      name: dimension.name,
+    }));
+
     interface FieldOption {
       [key: string]: string;
     }
-    const fieldOptions0: FieldOption[] = measures.map((measure) => ({
-      [measure.label]: measure.name,
+    const fieldOptions0: FieldOption[] = [...dimensions, ...measures].map((all) => ({
+      [all.label]: all.name,
     }));
 
-console.log(fieldOptions0)
 
-    const { dimension_like: dimensionLike } = queryResponse.fields;
-
-    const dimensions1 = dimensionLike.map((dimension) => ({
-       label: dimension.label_short ?? dimension.label,
-       name: dimension.name
+    console.log(measures[0].name, measures[0].label, "elizabeth")
 
 
-     }));
+    const kpiFieldDefault = measures[0].name;
+    const comparisonFieldDefault = measures.length > 1 ? measures[1].name : "";
+    const gaugeFieldDefault = measures.length > 2 ? measures[2].name : "";
+
+    console.log(fieldOptions)
+    console.log(fieldOptions0)
+    console.log(fieldOptions2)
 
 
-     const measures1 = measureLike.map((measure) => ({
-       label: measure.label_short ?? measure.label,
-       name: measure.name,
-     }));
-
-
-
-
-const fieldOptions = [...dimensions1, ...measures1].map((dim) => ({
-         [dim.label]: queryResponse.data.map(row => row[dim.name].value).join(",")
-       }));
-
-
-console.log(fieldOptions)
-
-const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
-    [dim.label]: dim.label
-  }));
-
-
-  const firstmeasure = measures[0].name;
-  const secondmeasure = measures.length > 1 ? measures[1].name : "";
-  const thirdmeasure = measures.length > 2 ? measures[2].name : "";
-
-
-
-
-const lookerVis = this;
+    const lookerVis = this;
     const configOptions: ConfigOptions = {
+
+
+      yAxisLeftValues: {
+        label: "Choose Measure for Chart",
+        type: "string",
+        display: "select",
+        default: kpiFieldDefault,
+        values: fieldOptions0,
+        section: "Chart",
+        order: 0,
+      },
 
       hideBox: {
         type: "boolean",
@@ -113,7 +139,7 @@ const lookerVis = this;
 
       writeTitle: {
         type: "string",
-        label: "Write Title Text Instead",
+        label: "Title Override",
         default: "",
         order: 5,
         section: "Style",
@@ -121,25 +147,25 @@ const lookerVis = this;
 
 
       titleColor: {
-      type: "string",
-      label: "Title Color",
-      default: "#ffffff",
-      display: "text",
-      placeholder: "#ffffff",
+        type: "string",
+        label: "Title Color",
+        default: "#ffffff",
+        display: "text",
+        placeholder: "#ffffff",
 
-      order: 6,
-      section: "Style",
-    },
+        order: 6,
+        section: "Style",
+      },
 
       yAxisDropdown: {
         type: "string",
         label: "Choose Percentage Change Value",
         display: "select",
-        default:secondmeasure,
-        values: fieldOptions,
+        default: kpiFieldDefault,
+        values: fieldOptions0,
         order: 6,
         default:"Please Select",
-        section: "KPI-Values",
+        section: "KPI",
       },
 
       hideTarget: {
@@ -147,7 +173,7 @@ const lookerVis = this;
         label: "Hide Target",
         default: false,
         order: 7,
-        section: "KPI-Values",
+        section: "KPI",
       },
 
       toolOn: {
@@ -155,7 +181,7 @@ const lookerVis = this;
         label: "Turn on Tooltip for KPI Tile",
         default: false,
         order: 8,
-        section: "KPI-Values",
+        section: "KPI",
       },
 
       writeTooltip: {
@@ -163,7 +189,7 @@ const lookerVis = this;
         label: "Write Tooltip Text",
         default: "",
         order: 9,
-        section: "KPI-Values",
+        section: "KPI",
       },
 
 
@@ -172,30 +198,30 @@ const lookerVis = this;
         label: "Hide Variance Colors",
         default: false,
         order: 10,
-        section: "KPI-Values",
+        section: "KPI",
       },
 
 
-           symbol: {
-            type: "string",
-            label: "Select Target Value",
-            display: "select",
+      symbol: {
+        type: "string",
+        label: "Select Target Value",
+        display: "select",
 
-            default:firstmeasure,
-            values: fieldOptions,
-            order: 26,
+        default:"",
+        values: fieldOptions,
+        order: 26,
 
-            section: "KPI-Values",
-          },
+        section: "KPI",
+      },
 
 
-          writeTarget: {
-            type: "string",
-            label: "Write Target Text Instead",
-            default: "",
-            order: 27,
-            section: "KPI-Values",
-          },
+      writeTarget: {
+        type: "string",
+        label: "Write Target Text Instead",
+        default: "",
+        order: 27,
+        section: "KPI",
+      },
 
 
       showXGridLines: {
@@ -203,14 +229,14 @@ const lookerVis = this;
         label: "Show Legend",
         default: false,
         order: 21,
-        section: "Chart",
+        section: "X-Axis",
       },
       showYGridLines: {
         type: "boolean",
         label: "Show Y Axis Tick Values",
         default: false,
         order: 22,
-        section: "Chart",
+        section: "Y-Axis",
       },
       showDatalabels: {
         type: "boolean",
@@ -225,7 +251,7 @@ const lookerVis = this;
         label: "Show X Axis Tick Values",
         default: false,
         order: 24,
-        section: "Chart",
+        section: "X-Axis",
       },
 
       showTwo: {
@@ -251,16 +277,16 @@ const lookerVis = this;
         order: 25,
         section: "Style",
       },
-      yAxisLeftValues: {
-        type: "string",
-        label: "Choose Measure Value for Chart",
-        display: "select",
-        default: firstmeasure,
-        values: fieldOptions,
-        order: 0,
-
-        section: "Chart",
-      },
+      // yAxisLeftValues: {
+      //   type: "string",
+      //   label: "Choose Measure Value for Chart",
+      //   display: "select",
+      //   default: kpiFieldDefault,
+      //   values: fieldOptions0,
+      //   order: 0,
+      //
+      //   section: "Chart",
+      // },
 
       borderLine: {
         type: "boolean",
@@ -278,19 +304,61 @@ const lookerVis = this;
         section: "Style",
       },
 
-      sign: {
-      type: "string",
-      label: "Add Symbol",
-      display: "select",
-      values: [
-         {"Dollar": "$"},
-         {"Percentage": "%"},
-         {"No Symbol": ""}
+      dollar: {
+        type: "boolean",
+        label: "Add Dollar Sign",
+        default: false,
+        order: 28,
+        section: "KPI",
+      },
+      percentSign: {
+        type: "boolean",
+        label: "Add Percentage Sign",
+        default: false,
+        order: 29,
+        section: "KPI",
+      },
 
-      ],
-      default: "",
-      section: "Style",
-    }
+      xFontSize: {
+        type: "string",
+        label: "X Axis Tick Size",
+        default: 10,
+        display: "text",
+        placeholder: 10,
+
+        order: 30,
+        section: "X-Axis",
+      },
+
+
+      yFontSize: {
+        type: "string",
+        label: "Y Axis Tick Size",
+        default: 10,
+        display: "text",
+        placeholder: 10,
+
+        order: 31,
+        section: "Y-Axis",
+      },
+      legendSize: {
+        type: "string",
+        label: "Legend Size",
+        default: 10,
+        display: "text",
+        placeholder: 10,
+
+        order: 32,
+        section: "X-Axis",
+      },
+
+      diagonal: {
+        type: "boolean",
+        label: "X Axis Ticks Diagonal",
+        default: true,
+        order: 28,
+        section: "Chart",
+      },
 
     };
 
@@ -320,7 +388,7 @@ const lookerVis = this;
       pivots: pivots?.map((p) => p.name),
     };
 
-
+    console.log(fields)
 
     // console.log(fields)
 
@@ -330,11 +398,11 @@ const lookerVis = this;
     const root = createRoot(document.getElementById("app"));
     root.render(
       <BarLineVis
-        data={data}
-        fields={fields}
-        config={validatedConfig}
-        lookerCharts={LookerCharts}
-        lookerVis={lookerVis}
+      data={data}
+      fields={fields}
+      config={validatedConfig}
+      lookerCharts={LookerCharts}
+      lookerVis={lookerVis}
       />
     );
 

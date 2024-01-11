@@ -150,7 +150,14 @@ function BarLineVis({
     titleColor,
     firstmeasure,
     fieldOptions0,
-    sign
+    sign,
+    kpiField,
+    dollar,
+    percentSign,
+    xFontSize,
+    yFontSize,
+    legendSize,
+    diagonal
   } = config;
 
 
@@ -181,8 +188,6 @@ function BarLineVis({
   const dimensionLabel = fields.dimensionsLabel[0];
   const measureLabel = fields.measuresLabel[0];
 
-
-  yAxisLeftValues = yAxisLeftValues ?? firstmeasure;
 
   const [firstData = {}] = data;
   let cols_to_hide = [];
@@ -295,8 +300,8 @@ function BarLineVis({
           //backgroundColor:`${color_range ? colors[0] : colors[0]}`,
           borderColor: `${color_range ? colors[0] : colors[0]}`,
           pointBackgroundColor: `${color_range ? colors[0] : colors[0]}`,
-          // data: data.map((row) => row[measureName].value),
-          data: yAxisLeftValues ? yAxisLeftValues.split(",") : data.map((row) => row[measureName].value),
+          data: yAxisValues,
+          // data: yAxisLeftValues ? yAxisLeftValues.split(",") : data.map((row) => row[measureName].value),
           yAxisID: "yLeft",
           fill,
         });
@@ -416,14 +421,16 @@ function BarLineVis({
         // measureLabel: `${yAxisLeftValues}: `,
         measureLabel0: `${context.tooltip.dataPoints[0].formattedValue}`,
         left:
-        position.left + window.pageXOffset + context.tooltip.caretX  - 400 + "px",
-        rows,
-        top:
-        position.top +
-        window.pageYOffset +
-        context.tooltip.caretY - 240 + "px",
-        yAlign: context.tooltip.yAlign,
-      });
+            position.left + window.pageXOffset + context.tooltip.caretX + "px",
+            rows,
+            top:
+              position.top +
+              window.pageYOffset +
+              context.tooltip.caretY -
+              20 +
+              "px",
+            yAlign: context.tooltip.yAlign,
+          });
 
     } else {
       setTooltip(null);
@@ -433,36 +440,55 @@ function BarLineVis({
 
   const Content = config.textTitle.split(",").map((d, i) => ({
     textTitle: d,
-    yAxisDropdown:config.yAxisDropdown.split(",")[i],
-
+    // yAxisDropdown:config.yAxisDropdown.split(",")[i],
 
     symbol:config.symbol.split(",")[i],
-    yAxisLeftValues:config.yAxisLeftValues.split(",")[i],
+    // yAxisLeftValues:config.yAxisLeftValues.split(",")[i],
 
 
   }))
 
 
 
+console.log(data)
 
-let array = yAxisLeftValues.split(',').map(function(item) {
-    return parseInt(item);
-});
 
-// console.log(array)
-function calculateAverage(array) {
-  var sum = 0;
-  for (var i = 0; i < array.length; i++) {
-    sum += array[i];
+  const yAxisValues = data.map(item => item[yAxisLeftValues].value)
+
+  console.log('yaxis', yAxisValues)
+
+
+  var total = 0;
+  for(var i = 0; i < yAxisValues.length; i++) {
+      total += yAxisValues[i];
   }
-  return sum / array.length;
+  var avg = total / yAxisValues.length;
+
+
+let array = yAxisValues
+
+
+
+
+function calculateAverage(array) {
+let num = 0;
+for (let i = 0; i < yAxisValues.length; i++) {
+   // console.log(yAxisValues[i]);
+
+ num += +yAxisValues[i];
+   console.log(yAxisValues.length)
+}
+return num / yAxisValues.length
+
 }
 
 var average = calculateAverage(array);
 
+// console.log(average)
+
 var average = Math.round(average * 1).toLocaleString();
 
-
+// console.log(average)
 
   let title = Content.map(function(val, i){ return val.textTitle });
 
@@ -478,14 +504,14 @@ var average = Math.round(average * 1).toLocaleString();
 
   let target = Math.round(result[0] * 100)
 
-  // let yAxisRightDropdownValues = Content.map(function(val, i){ return val.yAxisRightDropdown });
-  //
-  //
-  // let yAxisRightDropdownValues = Math.round(yAxisRightDropdownValues[0])
+  let yAxisRightDropdownValues = Content.map(function(val, i){ return val.yAxisRightDropdown });
+
+
+  let yAxisRightDropdownValues = Math.round(yAxisRightDropdownValues[0])
 
 
   const first = labels[0];
-  const last = labels[labels.length - 1];
+  const lastLabel = labels[labels.length - 1];
 
 
 
@@ -493,8 +519,24 @@ var average = Math.round(average * 1).toLocaleString();
       return parseInt(item);
   });
 
-const last = array2[array2.length - 1];
-  console.log(last)
+
+
+
+
+  const yDrop = data.map(item => item[yAxisDropdown].value)
+
+  const last = yDrop[yDrop.length - 1];
+
+
+  // const last = Math.round(last * 1).toLocaleString();
+  //
+  //
+  // console.log(last)
+
+// var labels = [first, lastLabel]
+// console.log(thing)
+//
+// console.log(labels)
 
   const popoverHoverFocus = (
     <Popover
@@ -546,15 +588,20 @@ const last = array2[array2.length - 1];
       responsive: true,
       plugins: {
         datalabels: {
-          display:showDatalabels,
+
+          display: showDatalabels ?  "auto" : false,
+          // display: function(context) {
+          //   return context.dataIndex % 2; // display labels with an odd index
+          // },
+
           formatter: function(value: number) {
 
 
-            if (value < 1){
-
-            return Math.round(value*100)
-          }
-          else if  (value < 100){
+          // if (value < 1){
+          //
+          //   return Math.round(value*100)
+          // }
+         if  (value < 100){
 
             return Math.round(value*1)
           }
@@ -596,7 +643,7 @@ const last = array2[array2.length - 1];
           labels: {
             color:'#262D33',
             font: {
-              size: 10,
+              size: `${legendSize ?  legendSize  : 10 }`,
               weight: '500',
               family: "Roboto"
 
@@ -632,18 +679,30 @@ const last = array2[array2.length - 1];
           },
           ticks: {
 
+
+
             display:showX,
-            // maxTicksLimit: 2,
-            // autoSkip: true,
-            //
+              autoSkip: `${diagonal ?  true : false }`,
+              maxRotation: `${diagonal ?  60  : 0 }`,
+              minRotation: `${diagonal ?  60  : 0 }`,
+
+
+
+            maxTicksLimit: `${showTwo ?  1 : 5000}`,
+            autoSkip: `${showTwo ?  true : false}`,
+            minRotation:`${showTwo ?  0 : 0}`,
+
+
             // callback: () => {
             //
             //   return labels[0];
-            //   return labels[labels.length - 1];
+            //   // return labels[labels.length - 1];
             // },
 
+
+
             font: {
-              size: 10
+              size:`${xFontSize ?  xFontSize  : 10 }`
             },
             color: 'black',
           },
@@ -660,7 +719,7 @@ const last = array2[array2.length - 1];
           stacked: false,
           ticks: {
             font: {
-              size: 10
+              size: `${yFontSize ?  yFontSize  : 10 }`
             },
             display:showYGridLines,
             callback: function (value: number) {
@@ -723,7 +782,7 @@ const last = array2[array2.length - 1];
     </div>
 
     <div className={`
-      ${percent > 0 ? "varianceBox negative" : "varianceBox positive"}
+      ${last > 0 ? "varianceBox negative" : "varianceBox positive"}
       ${hideColors ? "varianceBox clear" : ""}
       ${hideBox ? "visibilityHidden" : ""}
       `}>
@@ -735,7 +794,7 @@ const last = array2[array2.length - 1];
       placement="right"
       overlay={popoverHoverFocus}
     >
-      <h1 className="mb-0">{sign ? sign : ""}{last}
+      <h1 className="mb-0">{dollar ? "$" : ""}{Math.round(last * 1).toLocaleString()}{percentSign ? "%" : ""}
       <span class="caret">
       </span>
       </h1>
@@ -762,9 +821,9 @@ const last = array2[array2.length - 1];
     />
     {tooltip && <Tooltip hasPivot={hasPivot} hasNoPivot={hasNoPivot} tooltipData={tooltip} />}
     </div>
-    <div className={showTwo ? "showFirstLast" : "showFirstLast colorWhite"}>
-    <p>{first}</p>
-    <p>{last}</p>
+    <div className={`${showTwo ? "showFirstLast" : "showFirstLast colorWhite"}`}>
+    <p className="hidden">{first}</p>
+    <p className={showXGridLines ? "rightP" : "rightP moveDown"}>{lastLabel}</p>
     </div>
     <div className={hideBottom ? "bottom hideBottom" : "bottom"}>
     <p>L13W Avg</p>
