@@ -49,7 +49,7 @@ looker.plugins.visualizations.add({
     }));
 
 
-    const fieldOptions2 = [...dimensions1, ...measures1].map((dim) => ({
+    const fieldOptions2: FieldOptions2[] = [...dimensions1, ...measures1].map((dim) => ({
       [dim.label]: dim.label
     }));
 
@@ -360,6 +360,15 @@ looker.plugins.visualizations.add({
         section: "Chart",
       },
 
+      changeLegend: {
+        type: "string",
+        label: "Override Legend",
+        default: "",
+      
+        order: 29,
+        section: "Chart",
+      },
+
     };
 
 
@@ -388,7 +397,7 @@ looker.plugins.visualizations.add({
       pivots: pivots?.map((p) => p.name),
     };
 
-    console.log(fields)
+    console.log(fields, "fields")
 
     // console.log(fields)
 

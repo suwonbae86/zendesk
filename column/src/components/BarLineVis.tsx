@@ -157,7 +157,8 @@ function BarLineVis({
     xFontSize,
     yFontSize,
     legendSize,
-    diagonal
+    diagonal,
+    changeLegend
   } = config;
 
 
@@ -187,6 +188,10 @@ function BarLineVis({
 
   const dimensionLabel = fields.dimensionsLabel[0];
   const measureLabel = fields.measuresLabel[0];
+
+
+
+
 
 
   const [firstData = {}] = data;
@@ -295,7 +300,7 @@ function BarLineVis({
           },
 
           type: chartType,
-          label: measureLabel,
+          label: `${changeLegend ? changeLegend : measureLabel}`,
           backgroundColor: lastBar ? color_range ? colors[0] : colors[0] : data.map((item, index) => { return index === data.length - 1 ? colors[1] : colors[0]}),
           //backgroundColor:`${color_range ? colors[0] : colors[0]}`,
           borderColor: `${color_range ? colors[0] : colors[0]}`,
@@ -418,6 +423,9 @@ function BarLineVis({
         dimensionLabel0: `${dimensionLabel}:`,
         dimensionLabel: `${context.tooltip.title[0]}`,
         measureLabel: `${context.tooltip.dataPoints[0].dataset.label}: `,
+
+
+
         // measureLabel: `${yAxisLeftValues}: `,
         measureLabel0: `${context.tooltip.dataPoints[0].formattedValue}`,
         left:
@@ -450,12 +458,8 @@ function BarLineVis({
 
 
 
-console.log(data)
-
-
   const yAxisValues = data.map(item => item[yAxisLeftValues].value)
 
-  console.log('yaxis', yAxisValues)
 
 
   var total = 0;
@@ -680,8 +684,11 @@ var average = Math.round(average * 1).toLocaleString();
           ticks: {
 
 
+            display: showTwo || showX ? true : false,
 
-            display:showX,
+
+            // `${showX  ? true : false  : showTwo  ? true : false : false}`,
+
               autoSkip: `${diagonal ?  true : false }`,
               maxRotation: `${diagonal ?  60  : 0 }`,
               minRotation: `${diagonal ?  60  : 0 }`,

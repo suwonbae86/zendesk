@@ -479,6 +479,7 @@ tr:nth-child(odd) td{
 
     width: 100% !important;
 
+
  }
 
 
@@ -486,9 +487,10 @@ tr:nth-child(odd) td{
     display: table;
 
   }
-
-
-
+  .unsetTable .td,
+  .unsetTable td{
+    word-break: break-all;
+}
 
   .unsetTable::-webkit-scrollbar-track {
    border-radius: 0.125rem;
@@ -522,6 +524,8 @@ tr:nth-child(odd) td{
     border-style: solid;
     border-width: 0;
     width: 100% !important;
+
+
 }
 
 
