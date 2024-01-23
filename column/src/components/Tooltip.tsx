@@ -15,6 +15,7 @@ const TooltipRow: React.FC<TooltipRowProps> = ({
   hasNoPivot,
   style,
   tooltipRow,
+
 }) => {
   const {
     hasPreviousPeriod,

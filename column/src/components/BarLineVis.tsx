@@ -7,7 +7,7 @@ import {
   VisConfig,
   VisData,
 } from "../types";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useState } from "react";
 
 import { formatNumber, formatNumber2 } from "../utils";
 import {
@@ -38,7 +38,8 @@ import "bootstrap/scss/bootstrap.scss";
 // import Button from "react-bootstrap/Button";
 
 import { Button, Overlay, OverlayTrigger, Popover, PopoverBody, PopoverHeader} from 'react-bootstrap';
-
+import styled from "styled-components";
+import CSS from 'csstype';
 
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import ChartDataLabels from 'chartjs-plugin-datalabels';
@@ -70,6 +71,21 @@ interface BarLineVisProps {
 
 }
 
+const Styles = styled.div`
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+  @import url('https://fonts.googleapis.com/css?family=Open+Sans:wght@100;300;400;500;700;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,100;1,700&display=swap');
+
+  `;
+
+
+
+
+
+
 const chartPlugins = [
   {
     id: "padding-below-legend",
@@ -87,21 +103,12 @@ const chartPlugins = [
 ];
 
 
-ChartJS.defaults.font.family = "Roboto";
+// ChartJS.defaults.font.family = "Roboto";
 ChartJS.defaults.font.size = 13;
 ChartJS.defaults.color = "#262D33";
 
 
-
-
-function BarLineVis({
-  data,
-  fields,
-  config,
-  lookerCharts,
-  lookerVis,
-  configOptions
-}: BarLineVisProps): JSX.Element {
+function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptions, }: BarLineVisProps): JSX.Element {
 
 
   // config values
@@ -158,7 +165,10 @@ function BarLineVis({
     yFontSize,
     legendSize,
     diagonal,
-    changeLegend
+    changeLegend,
+    labelPercent,
+    hideTitle,
+    bodyStyle
   } = config;
 
 
@@ -295,7 +305,7 @@ function BarLineVis({
         datasets.push({
           datalabels: {
             color: "black !important",
-            fontWeight:'600',
+            fontWeight:'500',
 
           },
 
@@ -305,7 +315,7 @@ function BarLineVis({
           //backgroundColor:`${color_range ? colors[0] : colors[0]}`,
           borderColor: `${color_range ? colors[0] : colors[0]}`,
           pointBackgroundColor: `${color_range ? colors[0] : colors[0]}`,
-          data: yAxisValues,
+          data:yAxisValues,
           // data: yAxisLeftValues ? yAxisLeftValues.split(",") : data.map((row) => row[measureName].value),
           yAxisID: "yLeft",
           fill,
@@ -446,15 +456,21 @@ function BarLineVis({
   }
 
 
+
+
+
+
   const Content = config.textTitle.split(",").map((d, i) => ({
     textTitle: d,
     // yAxisDropdown:config.yAxisDropdown.split(",")[i],
 
-    symbol:config.symbol.split(",")[i],
+    // symbol:config.symbol.split(",")[i],
     // yAxisLeftValues:config.yAxisLeftValues.split(",")[i],
 
 
   }))
+
+
 
 
 
@@ -504,9 +520,13 @@ var average = Math.round(average * 1).toLocaleString();
   let percent = Math.round(percent[0] * 100)
 
 
-  let result = Content.map(function(val, i){ return val.symbol });
+  let result = data.map(item => item[symbol].value)
 
-  let target = Math.round(result[0] * 100)
+
+console.log(result, "WTF")
+
+
+  let target = Math.round(result[0])
 
   let yAxisRightDropdownValues = Content.map(function(val, i){ return val.yAxisRightDropdown });
 
@@ -594,45 +614,28 @@ var average = Math.round(average * 1).toLocaleString();
         datalabels: {
 
           display: showDatalabels ?  "auto" : false,
-          // display: function(context) {
-          //   return context.dataIndex % 2; // display labels with an odd index
-          // },
-
           formatter: function(value: number) {
 
+         if (value < 100){
 
-          // if (value < 1){
-          //
-          //   return Math.round(value*100)
-          // }
-         if  (value < 100){
-
-            return Math.round(value*1)
+            return `${percentSign ? Math.round(value*1) + '%' : Math.round(value*1)}`
           }
           else if (value < 1000){
 
-          return Math.round(value*1)
+          return `${percentSign ? Math.round(value*1) + '%' : Math.round(value*1)}`
         }
           else{
-              // return `${formatNumber(Math.round(value).toFixed(0) * 1) }`;
 
               let percentage = (value) / 1000
 
-              return `${formatNumber(Math.round(percentage.toFixed() * 1000))}`;
+              return `${percentSign ? formatNumber(Math.round(percentage.toFixed() * 1000)) + '%' : formatNumber(Math.round(percentage.toFixed() * 1000))}`;
           }
         },
-          // formatter: function(value: number) {
-          //
-          //   return `${formatNumber(Math.round(value).toFixed(0) * 1) }`;
-          //
-          //   // let percentage = (value) / 1000
-          //   //
-          //   // return `${formatNumber(Math.round(percentage.toFixed() * 1000))}`;
-          // },
+
           font: {
             size: 10,
             weight: '500',
-            family: "Roboto",
+            family: bodyStyle ? bodyStyle : "'Roboto'"
 
           },
 
@@ -649,7 +652,7 @@ var average = Math.round(average * 1).toLocaleString();
             font: {
               size: `${legendSize ?  legendSize  : 10 }`,
               weight: '500',
-              family: "Roboto"
+              family: bodyStyle ? bodyStyle : "'Roboto'"
 
             },
             usePointStyle: true
@@ -678,7 +681,8 @@ var average = Math.round(average * 1).toLocaleString();
             display: false,
             // text: ` ${xAxisDropdown ?  xAxisDropdownValues  : dimensionLabel }`,
             font: {
-              size: 10
+              size: 10,
+              family: bodyStyle ? bodyStyle : "'Roboto'"
             }
           },
           ticks: {
@@ -709,7 +713,8 @@ var average = Math.round(average * 1).toLocaleString();
 
 
             font: {
-              size:`${xFontSize ?  xFontSize  : 10 }`
+              size:`${xFontSize ?  xFontSize  : 10 }`,
+              family: bodyStyle ? bodyStyle : "'Roboto'"
             },
             color: 'black',
           },
@@ -726,18 +731,20 @@ var average = Math.round(average * 1).toLocaleString();
           stacked: false,
           ticks: {
             font: {
-              size: `${yFontSize ?  yFontSize  : 10 }`
+              size: `${yFontSize ?  yFontSize  : 10 }`,
+              family: bodyStyle ? bodyStyle : "'Roboto'"
             },
             display:showYGridLines,
             callback: function (value: number) {
-              return `${formatNumber(value)}`;
+              return `${percentSign ? formatNumber(value) + "%" :  formatNumber(value)}`;
             },
           },
           title: {
             display: false,
             // text: `${showYGridLines ?  yAxisRightDropdownValues  : measureLabel }`,
             font: {
-              size: 10
+              size: 10,
+              family: bodyStyle ? bodyStyle : "'Roboto'"
             }
           },
 
@@ -774,18 +781,17 @@ var average = Math.round(average * 1).toLocaleString();
   }
 
   return (
-
-    <div>
-
-
-
+    <Fragment>
+    <Styles>
 
     <div className={borderLine ?  "upDown noBorder"  : "upDown"}>
     <div className="greenBox pt-3" style={{ backgroundColor: color_title ? background[0] : '#00363d'}}>
 
 
-    <h5 className="mb-3" style={{ color: titleColor ? titleColor : '#fff'}}>{writeTitle === "" ? title : writeTitle}</h5>
-    {/*<p>Number of accounts without activity in the last 30 days</p>*/}
+    <h5 className={hideTitle ?  "transparentText mb-3"  : "mb-3"}
+    style={{color: titleColor ? titleColor : '#fff', fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}}
+    >{writeTitle === "" ? title : writeTitle}</h5>
+
     </div>
 
     <div className={`
@@ -801,13 +807,13 @@ var average = Math.round(average * 1).toLocaleString();
       placement="right"
       overlay={popoverHoverFocus}
     >
-      <h1 className="mb-0">{dollar ? "$" : ""}{Math.round(last * 1).toLocaleString()}{percentSign ? "%" : ""}
+      <h1 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className="mb-0">{dollar ? "$" : ""}{Math.round(last * 1).toLocaleString()}{percentSign ? "%" : ""}
       <span class="caret">
       </span>
       </h1>
     </OverlayTrigger>
 
-    <h3 className={hideTarget ? "hidden" : ""}>Target: {writeTarget === "" ? target : writeTarget}</h3>
+    <h3 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className={hideTarget ? "hidden" : ""}>Target: {writeTarget === "" ? target : writeTarget}</h3>
 
 
     </div>
@@ -826,19 +832,21 @@ var average = Math.round(average * 1).toLocaleString();
 
     lookerVis={lookerVis}
     />
+
     {tooltip && <Tooltip hasPivot={hasPivot} hasNoPivot={hasNoPivot} tooltipData={tooltip} />}
     </div>
     <div className={`${showTwo ? "showFirstLast" : "showFirstLast colorWhite"}`}>
-    <p className="hidden">{first}</p>
-    <p className={showXGridLines ? "rightP" : "rightP moveDown"}>{lastLabel}</p>
+    <p style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className="hidden">{first}</p>
+    <p style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className={showXGridLines ? "rightP" : "rightP moveDown"}>{lastLabel}</p>
     </div>
     <div className={hideBottom ? "bottom hideBottom" : "bottom"}>
-    <p>L13W Avg</p>
-    <p>{average}</p>
+    <p style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}}>L13W Avg</p>
+    <p style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}}>{average}</p>
     </div>
     </div>
     </div>
-    </div>
+    </Styles>
+  </Fragment>
 
   );
 }

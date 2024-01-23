@@ -208,7 +208,7 @@ looker.plugins.visualizations.add({
         display: "select",
 
         default:"",
-        values: fieldOptions,
+        values: fieldOptions0,
         order: 26,
 
         section: "KPI",
@@ -364,10 +364,37 @@ looker.plugins.visualizations.add({
         type: "string",
         label: "Override Legend",
         default: "",
-      
+
         order: 29,
         section: "Chart",
       },
+
+      hideTitle: {
+        type: "boolean",
+        label: "Hide Title",
+        default: false,
+        order: 28,
+        section: "Style",
+      },
+
+
+  bodyStyle: {
+      type: "string",
+      label: "Choose Font",
+      display: "select",
+      values: [{ "Roboto": "'Roboto'" } , { "Open Sans": "'Open Sans'" }, {"Montserrat" : "'Montserrat'"}],
+      section: "Style",
+      default: "'Roboto', sans-serif;",
+      order: 29,
+    },
+
+      // labelPercent: {
+      //   type: "boolean",
+      //   label: "Add Percentage to Datalabels",
+      //   default: false,
+      //   order: 30,
+      //   section: "Chart",
+      // },
 
     };
 

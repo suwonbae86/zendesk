@@ -3,6 +3,8 @@ $text-color: #262D33;
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:wght@100;300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 
 @import url("https://kit-pro.fontawesome.com/releases/v5.15.1/css/pro.min.css");
 
@@ -21,9 +23,9 @@ $text-color: #262D33;
     border: none;
 }
 
-body, html{
-  font-family: 'Roboto', sans-serif;
-}
+// body, html{
+//   font-family: 'Roboto', sans-serif;
+// }
 
 .upDown{
   display: flex;
@@ -171,6 +173,9 @@ h1{
   display: none !important
 }
 
+.transparentText{
+  visibility: hidden;
+}
 
 .popover {
   background: black !important;
@@ -216,8 +221,8 @@ position: relative;
  p.rightP{
   position: absolute;
   bottom: 30px;
-  right: 23px;
-
+  right: 4%;
+  width: auto;
 }
 
   p.leftP.moveDown,
@@ -352,8 +357,8 @@ position: relative;
 .chartjs-tooltip {
   // top:-550px;
   min-width: 100px !important;
-  margin-top:-70px;
-  margin-left:-50px !important;
+  margin-top:-120px;
+  margin-left:-55px !important;
   opacity: 1;
   position: absolute;
   padding: 5px 8px;

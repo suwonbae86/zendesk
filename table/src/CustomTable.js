@@ -36,7 +36,7 @@ import { TablePagination } from "@mui/material";
 
 
 const Styles = ({ children, config }) => {
-  var { thColor, thFontSize, tableBordered, fixedHeight, unsetTable, hidePag, removeBars, rightPag, index, border, unsetWidth, titleColor } = config;
+  var { thColor, thFontSize, tableBordered, fixedHeight, unsetTable, hidePag, removeBars, rightPag, index, border, unsetWidth, titleColor,  toolOn } = config;
 
   const StyledWrapper = styled.div`
 
@@ -736,7 +736,7 @@ margin-top: 3px;
 }
 
 .hidden{
-  display:none
+  display:none !important
 }
 
 
@@ -951,7 +951,7 @@ function Table({ columns, data, config }) {
 
 
     <OverlayTrigger
-      trigger="hover"
+      trigger={config.toolOn ? "hover" : "" }
       placement="right"
       overlay={popoverHoverFocus}
     >
