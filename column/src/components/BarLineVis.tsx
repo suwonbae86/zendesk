@@ -490,7 +490,7 @@ for (let i = 0; i < yAxisValues.length; i++) {
    // console.log(yAxisValues[i]);
 
  num += +yAxisValues[i];
-   console.log(yAxisValues.length)
+   // console.log(yAxisValues.length)
 }
 return num / yAxisValues.length
 
@@ -517,7 +517,6 @@ var average = Math.round(average * 1).toLocaleString();
   let result = data.map(item => item[symbol].value)
 
 
-console.log(result, "WTF")
 
 
   let target = Math.round(result[0])
@@ -792,6 +791,8 @@ console.log(result, "WTF")
       ${last > 0 ? "varianceBox negative" : "varianceBox positive"}
       ${hideColors ? "varianceBox clear" : ""}
       ${hideBox ? "visibilityHidden" : ""}
+      ${last >= target ? "varianceBox positive" : "varianceBox negative"}
+      ${last >= parseInt(writeTarget) ? "varianceBox positive" : "varianceBox negative"}
       `}>
 
 
