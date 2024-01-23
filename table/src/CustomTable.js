@@ -8,7 +8,7 @@ import React, {
 } from "react";
 
 import styled from "styled-components";
-
+import "./style.css";
 import {
   useTable,
   useBlockLayout,
@@ -36,13 +36,25 @@ import { TablePagination } from "@mui/material";
 
 
 const Styles = ({ children, config }) => {
-  var { thColor, thFontSize, tableBordered, fixedHeight, unsetTable, hidePag, removeBars, rightPag, index, border, unsetWidth, titleColor,  toolOn } = config;
+  var { thColor, thFontSize, tableBordered, fixedHeight, unsetTable, hidePag, removeBars, rightPag, index, border, unsetWidth, titleColor,  toolOn, bodyStyle, hideTitle } = config;
 
   const StyledWrapper = styled.div`
 
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+  @import url('https://fonts.googleapis.com/css?family=Open+Sans:wght@100;300;400;500;700;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,100;1,700&display=swap');
+
 
   @import url("https://kit-pro.fontawesome.com/releases/v5.15.1/css/pro.min.css");
+
+
+  .transparentText{
+    visibility: hidden;
+  }
+
 
   #vis-container {
       height: 100%;
@@ -50,16 +62,18 @@ const Styles = ({ children, config }) => {
       width: 100%;
       display: flex;
       flex-direction: column;
-      font-family: 'Roboto', sans-serif  !important;
+
       font-weight: 300;
-      justify-content:center
+      justify-content:center;
+
  }
   #vis {
       min-height: 500px;
         justify-content:center;
         display: flex;
         flex-direction: column;
-        align-items:center
+        align-items:center;
+
  }
 
 
@@ -82,14 +96,12 @@ const Styles = ({ children, config }) => {
   .redGradient {
       fill: rgb(199, 32, 10) !important;
  }
-  body {
-      font-family: 'Roboto', sans-serif  !important;
- }
+
   thead th {
       font-size: 12px !important;
       color: ${thColor};
       font-weight: 400;
-      font-family: 'Roboto', sans-serif  !important;
+
       text-align: left;
  }
   tbody > tr > td {
@@ -104,7 +116,7 @@ const Styles = ({ children, config }) => {
  }
   .moveRight {
       margin: 0em 0em 0em 0.5em !important;
-      font-family: 'Roboto', sans-serif  !important;
+
  }
   .d-flex {
       display: flex;
@@ -125,7 +137,7 @@ const Styles = ({ children, config }) => {
       margin-bottom: 0 !important;
       color: #1d1e20 !important;
       font-weight: 400 !important;
-      font-family: 'Roboto', sans-serif  !important;
+
       margin-top: 0 !important;
       min-width: 2rem;
  }
@@ -136,7 +148,7 @@ const Styles = ({ children, config }) => {
       color: #72777e !important;
       font-weight: 300 !important;
       font-size: 11px !important;
-      font-family: 'Roboto', sans-serif  !important;
+
  }
   p {
       margin: 0rem !important;
@@ -459,7 +471,6 @@ tr:nth-child(odd) td{
       padding-left:1em;
       margin: 0;
 
-    font-family: 'Roboto', sans-serif  !important;
     position: relative;
  }
   .bordered td:first-child {
@@ -574,15 +585,14 @@ width: 99%;
       z-index: 100;
  }
   .table {
-      font-family: 'Roboto', sans-serif  !important;
+
       display: inline-block;
       border-spacing: 0;
       .th {
           font-size: 12px;
           text-transform: capitalize;
 
-
-          font-family: 'DM Sans', sans-serif !important;
+}
           text-align: left;
           border-right: 1px solid white;
           font-weight: 700;
@@ -590,14 +600,14 @@ width: 99%;
       .td {
           font-size: 12px !important;
           text-align: left;
-          font-family: 'Roboto', sans-serif  !important;
+
           min-height: unset !important;
           height:auto !important
      }
       .th, .td {
           margin: 0;
           padding: .6rem;
-          font-family: 'Roboto', sans-serif  !important;
+
           position: relative;
           font-weight:300;
           height: 75px;
@@ -665,7 +675,7 @@ font-weight: 400;
       color: #A6A6A6 !important;
       font-weight: 100 !important;
       font-size: 13px !important;
-      font-family: 'Roboto', sans-serif  !important;
+
       min-width: 70%;
       margin-right:.5em;
       line-height:1
@@ -843,6 +853,10 @@ a{
     }
 
 
+th, .th, td, .td{
+  font-family:${bodyStyle ? bodyStyle : "'Roboto'"}
+}
+
   `;
 
   return <StyledWrapper>{children}</StyledWrapper>;
@@ -851,7 +865,7 @@ a{
 function Table({ columns, data, config }) {
 
 
-  var { tableBordered, fixedHeight, unsetTable, hidePag, rightPag, removeBars, index, border, textTitle, color_title, writeTitle, toolOn, writeTooltip, headerText, yesText, unsetWidth,   titleColor } = config;
+  var { tableBordered, fixedHeight, unsetTable, hidePag, rightPag, removeBars, index, border, textTitle, color_title, writeTitle, toolOn, writeTooltip, headerText, yesText, unsetWidth, titleColor, bodyStyle, hideTitle } = config;
 
   const defaultColumn = React.useMemo(
      () => ({
@@ -944,7 +958,7 @@ function Table({ columns, data, config }) {
     <>
 
 
-      <div className={`${config.border ? "removeBorder" : ""}`}>
+   <div className={`${config.border ? "removeBorder" : ""}`}>
 
     <Container fluid className={`${config.removeBars ? "scrunch" : "padding-0 second"}`} id="height">
     <div className="greenBox pt-3" style={{ backgroundColor: config.color_title ? background[0] : '#00363d'}}>
@@ -955,7 +969,7 @@ function Table({ columns, data, config }) {
       placement="right"
       overlay={popoverHoverFocus}
     >
-    <h5 class="mb-0" style={{ color: titleColor ? titleColor : '#fff'}}>{config.writeTitle === "" ? title : config.writeTitle}</h5>
+    <h5 className={config.hideTitle ?  "transparentText mb-0"  : "mb-0"} style={{ color: titleColor ? titleColor : '#fff', fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}}>{config.writeTitle === "" ? title : config.writeTitle}</h5>
     </OverlayTrigger>
 
     </div>
@@ -979,8 +993,10 @@ function Table({ columns, data, config }) {
                {...headerGroup.getHeaderGroupProps()} className="tr">
 
                 <th className="th smallerWidth"/>
+
                   {headerGroup.headers.map((column, i) => (
                     <th
+
                     key={column.id}
                       {...column.getHeaderProps(column.getSortByToggleProps())}
                       className="th"
@@ -1020,6 +1036,7 @@ function Table({ columns, data, config }) {
                               {row.cells.map((cell, i) => {
                                 return (
                                   <td
+                                  style={{fontFamily: config.bodyStyle ? config.bodyStyle : "'Roboto'"}}
                                   key={cell.id}
                                     {...cell.getCellProps()} className="td">
                                     {cell.render("Cell")}
@@ -1044,6 +1061,7 @@ function Table({ columns, data, config }) {
                             <tr {...headerGroup.getHeaderGroupProps()} className="tr">
                               {headerGroup.headers.map((column) => (
                                 <th
+                                style={{fontFamily: config.bodyStyle ? config.bodyStyle : "'Roboto'"}}
                                   {...column.getHeaderProps(column.getSortByToggleProps())}
                                   className="th"
                                 >
@@ -1072,7 +1090,9 @@ function Table({ columns, data, config }) {
                          <tr {...row.getRowProps()} className="tr">
                            {row.cells.map((cell) => {
                              return (
-                               <td {...cell.getCellProps()} className="td">
+                               <td
+                              style={{fontFamily: config.bodyStyle ? config.bodyStyle : "'Roboto'"}}
+                                {...cell.getCellProps()} className="td">
                                  {cell.render("Cell")}
                                </td>
                              );

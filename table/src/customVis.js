@@ -151,6 +151,26 @@ console.log(fieldOptions)
 
 
 
+
+      bodyStyle: {
+          type: "string",
+          label: "Choose Font",
+          display: "select",
+          values: [{ "Roboto": "'Roboto'" } , { "Open Sans": "'Open Sans'" }, {"Montserrat" : "'Montserrat'"}],
+          section: "Style",
+          default: "'Roboto', sans-serif;",
+          order: 29,
+        },
+        hideTitle: {
+          type: "boolean",
+          label: "Hide Title",
+          default: false,
+          order: 30,
+          section: "Style",
+        },
+
+
+
     // yesText: {
     //  type: "boolean",
     //  label: "Change Default Header to Dropdown",

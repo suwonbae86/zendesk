@@ -83,9 +83,6 @@ const Styles = styled.div`
 
 
 
-
-
-
 const chartPlugins = [
   {
     id: "padding-below-legend",
@@ -198,9 +195,6 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
 
   const dimensionLabel = fields.dimensionsLabel[0];
   const measureLabel = fields.measuresLabel[0];
-
-
-
 
 
 
