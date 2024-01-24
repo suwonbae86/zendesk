@@ -36,7 +36,7 @@ import { TablePagination } from "@mui/material";
 
 
 const Styles = ({ children, config }) => {
-  var { thColor, thFontSize, tableBordered, fixedHeight, unsetTable, hidePag, removeBars, rightPag, index, border, unsetWidth, titleColor,  toolOn, bodyStyle, hideTitle } = config;
+  var { thColor, thFontSize, tableBordered, fixedHeight, unsetTable, hidePag, removeBars, rightPag, index, border, unsetWidth, titleColor,  toolOn, bodyStyle, hideTitle, tableFontSize } = config;
 
   const StyledWrapper = styled.div`
 
@@ -98,7 +98,7 @@ const Styles = ({ children, config }) => {
  }
 
   thead th {
-      font-size: 12px !important;
+
       color: ${thColor};
       font-weight: 400;
 
@@ -466,7 +466,7 @@ tr:nth-child(odd) td{
 }
   .bordered td {
       border-right: 1px solid #d0d9e1 !important;
-      font-size: 12px !important;
+
       padding: 0.5rem;
       padding-left:1em;
       margin: 0;
@@ -598,7 +598,7 @@ width: 99%;
           font-weight: 700;
      }
       .td {
-          font-size: 12px !important;
+
           text-align: left;
 
           min-height: unset !important;
@@ -612,13 +612,13 @@ width: 99%;
           font-weight:300;
           height: 75px;
           width: 200px;
-
+          font-size: ${tableFontSize} !important;
      }
 
 
      .th{
-       font-size:12px !important;
-       font-size: 12px !important;
+
+
 height: auto;
 display: flex !important;
 align-items: center;
@@ -865,7 +865,7 @@ th, .th, td, .td{
 function Table({ columns, data, config }) {
 
 
-  var { tableBordered, fixedHeight, unsetTable, hidePag, rightPag, removeBars, index, border, textTitle, color_title, writeTitle, toolOn, writeTooltip, headerText, yesText, unsetWidth, titleColor, bodyStyle, hideTitle } = config;
+  var { tableBordered, fixedHeight, unsetTable, hidePag, rightPag, removeBars, index, border, textTitle, color_title, writeTitle, toolOn, writeTooltip, headerText, yesText, unsetWidth, titleColor, bodyStyle, hideTitle, tableFontSize } = config;
 
   const defaultColumn = React.useMemo(
      () => ({

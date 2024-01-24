@@ -36,7 +36,7 @@ const dimensions = dimensionLike.map((dimension) => ({
      [dim.label]: queryResponse.data.map(row => row[dim.name].value).join(",")
    }));
 
-console.log(fieldOptions)
+console.log(data, "data api response")
 
     const options = {
 
@@ -168,6 +168,16 @@ console.log(fieldOptions)
           order: 30,
           section: "Style",
         },
+
+        tableFontSize: {
+           type: "string",
+           label: "Table Font Size",
+           default: "12px",
+           display: "text",
+           placeholder: "12px",
+           section: "Style",
+           order: 31,
+         },
 
 
 
