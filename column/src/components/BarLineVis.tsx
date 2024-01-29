@@ -165,7 +165,8 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
     changeLegend,
     labelPercent,
     hideTitle,
-    bodyStyle
+    bodyStyle,
+    showDifference
   } = config;
 
 
@@ -555,6 +556,12 @@ var average = Math.round(average * 1).toLocaleString();
 //
 // console.log(labels)
 
+
+
+const percentDiff1 = Math.round(last / target * 100)
+const percentDiff2 =  Math.round(last / parseInt(writeTarget) * 100)
+
+
   const popoverHoverFocus = (
     <Popover
     className={toolOn ? "" : "hidden"}
@@ -788,7 +795,7 @@ var average = Math.round(average * 1).toLocaleString();
     </div>
 
     <div className={`
-      ${last > 0 ? "varianceBox negative" : "varianceBox positive"}
+
       ${hideColors ? "varianceBox clear" : ""}
       ${hideBox ? "visibilityHidden" : ""}
       ${last >= target ? "varianceBox positive" : "varianceBox negative"}
@@ -796,16 +803,31 @@ var average = Math.round(average * 1).toLocaleString();
       `}>
 
 
-    <OverlayTrigger
 
+    <OverlayTrigger
       trigger="hover"
       placement="right"
       overlay={popoverHoverFocus}
     >
+    {
+      showDifference ? (
+        <h1 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className="mb-0">{`${writeTarget ? percentDiff2 : percentDiff1}`}%
+        <span class="caret">
+        </span>
+
+        </h1>
+
+            ) : (
+
       <h1 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className="mb-0">{dollar ? "$" : ""}{Math.round(last * 1).toLocaleString()}{percentSign ? "%" : ""}
       <span class="caret">
       </span>
       </h1>
+
+    )
+}
+
+
     </OverlayTrigger>
 
     <h3 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className={hideTarget ? "hidden" : ""}>Target: {writeTarget === "" ? target : writeTarget}</h3>

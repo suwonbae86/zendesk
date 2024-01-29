@@ -167,20 +167,31 @@ looker.plugins.visualizations.add({
         default:"Please Select",
         section: "KPI",
       },
+      showDifference: {
+         type: "boolean",
+         label: "Show % Difference Instead of Value",
+         default: false,
+         order: 7,
+         section: "KPI",
+       },
+
 
       hideTarget: {
         type: "boolean",
         label: "Hide Target",
         default: false,
-        order: 7,
+        order: 8,
         section: "KPI",
       },
+
+
+
 
       toolOn: {
         type: "boolean",
         label: "Turn on Tooltip for KPI Tile",
         default: false,
-        order: 8,
+        order: 9,
         section: "KPI",
       },
 
@@ -188,7 +199,7 @@ looker.plugins.visualizations.add({
         type: "string",
         label: "Write Tooltip Text",
         default: "",
-        order: 9,
+        order: 10,
         section: "KPI",
       },
 
@@ -197,7 +208,7 @@ looker.plugins.visualizations.add({
         type: "boolean",
         label: "Hide Variance Colors",
         default: false,
-        order: 10,
+        order: 11,
         section: "KPI",
       },
 
