@@ -166,7 +166,10 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
     labelPercent,
     hideTitle,
     bodyStyle,
-    showDifference
+    showDifference,
+    writeTargetLabel,
+    targetLabel,
+    showAverage
   } = config;
 
 
@@ -562,6 +565,14 @@ const percentDiff1 = Math.round(last / target * 100)
 const percentDiff2 =  Math.round(last / parseInt(writeTarget) * 100)
 
 
+
+const percentDiff3 = Math.round(last / parseInt(average) * 100)
+
+
+console.log(percentDiff3)
+
+
+
   const popoverHoverFocus = (
     <Popover
     className={toolOn ? "" : "hidden"}
@@ -809,7 +820,15 @@ const percentDiff2 =  Math.round(last / parseInt(writeTarget) * 100)
       placement="right"
       overlay={popoverHoverFocus}
     >
-    {
+    {   showDifference && showAverage ? (
+
+      <h1 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className="mb-0">{percentDiff3}%
+      <span class="caret">
+      </span>
+
+      </h1>
+
+      ) :
       showDifference ? (
         <h1 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className="mb-0">{`${writeTarget ? percentDiff2 : percentDiff1}`}%
         <span class="caret">
@@ -818,6 +837,8 @@ const percentDiff2 =  Math.round(last / parseInt(writeTarget) * 100)
         </h1>
 
             ) : (
+
+
 
       <h1 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className="mb-0">{dollar ? "$" : ""}{Math.round(last * 1).toLocaleString()}{percentSign ? "%" : ""}
       <span class="caret">
@@ -830,7 +851,17 @@ const percentDiff2 =  Math.round(last / parseInt(writeTarget) * 100)
 
     </OverlayTrigger>
 
-    <h3 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className={hideTarget ? "hidden" : ""}>Target: {writeTarget === "" ? target : writeTarget}</h3>
+  { showAverage ? (
+    <h3 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className={hideTarget ? "hidden" : ""}>{writeTargetLabel === "" ? targetLabel : writeTargetLabel}: {average}</h3>
+
+
+      ) : (
+
+    <h3 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className={hideTarget ? "hidden" : ""}>{writeTargetLabel === "" ? targetLabel : writeTargetLabel}: {writeTarget === "" ? target : writeTarget}</h3>
+
+  )
+}
+
 
 
     </div>

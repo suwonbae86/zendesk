@@ -228,7 +228,7 @@ looker.plugins.visualizations.add({
 
       writeTarget: {
         type: "string",
-        label: "Write Target Text Instead",
+        label: "Write Target Value Instead",
         default: "",
         order: 27,
         section: "KPI",
@@ -319,14 +319,14 @@ looker.plugins.visualizations.add({
         type: "boolean",
         label: "Add Dollar Sign",
         default: false,
-        order: 28,
+        order: 31,
         section: "KPI",
       },
       percentSign: {
         type: "boolean",
         label: "Add Percentage Sign",
         default: false,
-        order: 29,
+        order: 32,
         section: "KPI",
       },
 
@@ -406,6 +406,36 @@ looker.plugins.visualizations.add({
       //   order: 30,
       //   section: "Chart",
       // },
+
+
+      targetLabel: {
+        type: "string",
+        label: "Select Target Label",
+        display: "select",
+
+        default:"",
+        values: fieldOptions2,
+        order: 28,
+
+        section: "KPI",
+      },
+
+
+      writeTargetLabel: {
+        type: "string",
+        label: "Write Target Label Instead",
+        default: "",
+        order: 29,
+        section: "KPI",
+      },
+
+      showAverage: {
+        type: "boolean",
+        label: "Show Average Instead",
+        default: false,
+        order: 30,
+        section: "KPI",
+      },
 
     };
 
