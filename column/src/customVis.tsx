@@ -315,20 +315,7 @@ looker.plugins.visualizations.add({
         section: "Style",
       },
 
-      dollar: {
-        type: "boolean",
-        label: "Add Dollar Sign",
-        default: false,
-        order: 31,
-        section: "KPI",
-      },
-      percentSign: {
-        type: "boolean",
-        label: "Add Percentage Sign",
-        default: false,
-        order: 32,
-        section: "KPI",
-      },
+
 
       xFontSize: {
         type: "string",
@@ -434,6 +421,29 @@ looker.plugins.visualizations.add({
         label: "Show Average Instead",
         default: false,
         order: 30,
+        section: "KPI",
+      },
+
+      dollar: {
+        type: "boolean",
+        label: "Add Dollar Sign",
+        default: false,
+        order: 31,
+        section: "KPI",
+      },
+      percentSign: {
+        type: "boolean",
+        label: "Add Percentage Sign",
+        default: false,
+        order: 32,
+        section: "KPI",
+      },
+
+      hideCaret: {
+        type: "boolean",
+        label: "Hide Caret",
+        default: false,
+        order: 33,
         section: "KPI",
       },
 

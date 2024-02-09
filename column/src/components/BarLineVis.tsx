@@ -169,7 +169,8 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
     showDifference,
     writeTargetLabel,
     targetLabel,
-    showAverage
+    showAverage,
+    hideCaret
   } = config;
 
 
@@ -823,7 +824,7 @@ console.log(percentDiff3)
     {   showDifference && showAverage ? (
 
       <h1 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className="mb-0">{percentDiff3}%
-      <span class="caret">
+      <span className={hideCaret ? "hidden" : "caret"}>
       </span>
 
       </h1>
@@ -831,7 +832,7 @@ console.log(percentDiff3)
       ) :
       showDifference ? (
         <h1 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className="mb-0">{`${writeTarget ? percentDiff2 : percentDiff1}`}%
-        <span class="caret">
+        <span className={hideCaret ? "hidden" : "caret"}>
         </span>
 
         </h1>
@@ -841,7 +842,7 @@ console.log(percentDiff3)
 
 
       <h1 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className="mb-0">{dollar ? "$" : ""}{Math.round(last * 1).toLocaleString()}{percentSign ? "%" : ""}
-      <span class="caret">
+      <span className={hideCaret ? "hidden" : "caret"}>
       </span>
       </h1>
 

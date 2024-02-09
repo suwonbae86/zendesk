@@ -500,7 +500,7 @@ tr:nth-child(odd) td{
   }
   .unsetTable .td,
   .unsetTable td{
-    word-break: break-all;
+  
 }
 
   .unsetTable::-webkit-scrollbar-track {
