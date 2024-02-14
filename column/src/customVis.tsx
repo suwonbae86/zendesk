@@ -257,6 +257,16 @@ looker.plugins.visualizations.add({
         section: "Chart",
       },
 
+
+      autoData: {
+        type: "boolean",
+        label: "Turn Off Auto Data Labels",
+        default: false,
+        order: 24,
+        section: "Chart",
+      },
+
+
       showX: {
         type: "boolean",
         label: "Show X Axis Tick Values",
@@ -380,19 +390,19 @@ looker.plugins.visualizations.add({
       type: "string",
       label: "Choose Font",
       display: "select",
-      values: [{ "Roboto": "'Roboto'" } , { "Open Sans": "'Open Sans'" }, {"Montserrat" : "'Montserrat'"}],
+      values: [{ "Roboto": "'Roboto'" } , { "Open Sans": "'Open Sans'" }, {"Montserrat" : "'Montserrat'"}, {"IBM Plex Sans" :  "'IBM Plex Sans'"},{"DM Serif Text": "DM Serif Text"}],
       section: "Style",
       default: "'Roboto', sans-serif;",
       order: 29,
     },
 
-      // labelPercent: {
-      //   type: "boolean",
-      //   label: "Add Percentage to Datalabels",
-      //   default: false,
-      //   order: 30,
-      //   section: "Chart",
-      // },
+      lineChart: {
+        type: "boolean",
+        label: "Switch to Line Chart",
+        default: false,
+        order: 30,
+        section: "Style",
+      },
 
 
       targetLabel: {
@@ -446,6 +456,15 @@ looker.plugins.visualizations.add({
         order: 33,
         section: "KPI",
       },
+
+      showDifferenceBottom: {
+         type: "boolean",
+         label: "Show % Difference Next to Target",
+         default: false,
+         order: 34,
+         section: "KPI",
+       },
+
 
     };
 

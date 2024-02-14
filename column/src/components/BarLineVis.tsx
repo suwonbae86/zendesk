@@ -79,6 +79,12 @@ const Styles = styled.div`
 
   @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,100;1,700&display=swap');
 
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Text:ital,wght@0,300;0,400;0,500;0,600;1,100;1,700&display=swap');
+
+
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,100;1,700&display=swap');
+
+
   `;
 
 
@@ -170,7 +176,10 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
     writeTargetLabel,
     targetLabel,
     showAverage,
-    hideCaret
+    hideCaret,
+    showDifferenceBottom,
+    lineChart,
+    autoData
   } = config;
 
 
@@ -283,7 +292,7 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
               fontWeight:'600'
             },
             labels:pivotValues,
-            type: chartType,
+            type: lineChart ? "line" : "bar",
             label: pivotValue,
             // barThickness: 75,
             backgroundColor:`${color_range ? colors[i] : colors[i]}`,
@@ -308,7 +317,7 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
 
           },
 
-          type: chartType,
+          type: lineChart ? "line" : "bar",
           label: `${changeLegend ? changeLegend : measureLabel}`,
           backgroundColor: lastBar ? color_range ? colors[0] : colors[0] : data.map((item, index) => { return index === data.length - 1 ? colors[1] : colors[0]}),
           //backgroundColor:`${color_range ? colors[0] : colors[0]}`,
@@ -625,7 +634,10 @@ console.log(percentDiff3)
       plugins: {
         datalabels: {
 
-          display: showDatalabels ?  "auto" : false,
+
+            // display:  showDatalabels ?  "auto" : false,
+
+          display: showDatalabels && !autoData ?  "auto" :  showDatalabels && autoData  ? true : !showDatalabels && autoData ? false : !showDatalabels && !autoData ? false : false,
           formatter: function(value: number) {
 
          if (value < 100){
@@ -853,12 +865,12 @@ console.log(percentDiff3)
     </OverlayTrigger>
 
   { showAverage ? (
-    <h3 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className={hideTarget ? "hidden" : ""}>{writeTargetLabel === "" ? targetLabel : writeTargetLabel}: {average}</h3>
+    <h3 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className={hideTarget ? "hidden" : ""}>{writeTargetLabel === "" ? targetLabel : writeTargetLabel}: {average} <span className={showDifferenceBottom ? "" : "hidden"}>({percentDiff3}%)</span></h3>
 
 
       ) : (
 
-    <h3 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className={hideTarget ? "hidden" : ""}>{writeTargetLabel === "" ? targetLabel : writeTargetLabel}: {writeTarget === "" ? target : writeTarget}</h3>
+    <h3 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className={hideTarget ? "hidden" : ""}>{writeTargetLabel === "" ? targetLabel : writeTargetLabel}: {writeTarget === "" ? target : writeTarget}  <span className={showDifferenceBottom ? "" : "hidden"}>({percentDiff1}%)</span></h3>
 
   )
 }
