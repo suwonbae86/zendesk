@@ -93,7 +93,7 @@ h5{
   justify-content: center;
 
   padding:1em 0em;
-  
+
 }
 
 
@@ -161,6 +161,8 @@ h5{
 .negative-background{
   background: #f4cccc
 }
+
+
 
 h1{
   color:black
@@ -321,6 +323,13 @@ position: relative;
   .tallerBox.highUp canvas {
     height: 330px !important;
     margin-top: -30px;
+}
+
+.noHeight{
+  height: 0px !important
+}
+.allHeight{
+  min-height: 407px
 }
 
 

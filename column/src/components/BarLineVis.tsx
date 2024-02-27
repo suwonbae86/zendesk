@@ -34,6 +34,7 @@ import {
 } from "chart.js";
 import Tooltip from "./Tooltip";
 import { Chart } from "react-chartjs-2";
+import * as Gauge from "chartjs-gauge";
 import "bootstrap/scss/bootstrap.scss";
 // import Button from "react-bootstrap/Button";
 
@@ -179,7 +180,8 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
     hideCaret,
     showDifferenceBottom,
     lineChart,
-    autoData
+    autoData,
+    hideChart
   } = config;
 
 
@@ -824,6 +826,7 @@ console.log(percentDiff3)
       ${hideBox ? "visibilityHidden" : ""}
       ${last >= target ? "varianceBox positive" : "varianceBox negative"}
       ${last >= parseInt(writeTarget) ? "varianceBox positive" : "varianceBox negative"}
+      ${hideChart ? "allHeight" : ""}
       `}>
 
 
@@ -882,7 +885,7 @@ console.log(percentDiff3)
 
     <div
     id="chart-wrapper"
-    className={hideBox ? "tallerBox" : ""}>
+    className={`${hideBox ? "tallerBox" : ""}${hideChart ? "visibilityHidden noHeight" : ""}`}>
     <Chart
     type={selectedChartType}
     data={chartData}

@@ -405,6 +405,15 @@ looker.plugins.visualizations.add({
       },
 
 
+      hideChart: {
+        type: "boolean",
+        label: "Hide Chart",
+        default: false,
+        order: 31,
+        section: "Style",
+      },
+
+
       targetLabel: {
         type: "string",
         label: "Select Target Label",
