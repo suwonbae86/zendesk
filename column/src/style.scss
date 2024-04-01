@@ -326,10 +326,11 @@ position: relative;
 }
 
 .noHeight{
-  height: 0px !important
+  height: 0px !important;
+  margin-top: -5px;
 }
 .allHeight{
-  min-height: 407px
+  min-height: 100px
 }
 
 

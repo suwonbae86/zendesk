@@ -903,7 +903,7 @@ console.log(percentDiff3)
     <p style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className="hidden">{first}</p>
     <p style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className={showXGridLines ? "rightP" : "rightP moveDown"}>{lastLabel}</p>
     </div>
-    <div className={hideBottom ? "bottom hideBottom" : "bottom"}>
+    <div className={hideBottom && !hideChart ? "bottom hideBottom" : hideChart && hideBottom ? "hidden" : "bottom"}>
     <p style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}}>L13W Avg</p>
     <p style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}}>{average}</p>
     </div>
