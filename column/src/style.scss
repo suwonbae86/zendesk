@@ -41,6 +41,10 @@ max-height: 498px;
 
 }
 
+.upDown.unsetWidth{
+    max-width: 100%;
+}
+
 :-webkit-scrollbar-track {
  border-radius: 0.125rem;
  background-color: lightgray;

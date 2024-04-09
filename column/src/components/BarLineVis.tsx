@@ -181,7 +181,8 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
     showDifferenceBottom,
     lineChart,
     autoData,
-    hideChart
+    hideChart,
+    fullWidth
   } = config;
 
 
@@ -213,35 +214,41 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
   const measureLabel = fields.measuresLabel[0];
 
 
-
   const [firstData = {}] = data;
   let cols_to_hide = [];
 
   for (const [key, value] of Object.entries(firstData)) {
-    if (key.split(".")[1] === "currency_number_format") {
-      cols_to_hide = firstData[key].value.split(",").map((e) => e.trim());
+
+    if (key.split(".")[1] === "count_orders") {
+
+      cols_to_hide = key
 
     }
   }
 
 
-  let points = [];
 
-  for (const [key, value] of Object.entries(firstData)) {
-    if (key.split(".")[1] === "points_sized_by") {
-      points = firstData[key].value.split(",").map((e) => e.trim());
-
-    }
-  }
-  let points = points.toString()
-
-  let text = cols_to_hide.toString()
 
 
   const labels = data.map(
     (row) => row[dimensionName].rendered ?? row[dimensionName].value ?? "∅"
   );
 
+
+
+  //
+  // let tooltipMeasure = [];
+  //
+  // for (const [key, value] of Object.entries(firstData)) {
+  //   if (key.split(".")[1] === "count_orders") {
+  //   tooltipMeasure = firstData[key].value.split(",").map((e) => e.trim());
+  //
+  //   }
+  // }
+  // // let tooltipMeasure = tooltipMeasure.toString()
+  //
+  //
+  // console.log(tooltipMeasure, "count_orders")
 
 
   const colors = config.color_range
@@ -369,8 +376,9 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
 
       const { dataIndex } = context.tooltip.dataPoints[0];
 
-
       const lookerRow = data[dataIndex];
+
+
 
 
       let rows: TooltipRow[] = [];
@@ -439,8 +447,14 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
       //   ];
       // }
 
+
+
+
       setTooltip({
+
+
         dimensionLabel0: `${dimensionLabel}:`,
+
         dimensionLabel: `${context.tooltip.title[0]}`,
         measureLabel: `${context.tooltip.dataPoints[0].dataset.label}: `,
 
@@ -576,12 +590,10 @@ var average = Math.round(average * 1).toLocaleString();
 const percentDiff1 = Math.round(last / target * 100)
 const percentDiff2 =  Math.round(last / parseInt(writeTarget) * 100)
 
-
-
 const percentDiff3 = Math.round(last / parseInt(average) * 100)
 
 
-console.log(percentDiff3)
+
 
 
 
@@ -642,7 +654,14 @@ console.log(percentDiff3)
           display: showDatalabels && !autoData ?  "auto" :  showDatalabels && autoData  ? true : !showDatalabels && autoData ? false : !showDatalabels && !autoData ? false : false,
           formatter: function(value: number) {
 
-         if (value < 100){
+
+
+           if (value < 10){
+
+                return `${percentSign ? (value).toFixed(2) + '%' : (value).toFixed(2)}`
+            }
+
+         else if (value < 100){
 
             return `${percentSign ? Math.round(value*1) + '%' : Math.round(value*1)}`
           }
@@ -810,7 +829,9 @@ console.log(percentDiff3)
     <Fragment>
     <Styles>
 
-    <div className={borderLine ?  "upDown noBorder"  : "upDown"}>
+    <div className={`
+    ${borderLine ?  "upDown noBorder"  : "upDown"}
+    ${fullWidth ? "unsetWidth" : ""}`}>
     <div className="greenBox pt-3" style={{ backgroundColor: color_title ? background[0] : '#00363d'}}>
 
 
@@ -827,6 +848,7 @@ console.log(percentDiff3)
       ${last >= target ? "varianceBox positive" : "varianceBox negative"}
       ${last >= parseInt(writeTarget) ? "varianceBox positive" : "varianceBox negative"}
       ${hideChart ? "allHeight" : ""}
+      ${fullWidth ? "hidden" : ""}
       `}>
 
 
@@ -881,7 +903,7 @@ console.log(percentDiff3)
 
 
     </div>
-    <div id="vis-wrapper" className={`${config.showPoints ? "points hidePoints" : "points"}`}>
+    <div id="vis-wrapper" className={`${fullWidth ? "hidden" : ""}`}>
 
     <div
     id="chart-wrapper"
@@ -899,7 +921,10 @@ console.log(percentDiff3)
 
     {tooltip && <Tooltip hasPivot={hasPivot} hasNoPivot={hasNoPivot} tooltipData={tooltip} />}
     </div>
-    <div className={`${showTwo ? "showFirstLast" : "showFirstLast colorWhite"}`}>
+    <div className={`
+      ${showTwo ? "showFirstLast" : "showFirstLast colorWhite"}
+      ${hideChart ? "hidden" : ""}
+      `}>
     <p style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className="hidden">{first}</p>
     <p style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className={showXGridLines ? "rightP" : "rightP moveDown"}>{lastLabel}</p>
     </div>

@@ -228,7 +228,7 @@ looker.plugins.visualizations.add({
 
       writeTarget: {
         type: "string",
-        label: "Write Target Value Instead",
+        label: "Override Target",
         default: "",
         order: 27,
         section: "KPI",
@@ -429,7 +429,7 @@ looker.plugins.visualizations.add({
 
       writeTargetLabel: {
         type: "string",
-        label: "Write Target Label Instead",
+        label: "Override Target Label",
         default: "",
         order: 29,
         section: "KPI",
@@ -473,6 +473,15 @@ looker.plugins.visualizations.add({
          order: 34,
          section: "KPI",
        },
+
+       fullWidth: {
+         type: "boolean",
+         label: "Full Width Title",
+         default: false,
+         order: 35,
+         section: "Style",
+       },
+
 
 
     };

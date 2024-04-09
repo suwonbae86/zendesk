@@ -27,7 +27,8 @@ const TooltipRow: React.FC<TooltipRowProps> = ({
     dimensionLabel,
     measureLabel,
     measureLabel0,
-    dimensionLabel0
+    dimensionLabel0,
+    secondMeasure
   } = tooltipRow;
 
 
@@ -63,11 +64,12 @@ interface TooltipProps {
 }
 
 const Tooltip: React.FC<TooltipProps> = (
-  { hasPivot, hasNoPivot, tooltipData, measureValue, dimensionName, measureLabel, dimensionLabel0, measureLabel0 }
+  { hasPivot, hasNoPivot, tooltipData, measureValue, dimensionName, measureLabel, dimensionLabel0, measureLabel0,
+  secondMeasure }
 
 
 ) => {
-const { dimensionLabel, left, rows, top, yAlign, measureValue, dimensionName, measureLabel, dimensionLabel0, measureLabel0 } = tooltipData;
+const { dimensionLabel, left, rows, top, yAlign, measureValue, dimensionName, measureLabel, dimensionLabel0, measureLabel0, secondMeasure } = tooltipData;
 
   return (
     <div
@@ -89,7 +91,6 @@ const { dimensionLabel, left, rows, top, yAlign, measureValue, dimensionName, me
       <div className="dimension-label">{measureLabel}</div>
       <div className="dimension-label">{measureLabel0}</div>
 
-      {console.log(measureLabel, dimensionLabel0)}
 
       </div>
         )}
