@@ -652,7 +652,7 @@ console.log(last, percentDiff1, percentDiff2, percentDiff3 )
 
 
 
-           if (value < 10){
+           if (value < 1){
 
                 return `${percentSign ? (value).toFixed(2) + '%' : (value).toFixed(2)}`
             }
@@ -876,7 +876,7 @@ console.log(last, percentDiff1, percentDiff2, percentDiff3 )
 
       <h1 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className="mb-0">
       {dollar ? "$" : ""}
-      {last <  10 ? (last * 1).toFixed(2).toLocaleString() : Math.round(last * 1).toLocaleString()}
+      {last <  1 ? (last * 1).toFixed(2).toLocaleString() : Math.round(last * 1).toLocaleString()}
       {percentSign ? "%" : ""}
       <span className={hideCaret ? "hidden" : "caret"}>
       </span>
