@@ -548,7 +548,6 @@ var average = Math.round(average * 1).toLocaleString();
 
 
 
-
   let target = Math.round(result[0])
 
   let yAxisRightDropdownValues = Content.map(function(val, i){ return val.yAxisRightDropdown });
@@ -565,9 +564,6 @@ var average = Math.round(average * 1).toLocaleString();
   let array2 = yAxisDropdown.split(',').map(function(item) {
       return parseInt(item);
   });
-
-
-
 
 
   const yDrop = data.map(item => item[yAxisDropdown].value)
@@ -594,7 +590,7 @@ const percentDiff3 = Math.round(last / parseInt(average) * 100)
 
 
 
-
+console.log(last, percentDiff1, percentDiff2, percentDiff3 )
 
 
   const popoverHoverFocus = (
@@ -878,7 +874,10 @@ const percentDiff3 = Math.round(last / parseInt(average) * 100)
 
 
 
-      <h1 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className="mb-0">{dollar ? "$" : ""}{Math.round(last * 1).toLocaleString()}{percentSign ? "%" : ""}
+      <h1 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className="mb-0">
+      {dollar ? "$" : ""}
+      {last <  10 ? (last * 1).toFixed(2).toLocaleString() : Math.round(last * 1).toLocaleString()}
+      {percentSign ? "%" : ""}
       <span className={hideCaret ? "hidden" : "caret"}>
       </span>
       </h1>
