@@ -182,7 +182,8 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
     lineChart,
     autoData,
     hideChart,
-    fullWidth
+    fullWidth,
+    secondLegend
   } = config;
 
 
@@ -316,10 +317,13 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
 
         });
       }
-      else {
+
+  if (secondLegend) {
 
 
-        datasets.push({
+        datasets.push(
+
+          {
           datalabels: {
             color: "black !important",
             fontWeight:'500',
@@ -328,6 +332,7 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
 
           type: lineChart ? "line" : "bar",
           label: `${changeLegend ? changeLegend : measureLabel}`,
+
           backgroundColor: lastBar ? color_range ? colors[0] : colors[0] : data.map((item, index) => { return index === data.length - 1 ? colors[1] : colors[0]}),
           //backgroundColor:`${color_range ? colors[0] : colors[0]}`,
           borderColor: `${color_range ? colors[0] : colors[0]}`,
@@ -336,8 +341,55 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
           // data: yAxisLeftValues ? yAxisLeftValues.split(",") : data.map((row) => row[measureName].value),
           yAxisID: "yLeft",
           fill,
-        });
+        }
+        ,
+
+        {
+            type: "line",
+            label: "Current Week",
+            backgroundColor:
+              chartType === "line" ? `#${colors[1]}` : `#${colors[0]}`,
+            borderColor: `${color_range ? colors[0] : colors[0]}`,
+            pointBackgroundColor: `${color_range ? colors[1] : colors[1]}`,
+            // data: data.map((row) => row[measureName].value),
+            data: yAxisLeftValues ? yAxisLeftValues.split(",") : data.map((row) => row[measureName].value),
+            yAxisID: "yRight",
+            fill,
+          }
+
+      );
       }
+
+
+      else {
+
+        datasets.push(
+
+          {
+          datalabels: {
+            color: "black !important",
+            fontWeight:'500',
+
+          },
+
+          type: lineChart ? "line" : "bar",
+          label: `${changeLegend ? changeLegend : measureLabel}`,
+
+          backgroundColor: lastBar ? color_range ? colors[0] : colors[0] : data.map((item, index) => { return index === data.length - 1 ? colors[1] : colors[0]}),
+          //backgroundColor:`${color_range ? colors[0] : colors[0]}`,
+          borderColor: `${color_range ? colors[0] : colors[0]}`,
+          pointBackgroundColor: `${color_range ? colors[0] : colors[0]}`,
+          data:yAxisValues,
+          // data: yAxisLeftValues ? yAxisLeftValues.split(",") : data.map((row) => row[measureName].value),
+          yAxisID: "yLeft",
+          fill,
+        }
+
+      )
+
+      }
+
+
       setChartData({ labels, datasets });
     }
   }
@@ -644,33 +696,27 @@ console.log(last, percentDiff1, percentDiff2, percentDiff3 )
       plugins: {
         datalabels: {
 
-
             // display:  showDatalabels ?  "auto" : false,
 
           display: showDatalabels && !autoData ?  "auto" :  showDatalabels && autoData  ? true : !showDatalabels && autoData ? false : !showDatalabels && !autoData ? false : false,
           formatter: function(value: number) {
 
-
-
            if (value > 0 && value <  1){
-
                 return `${percentSign ? (value).toFixed(2) + '%' : (value).toFixed(2)}`
             }
 
-         else if (value < 100){
+           else if (value < 100){
+
+              return `${percentSign ? Math.round(value*1) + '%' : Math.round(value*1)}`
+            }
+            else if (value < 1000){
 
             return `${percentSign ? Math.round(value*1) + '%' : Math.round(value*1)}`
           }
-          else if (value < 1000){
-
-          return `${percentSign ? Math.round(value*1) + '%' : Math.round(value*1)}`
-        }
-          else{
-
-              let percentage = (value) / 1000
-
-              return `${percentSign ? formatNumber(Math.round(percentage.toFixed() * 1000)) + '%' : formatNumber(Math.round(percentage.toFixed() * 1000))}`;
-          }
+            else{
+                let percentage = (value) / 1000
+                return `${percentSign ? formatNumber(Math.round(percentage.toFixed() * 1000)) + '%' : formatNumber(Math.round(percentage.toFixed() * 1000))}`;
+            }
         },
 
           font: {
@@ -680,15 +726,15 @@ console.log(last, percentDiff1, percentDiff2, percentDiff3 )
 
           },
 
-
           anchor: 'end',
           align: 'end',
-
 
         },
         legend: {
           position: "bottom",
-          labels: {
+          labels:
+
+          {
             color:'#262D33',
             font: {
               size: `${legendSize ?  legendSize  : 10 }`,
@@ -701,6 +747,7 @@ console.log(last, percentDiff1, percentDiff2, percentDiff3 )
           align: "center" as const,
           display: `${showXGridLines ? hasNoPivot || hasPivot : ""}`
         },
+
         tooltip: {
           enabled: false,
           position: "nearest",
@@ -790,6 +837,25 @@ console.log(last, percentDiff1, percentDiff2, percentDiff3 )
           },
 
         },
+
+        yRight: {
+          legend: {
+            display: true,
+        },
+        grid: {
+          display: false,
+        },
+        position: "right" as const,
+        display: false,
+        ticks: {
+
+          display: false,
+
+
+        },
+
+
+      },
 
       },
     }),

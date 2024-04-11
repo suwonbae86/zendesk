@@ -377,6 +377,15 @@ looker.plugins.visualizations.add({
         section: "Chart",
       },
 
+      secondLegend: {
+        type: "boolean",
+        label: "Turn on Second Legend",
+        default: false,
+
+        order: 30,
+        section: "Chart",
+      },
+
       hideTitle: {
         type: "boolean",
         label: "Hide Title",
