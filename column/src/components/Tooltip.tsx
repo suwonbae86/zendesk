@@ -70,7 +70,9 @@ const Tooltip: React.FC<TooltipProps> = (
 
 ) => {
 const { dimensionLabel, left, rows, top, yAlign, measureValue, dimensionName, measureLabel, dimensionLabel0, measureLabel0, secondMeasure } = tooltipData;
-
+  console.log('tooltip')
+  console.log(measureLabel)
+  console.log(measureLabel0)
   return (
     <div
       className={`chartjs-tooltip ${yAlign ?? "no-transform"}`}
