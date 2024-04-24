@@ -210,7 +210,10 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
   const dimensionName = fields.dimensions[0];
   const measureName = fields.measures[0];
   const previousPeriodFieldName = fields.measures[0];
-
+  console.log('list of measures')
+  console.log(fields.measures)
+  console.log(fields.measuresLabel)
+  console.log(measureName)
   const dimensionLabel = fields.dimensionsLabel[0];
   const measureLabel = fields.measuresLabel[0];
 
@@ -430,7 +433,8 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
 
       const lookerRow = data[dataIndex];
 
-
+      console.log('measures')
+      console.log(data, dataIndex)
 
 
       let rows: TooltipRow[] = [];
@@ -512,8 +516,9 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
 
 
 
-        // measureLabel: `${yAxisLeftValues}: `,
-        measureLabel0: `${context.tooltip.dataPoints[0].formattedValue}`,
+        // measureLabel0: `${yAxisLeftValues}: `,
+        // measureLabel0: `${context.tooltip.dataPoints[0].formattedValue}`,
+        measureLabel0: percentSign ? `${context.tooltip.dataPoints[0].formattedValue*100}%` : `${context.tooltip.dataPoints[0].formattedValue}`,
         left:
             position.left + window.pageXOffset + context.tooltip.caretX + "px",
             rows,
@@ -716,7 +721,7 @@ console.log(last, percentDiff1, percentDiff2, percentDiff3 )
           }
             else{
                 let percentage = (value) / 1000
-                return `${percentSign ? formatNumber(Math.round(percentage.toFixed() * 1000)) + '%' : formatNumber(Math.round(percentage.toFixed() * 1000))}`;
+                return `${percentSign ? formatNumber(Math.round(percentage.toFixed(0) * 1000)) + '%' : formatNumber(Math.round(percentage.toFixed() * 1000))}`;
             }
         },
 
