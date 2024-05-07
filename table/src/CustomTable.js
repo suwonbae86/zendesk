@@ -36,7 +36,7 @@ import { TablePagination } from "@mui/material";
 
 
 const Styles = ({ children, config }) => {
-  var { thColor, thFontSize, tableBordered, fixedHeight, unsetTable, hidePag, removeBars, rightPag, index, border, unsetWidth, titleColor,  toolOn, bodyStyle, hideTitle, tableFontSize } = config;
+  var { thColor, thFontSize, tableBordered, fixedHeight, unsetTable, hidePag, removeBars, rightPag, index, border, unsetWidth, titleColor,  toolOn, bodyStyle, hideTitle, tableFontSize, columnsToHide } = config;
 
   const StyledWrapper = styled.div`
 
@@ -865,7 +865,7 @@ th, .th, td, .td{
 function Table({ columns, data, config }) {
 
 
-  var { tableBordered, fixedHeight, unsetTable, hidePag, rightPag, removeBars, index, border, textTitle, color_title, writeTitle, toolOn, writeTooltip, headerText, yesText, unsetWidth, titleColor, bodyStyle, hideTitle, tableFontSize } = config;
+  var { tableBordered, fixedHeight, unsetTable, hidePag, rightPag, removeBars, index, border, textTitle, color_title, writeTitle, toolOn, writeTooltip, headerText, yesText, unsetWidth, titleColor, bodyStyle, hideTitle, tableFontSize, columnsToHide } = config;
 
   const defaultColumn = React.useMemo(
      () => ({
@@ -1162,8 +1162,6 @@ const createLabel = (label) => {
 
 export const CustomTable = ({ data, config, queryResponse, details, done }) => {
 
-
-
   // get dimensions and measures
   const { dimension_like, measure_like, pivots } = queryResponse.fields;
   const fields = {
@@ -1183,8 +1181,6 @@ var element;
       console.log(element);
   }
 
-
-
 const dimensionName = fields.dimensions[0];
 const dimensionName1 = fields.dimensions[1];
 const measureName = fields.measures[0];
@@ -1196,9 +1192,9 @@ const measureName = fields.measures[0];
   let cols_to_hide = [];
 
   for (const [key, value] of Object.entries(firstData)) {
-    if (key.split(".")[1] === "columns_to_hide") {
-      cols_to_hide = firstData[key].value.split(",").map((e) => e.trim());
-      break;
+    console.log(key, value)
+    if (config['columnsToHide'].split(",").includes(key.split(".")[1])) {
+      cols_to_hide.push(key);
     }
   }
 
