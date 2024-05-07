@@ -422,6 +422,13 @@ looker.plugins.visualizations.add({
         section: "Style",
       },
 
+      decimalPlace: {
+        type: "string",
+        label: "# of Decimal",
+        default: "1",
+        order: 32,
+        section: "Style",
+      },
 
       targetLabel: {
         type: "string",
