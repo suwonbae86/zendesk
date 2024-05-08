@@ -165,6 +165,7 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
     kpiField,
     dollar,
     percentSign,
+    decimalPlace,
     xFontSize,
     yFontSize,
     legendSize,
@@ -210,10 +211,6 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
   const dimensionName = fields.dimensions[0];
   const measureName = fields.measures[0];
   const previousPeriodFieldName = fields.measures[0];
-  console.log('list of measures')
-  console.log(fields.measures)
-  console.log(fields.measuresLabel)
-  console.log(measureName)
   const dimensionLabel = fields.dimensionsLabel[0];
   const measureLabel = fields.measuresLabel[0];
 
@@ -518,7 +515,14 @@ function BarLineVis({ data, fields, config, lookerCharts, lookerVis, configOptio
 
         // measureLabel0: `${yAxisLeftValues}: `,
         // measureLabel0: `${context.tooltip.dataPoints[0].formattedValue}`,
-        measureLabel0: percentSign ? `${context.tooltip.dataPoints[0].formattedValue*100}%` : `${context.tooltip.dataPoints[0].formattedValue}`,
+        measureLabel0: 
+          percentSign && parseInt(context.tooltip.dataPoints[0].formattedValue*1) < 1 ? `${(context.tooltip.dataPoints[0].formattedValue*100).toFixed(parseInt(decimalPlace))}%` :
+          percentSign ? `${context.tooltip.dataPoints[0].formattedValue*100}%`  :
+          dollar && parseInt(context.tooltip.dataPoints[0].formattedValue*1) < 1 ? `$${(context.tooltip.dataPoints[0].formattedValue*1).toFixed(parseInt(decimalPlace))}` : 
+          dollar ? `$${context.tooltip.dataPoints[0].formattedValue}` : 
+          parseInt(context.tooltip.dataPoints[0].formattedValue*1) < 1 ? `${(context.tooltip.dataPoints[0].formattedValue*1).toFixed(parseInt(decimalPlace))}` :
+          `${context.tooltip.dataPoints[0].formattedValue}` ,
+
         left:
             position.left + window.pageXOffset + context.tooltip.caretX + "px",
             rows,
@@ -587,7 +591,7 @@ var average = calculateAverage(array);
 
 // console.log(average)
 
-var average =  percentSign ? Math.round(average * 100).toLocaleString() : Math.round(average * 1).toLocaleString();
+var average =  percentSign ? Math.round(average * 100).toFixed(parseInt(decimalPlace)).toLocaleString() : Math.round(average * 1).toLocaleString();
 
 
 // console.log(average)
@@ -605,8 +609,14 @@ var average =  percentSign ? Math.round(average * 100).toLocaleString() : Math.r
   let result = data.map(item => item[symbol].value)
 
 
+  let targetRaw = result[0]
 
-  let target = percentSign ? Math.round(result[0]*100) : Math.round(result[0]) ;
+  let target = 
+  percentSign ? (result[0] * 100).toFixed(parseInt(decimalPlace)).toLocaleString() : 
+  result[0] > 0 && result[0] < 1 ? (result[0] * 1).toFixed(parseInt(decimalPlace)).toLocaleString() :
+  result[0] < 1000 ? Math.round(result[0]).toLocaleString() :
+   Math.round(result[0] * 1).toLocaleString()
+  
 
   let yAxisRightDropdownValues = Content.map(function(val, i){ return val.yAxisRightDropdown });
 
@@ -639,12 +649,12 @@ var average =  percentSign ? Math.round(average * 100).toLocaleString() : Math.r
 //
 // console.log(labels)
 
+//console.log(last, target, targetRaw, parseInt(target))
 
+const percentDiff1 = percentSign ? Math.round(last / (parseInt(targetRaw)/100) * 100).toFixed(parseInt(decimalPlace)) : Math.round(last / parseInt(targetRaw) * 100).toFixed(parseInt(decimalPlace))
+const percentDiff2 =  Math.round(last / parseInt(writeTarget) * 100).toFixed(parseInt(decimalPlace))
 
-const percentDiff1 = percentSign ? Math.round(last / (target/100) * 100) : Math.round(last / target * 100)
-const percentDiff2 =  Math.round(last / parseInt(writeTarget) * 100)
-
-const percentDiff3 = percentSign ? Math.round(last / (parseInt(average)/100) * 100) : Math.round(last / parseInt(average) * 100)
+const percentDiff3 = percentSign ? Math.round(last / (parseInt(average)/100) * 100).toFixed(parseInt(decimalPlace)) : Math.round(last / parseInt(average) * 100).toFixed(parseInt(decimalPlace))
 
 
 
@@ -708,20 +718,24 @@ console.log(last, percentDiff1, percentDiff2, percentDiff3 )
           formatter: function(value: number) {
 
            if (value > 0 && value <  1){
-                return `${percentSign ? (value*100).toFixed(0) + '%' : (value).toFixed(2)}`
+                return `${percentSign ? (value*100).toFixed(parseInt(decimalPlace)) + '%' : dollar ? '$' + (value).toFixed(parseInt(decimalPlace)) : (value).toFixed(parseInt(decimalPlace))}`
             }
 
            else if (value < 100){
 
-              return `${percentSign ? Math.round(value*100).toFixed(0) + '%' : Math.round(value*1)}`
+              return `${percentSign ? Math.round(value*100).toFixed(0) + '%' : dollar ? '$' + Math.round(value*1).toFixed(0) : Math.round(value*1).toFixed(0)}`
             }
             else if (value < 1000){
 
-            return `${percentSign ? Math.round(value*100).toFixed(0) + '%' : Math.round(value*1)}`
-          }
-            else{
+            return `${percentSign ? Math.round(value*100).toFixed(0) + '%' : dollar ? '$' + Math.round(value*1).toFixed(0) : Math.round(value*1).toFixed(0)}`
+            }
+            else if (value < 1000000) {
                 let percentage = (value) / 1000
-                return `${percentSign ? formatNumber(Math.round(percentage.toFixed(0) * 1000)) + '%' : formatNumber(Math.round(percentage.toFixed() * 1000))}`;
+                return `${percentSign ? formatNumber(Math.round(percentage.toFixed(0) * 100000)) + '%' : dollar ? '$' + formatNumber(Math.round(percentage.toFixed(1) * 1000)) : formatNumber(Math.round(percentage.toFixed(1) * 1000 ))}`;
+            }
+            else {
+              let percentage = (value) / 1000000
+                return `${percentSign ? formatNumber(Math.round(percentage.toFixed(0) * 10000000)) + '%' : dollar ? '$' + formatNumber(Math.round(percentage.toFixed(1) * 1000000)) : formatNumber(Math.round(percentage.toFixed(1) * 1000000 ))}`;
             }
         },
 
@@ -830,7 +844,7 @@ console.log(last, percentDiff1, percentDiff2, percentDiff3 )
             },
             display:showYGridLines,
             callback: function (value: number) {
-              return `${percentSign ? formatNumber((value*100).toFixed(0)) + "%" :  formatNumber(value)}`;
+              return `${percentSign ? formatNumber((value*100).toFixed(parseInt(decimalPlace))) + "%" :  dollar ? "$" + formatNumber(value) : formatNumber(value)}`;
             },
           },
           title: {
@@ -948,9 +962,10 @@ console.log(last, percentDiff1, percentDiff2, percentDiff3 )
 
       <h1 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className="mb-0">
       {dollar ? "$" : ""}
-      {last > 0 && last < 1 && percentSign ? (last * 100).toFixed(0).toLocaleString() : 
-       last > 0 && last < 1 ? (last * 1).toFixed(2).toLocaleString()
-       : Math.round(last * 1).toLocaleString()}
+      {percentSign ? (last * 100).toFixed(parseInt(decimalPlace)).toLocaleString() : 
+       last > 0 && last < 1 ? (last * 1).toFixed(parseInt(decimalPlace)).toLocaleString() :
+       last < 1000 ? Math.round(last * 1).toLocaleString() :
+       Math.round(last * 1).toLocaleString()}
       {percentSign ? "%" : ""}
       <span className={hideCaret ? "hidden" : "caret"}>
       </span>
@@ -963,12 +978,12 @@ console.log(last, percentDiff1, percentDiff2, percentDiff3 )
     </OverlayTrigger>
 
   { showAverage ? (
-    <h3 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className={hideTarget ? "hidden" : ""}>{writeTargetLabel === "" ? targetLabel : writeTargetLabel}: {average}{percentSign ? "%" : "" } <span className={showDifferenceBottom ? "" : "hidden"}>({percentDiff3}%)</span></h3>
+    <h3 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className={hideTarget ? "hidden" : ""}>{writeTargetLabel === "" ? targetLabel : writeTargetLabel}: {dollar ? "$" : ""}{average}{percentSign ? "%" : "" } <span className={showDifferenceBottom ? "" : "hidden"}>({percentDiff3}%)</span></h3>
 
 
       ) : (
 
-    <h3 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className={hideTarget ? "hidden" : ""}>{writeTargetLabel === "" ? targetLabel : writeTargetLabel}: {writeTarget === "" ? target : writeTarget}{percentSign ? "%" : "" }  <span className={showDifferenceBottom ? "" : "hidden"}>({percentDiff1}%)</span></h3>
+    <h3 style={{fontFamily: bodyStyle ? bodyStyle : "'Roboto'"}} className={hideTarget ? "hidden" : ""}>{writeTargetLabel === "" ? targetLabel : writeTargetLabel}: {dollar ? "$" : ""}{writeTarget === "" ? target : writeTarget}{percentSign ? "%" : "" }  <span className={showDifferenceBottom ? "" : "hidden"}>({percentDiff1}%)</span></h3>
 
   )
 }
