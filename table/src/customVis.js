@@ -188,28 +188,13 @@ console.log(data, "data api response")
            order: 32,
         },
 
-
-
-    // yesText: {
-    //  type: "boolean",
-    //  label: "Change Default Header to Dropdown",
-    //  default: false,
-    //  order: 11,
-    //   section: "Style",
-    // },
-    //
-    //
-    //         headerText: {
-    //         type: "string",
-    //         label: "Choose Header Text from Dropdown",
-    //
-    //         display: "select",
-    //
-    //         values: fieldOptions,
-    //         order: 12,
-    //         default:'',
-    //         section: "Style",
-    //       },
+        freeze: {
+         type: "boolean",
+         label: "Freeze First 2 Columns",
+         default: false,
+         order: 12,
+          section: "Style",
+        },
 
 
 
