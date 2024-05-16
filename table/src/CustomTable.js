@@ -36,7 +36,7 @@ import { TablePagination } from "@mui/material";
 
 
 const Styles = ({ children, config }) => {
-  var { thColor, thFontSize, tableBordered, fixedHeight, unsetTable, hidePag, removeBars, rightPag, index, border, unsetWidth, titleColor,  toolOn, bodyStyle, hideTitle, tableFontSize, columnsToHide, freeze } = config;
+  var { thColor, thFontSize, tableBordered, fixedHeight, unsetTable, hidePag, removeBars, rightPag, index, border, unsetWidth, titleColor,  toolOn, bodyStyle, hideTitle, tableFontSize, columnsToHide, freeze, wrapText } = config;
 
   const StyledWrapper = styled.div`
 
@@ -869,6 +869,18 @@ table>:not(caption)>*>* {
 }
 
 
+.fixHeight .td{
+  min-height:50px !important;
+  max-height:55px !important;
+  text-wrap: nowrap;
+}
+.wrapText td,
+.wrapText .td{
+word-break: break-all !important
+}
+
+
+
   `;
 
   return <StyledWrapper>{children}</StyledWrapper>;
@@ -876,7 +888,7 @@ table>:not(caption)>*>* {
 
 function Table({ columns, data, config }) {
 
-  var { tableBordered, fixedHeight, unsetTable, hidePag, rightPag, removeBars, index, border, textTitle, color_title, writeTitle, toolOn, writeTooltip, headerText, yesText, unsetWidth, titleColor, bodyStyle, hideTitle, tableFontSize, columnsToHide, freeze } = config;
+  var { tableBordered, fixedHeight, unsetTable, hidePag, rightPag, removeBars, index, border, textTitle, color_title, writeTitle, toolOn, writeTooltip, headerText, yesText, unsetWidth, titleColor, bodyStyle, hideTitle, tableFontSize, columnsToHide, freeze, wrapText } = config;
 
   const defaultColumn = React.useMemo(
      () => ({
@@ -947,7 +959,10 @@ function Table({ columns, data, config }) {
     <>
 
 
-   <div className={`${config.border ? "removeBorder" : ""}`}>
+   <div className={`
+     ${config.border ? "removeBorder" : ""}
+     ${config.wrapText ? "wrapText" : ""}
+     `}>
 
     <Container fluid className={`${config.removeBars ? "scrunch" : "padding-0 second"}`} id="height">
       <div className="greenBox pt-3" style={{ backgroundColor: config.color_title ? background[0] : '#00363d'}}>
@@ -971,12 +986,13 @@ function Table({ columns, data, config }) {
         {
            config.freeze  ? (
          <Fragment>
-            <thead style={{display: "flex", width: `${tr_length + 2 * 160}px`}}>
+            <thead style={{display: "inline-flex", width: `${tr_length + 2 * 160}px`}}>
               <tr key={headerGroups[0].id}
                {...headerGroups[0].getHeaderGroupProps()}
                className="tr makeGray"
                style={{
                 position: "sticky",
+
                 left: 0,
                 zIndex: 1,
                 display: "flex",
@@ -1057,12 +1073,13 @@ function Table({ columns, data, config }) {
 
 
 
-            <tbody {...getTableBodyProps()} style={{display: 'flex'}}>
+            <tbody {...getTableBodyProps()} style={{display: 'inline-flex'}} className="fixHeight">
               <tr
                 style={{
                   position: "sticky",
                   left: 0,
                   zIndex: 1,
+
                 }}
 
               >

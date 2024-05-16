@@ -196,6 +196,15 @@ console.log(data, "data api response")
           section: "Style",
         },
 
+        wrapText: {
+         type: "boolean",
+         label: "Wrap Text",
+         default: false,
+         order: 13,
+          section: "Style",
+        },
+
+
 
 
   };
