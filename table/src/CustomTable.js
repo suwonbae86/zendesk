@@ -521,7 +521,7 @@ tr:nth-child(odd) td{
 
  .unsetTable .fixedHeight {
 
-     overflow-x: hidden;
+
  }
 
 
@@ -611,7 +611,7 @@ width: 99%;
           position: relative;
           font-weight:300;
           height: 75px;
-          width: 160px;
+          width: 200px !important;
           font-size: ${tableFontSize} !important;
      }
 
@@ -623,6 +623,7 @@ height: auto;
 display: flex !important;
 align-items: center;
 font-weight: 400;
+width: 200px !important;
      }
 
 
@@ -869,16 +870,32 @@ table>:not(caption)>*>* {
 }
 
 
+
+
+.unsetTable td,
+.unsetTable .td,
+.unsetTable .th,
+.unsetTable th{
+  width: 100% !important;
+    max-width: 100%;
+    min-width: 200px;
+
+}
+
+
 .fixHeight .td{
-  min-height:50px !important;
-  max-height:55px !important;
-  text-wrap: nowrap;
+  height:70px !important;
+
+word-break: break-all !important
 }
 .wrapText td,
 .wrapText .td{
 word-break: break-all !important
 }
 
+.makeGray th{
+  width:160px !important
+}
 
 
   `;
@@ -893,7 +910,7 @@ function Table({ columns, data, config }) {
   const defaultColumn = React.useMemo(
      () => ({
        minWidth: 40,
-       width: 160,
+       width: 200,
        maxWidth: 400,
      }),
      []
@@ -953,7 +970,7 @@ function Table({ columns, data, config }) {
     <p className="m-0">{config.writeTooltip}</p>
     </Popover>
   );
-  const tr_length = (headerGroups[0].headers.length - 2) * 160
+  const tr_length = (headerGroups[0].headers.length - 2) * 200
 
   return (
     <>
@@ -976,7 +993,7 @@ function Table({ columns, data, config }) {
       </div>
 
       <div>
-        <div className={`${config.unsetTable  ? "" : "unsetTable"}`}>
+        <div className={`${config.unsetTable  ? "unsetTable" : ""}`}>
         <div className={`${config.fixedHeight  ? "fixedHeight" : ""}`}>
 
         <div className="aroundIt">
@@ -1364,7 +1381,7 @@ const measureName = fields.measures[0];
     delete firstData[col];
   });
 
-  const data2 = useMemo(() => data, []);
+  const data2 = useEffect(() => data, []);
 
 
 
